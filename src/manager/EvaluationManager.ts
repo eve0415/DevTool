@@ -51,7 +51,8 @@ export class EvaluationManager extends Collection<Snowflake, ChildProcessWithout
         return string
             .replaceAll(instance.token ?? '', token)
             .replaceAll('instance.token', `'${token}'`)
-            .replaceAll('client.token', `'${token}'`);
+            .replaceAll('client.token', `'${token}'`)
+            .replaceAll('process.env.DISCORD_TOKEN', `'${token}'`);
     }
 
     private processContent(content: unknown) {
