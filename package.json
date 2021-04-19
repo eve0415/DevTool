@@ -1,0 +1,52 @@
+{
+  "name": "devtoolbot",
+  "version": "1.0.0",
+  "description": "Developer tool bot for Discord",
+  "author": "eve0415 <40632436+eve0415@users.noreply.github.com>",
+  "homepage": "https://github.com/eve0415/DownDetector#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eve0415/DownDetector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eve0415/DownDetector/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "watch": "tsc -b -w",
+    "lint": "npx eslint . --ext ts --fix",
+    "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
+    "test": "nodemon --config nodemon.json -r dotenv/config src/index.ts"
+  },
+  "dependencies": {
+    "bufferutil": "^4.0.3",
+    "discord.js": "discordjs/discord.js#master",
+    "erlpack": "discord/erlpack",
+    "log4js": "^6.3.0",
+    "tslib": "^2.2.0",
+    "typescript": "^4.2.4",
+    "utf-8-validate": "^5.0.4",
+    "zlib-sync": "^0.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.41",
+    "@types/ws": "^7.4.1",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.24.0",
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.7",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.1.1"
+  }
+}

@@ -1,0 +1,38 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "alwaysStrict": true,
+        "declaration": true,
+        "declarationMap": true,
+        "esModuleInterop": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "lib": [
+            "ESNext",
+            "ESNext.AsyncIterable",
+            "ESNext.Array",
+            "ESNext.Intl",
+            "ESNext.Symbol"
+        ],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noEmitHelpers": true,
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "outDir": "dist",
+        "pretty": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": false,
+        "sourceMap": true,
+        "strict": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
+        "target": "ESNext"
+    },
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
