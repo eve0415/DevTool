@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devtool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devtool
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: devtool
+    spec:
+      containers:
+        - name: devtool
+          image: eve0415/devtool
+          imagePullPolicy: Always
+          resources:
+          env:
+            - name: DISCORD_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: discord
+                  key: token
