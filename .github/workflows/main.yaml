@@ -36,6 +36,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: eve0415/downdetector:latest
+          tags: eve0415/devtool:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
