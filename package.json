@@ -4,7 +4,7 @@
   "description": "Developer tool bot for Discord",
   "author": "eve0415 <40632436+eve0415@users.noreply.github.com>",
   "homepage": "https://github.com/eve0415/DownDetector#readme",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eve0415/DownDetector.git"
@@ -35,6 +35,7 @@
     "tslib": "^2.2.0",
     "typescript": "^4.2.4",
     "utf-8-validate": "^5.0.4",
+    "vm2": "^3.9.3",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {

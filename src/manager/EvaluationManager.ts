@@ -17,7 +17,7 @@ export class EvaluationManager extends Collection<Snowflake, ChildProcessWithout
         const process = this.get(message.channel.id);
         process?.stdout.once('data', data => {
             const res = this.processContent(data);
-            if (res) message.reply(this.createmessage(res), { allowedMentions: { repliedUser: false } });
+            if (res) message.reply(this.createmessage(res));
         });
         process?.stdin.write(`${this.processString(content)}\n`);
     }

@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import { transpile } from 'typescript';
+import { VM } from 'vm2';
 import { instance } from '..';
 import { SystemCommandBuilder } from '../api';
 
@@ -14,7 +15,7 @@ const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 function run(message: Message, args: string[]) {
     for (const arg of args) {
         if (!codeBlockRegex.test(arg)) {
-            instance.evalManager.evaluateOnce(message, transpile(arg));
+            runJS(message, transpile(arg));
         } else {
             const codeblock = codeBlockRegex.exec(arg)?.groups ?? {};
             switch (codeblock.lang.toLowerCase()) {
@@ -22,7 +23,7 @@ function run(message: Message, args: string[]) {
                 case 'javascript':
                 case 'ts':
                 case 'typescript':
-                    instance.evalManager.evaluateOnce(message, transpile(codeblock.code));
+                    runJS(message, transpile(codeblock.code));
                     break;
 
                 default:
@@ -30,4 +31,18 @@ function run(message: Message, args: string[]) {
             }
         }
     }
+}
+
+const vm = new VM({
+    timeout: 10000,
+});
+
+function runJS(message: Message, code: string) {
+    try {
+        vm.run(transpile(code));
+    } catch (e) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+        if (e.code === 'ERR_SCRIPT_EXECUTION_TIMEOUT') return message.reply({ embed: { description: 'Timeout error occured', color: 'RED' }, allowedMentions: { repliedUser: false } });
+    }
+    instance.evalManager.evaluateOnce(message, transpile(code));
 }
