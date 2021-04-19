@@ -32,7 +32,6 @@ export class EvaluationManager extends Collection<Snowflake, ChildProcessWithout
         const process = this.startProcess();
         const result: string[] = [];
         process.stdout.on('data', data => {
-            // result.push(data);
             const res = this.processContent(data);
             if (res) result.push(res);
         });
@@ -58,10 +57,12 @@ export class EvaluationManager extends Collection<Snowflake, ChildProcessWithout
     private processContent(content: unknown) {
         const string = this.processString(typeof content !== 'string' ? inspect(content, { depth: null, maxArrayLength: null }) : content).trim();
         if (string.startsWith('Welcome to Node.js ')) return;
-        return string.replaceAll('undefined\n>', '').replaceAll('...', '').replaceAll('>', '').replaceAll('undefined', '').trim();
+        if (string === '...') return;
+        return string.replaceAll('undefined\n>', '').replaceAll('>', '').replaceAll('undefined', '').trim();
     }
 
     private createmessage(result: string, code = 0) {
+        if (!result) result = 'No returned value';
         if (result.length <= 1990) {
             const embed = new MessageEmbed()
                 .setColor(code === 0 ? 'BLUE' : 'RED')
