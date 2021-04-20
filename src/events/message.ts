@@ -31,9 +31,9 @@ export default class extends Event {
             const cmd = parsed.filter(p => !p.includes('```')).find(p => commands.map(c => c.name).indexOf(p) >= 0);
             return { command: cmd, codeBlock: eachCodeBlock, other: parsed.filter(p => !p.includes('```') && p !== cmd).join('\n') };
         } else {
-            const parsed = message.content.split(' ').filter(p => p);
+            const parsed = message.content.split(/ |\n/g).filter(p => p);
             const cmd = parsed.find(p => commands.map(c => c.name).indexOf(p) >= 0);
-            return { command: cmd, codeBlock: null, other: parsed.filter(p => p !== cmd).join(' ') };
+            return { command: cmd, codeBlock: null, other: parsed.filter(p => p !== cmd).join('\n') };
         }
     }
 }
