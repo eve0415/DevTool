@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "Developer tool bot for Discord",
   "author": "eve0415 <40632436+eve0415@users.noreply.github.com>",
-  "homepage": "https://github.com/eve0415/DownDetector#readme",
+  "homepage": "https://github.com/eve0415/DevTool#readme",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eve0415/DownDetector.git"
+    "url": "git+https://github.com/eve0415/DevTool.git"
   },
   "bugs": {
-    "url": "https://github.com/eve0415/DownDetector/issues"
+    "url": "https://github.com/eve0415/DevTool/issues"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
