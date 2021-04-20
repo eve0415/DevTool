@@ -61,18 +61,18 @@ export class EvaluationManager extends Collection<Snowflake, ChildProcessWithout
         return string.replaceAll('undefined\n>', '').replaceAll('>', '').replaceAll('undefined', '').trim();
     }
 
-    private createmessage(result: string, code = 0) {
+    private createmessage(result: string, code = 0): MessageOptions {
         if (!result) result = 'No returned value';
         if (result.length <= 1990) {
             const embed = new MessageEmbed()
                 .setColor(code === 0 ? 'BLUE' : 'RED')
                 .setDescription(`\`\`\`js\n${result}\n\`\`\``);
-            return { embed: embed, allowedMentions: { repliedUser: false } } as MessageOptions;
+            return { embed: embed, allowedMentions: { repliedUser: false } };
         }
         return {
             content: 'The result of evaluation. See attached',
             files: [new MessageAttachment(Buffer.from(result), 'result.txt')],
             allowedMentions: { repliedUser: false },
-        } as MessageOptions;
+        };
     }
 }
