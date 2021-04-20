@@ -12,11 +12,13 @@ export default class extends Event {
 
         const parsed = this.parseMessage(message);
         if (!parsed.command) return;
+        this.logger.debug(parsed);
         const cmd = this.client.commandManager.find(c => c.name === parsed.command);
         if (!parsed.codeBlock && !parsed.other && message.reference) {
             const referenced = message.referencedMessage ?? message.channel.messages.resolve(message.reference.messageID ?? '');
             if (!referenced) return;
             const parsedTwo = this.parseMessage(referenced);
+            this.logger.debug(parsedTwo);
             cmd?.execute(message, [parsedTwo.other].concat(parsedTwo.codeBlock ?? '').filter(a => a));
         } else {
             cmd?.execute(message, [parsed.other].concat(parsed.codeBlock ?? '').filter(a => a));
@@ -31,9 +33,10 @@ export default class extends Event {
             const cmd = parsed.filter(p => !p.includes('```')).find(p => commands.map(c => c.name).indexOf(p) >= 0);
             return { command: cmd, codeBlock: eachCodeBlock, other: parsed.filter(p => !p.includes('```') && p !== cmd).join('\n') };
         } else {
-            const parsed = message.content.split(/ |\n/g).filter(p => p);
+            const parsed = message.content.split(/(?=[\n ])|(?<=[\n ])/g);
+            this.logger.debug(parsed);
             const cmd = parsed.find(p => commands.map(c => c.name).indexOf(p) >= 0);
-            return { command: cmd, codeBlock: null, other: parsed.filter(p => p !== cmd).join('\n') };
+            return { command: cmd, codeBlock: null, other: parsed.filter(p => p !== cmd).join('') };
         }
     }
 }

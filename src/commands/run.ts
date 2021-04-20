@@ -36,9 +36,7 @@ function run(message: Message, args: string[]) {
 function runJS(message: Message, code: string) {
     const transpiled = transpile(code, { allowJs: true, importHelpers: false, target: ScriptTarget.ES2020 });
     try {
-        const vm = new VM({
-            timeout: 10000,
-        });
+        const vm = new VM({ timeout: 10000 });
         vm.run(transpiled);
     } catch (e) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
