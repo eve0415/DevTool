@@ -20,6 +20,8 @@ spec:
         - name: devtool
           image: eve0415/devtool
           imagePullPolicy: Always
+          securityContext:
+            readOnlyRootFilesystem: true
           resources:
           env:
             - name: DISCORD_TOKEN
