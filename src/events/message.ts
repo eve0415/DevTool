@@ -36,7 +36,7 @@ export default class extends Event {
             const parsed = message.content.split(/(?=[\n ])|(?<=[\n ])/g);
             this.logger.debug(parsed);
             const cmd = parsed.find(p => commands.map(c => c.name).indexOf(p) >= 0);
-            return { command: cmd, codeBlock: null, other: parsed.filter(p => p !== cmd).join('') };
+            return { command: cmd, codeBlock: null, other: parsed.filter(p => p !== cmd).join('').trim() };
         }
     }
 }

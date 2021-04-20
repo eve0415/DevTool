@@ -13,4 +13,5 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --production && yarn cache clean
 COPY --from=builder /app/dist ./
+RUN chmod 444 /app
 CMD ["node", "index.js"]
