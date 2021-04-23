@@ -35,7 +35,6 @@
     "tslib": "^2.2.0",
     "typescript": "^4.2.4",
     "utf-8-validate": "^5.0.4",
-    "vm2": "^3.9.3",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
