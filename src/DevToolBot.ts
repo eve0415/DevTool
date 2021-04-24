@@ -1,7 +1,6 @@
 import { Client } from 'discord.js';
 import { getLogger, shutdown } from 'log4js';
-import { CommandManager, EventManager } from './manager';
-import { EvaluationManager } from './manager/EvaluationManager';
+import { CommandManager, EvaluationManager, EventManager } from './manager';
 
 export class DevToolBot extends Client {
     private readonly logger = getLogger('DevToolBot');

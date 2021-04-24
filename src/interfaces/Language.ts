@@ -15,6 +15,6 @@ export const processData: Readonly<SafeManual[]> = [
     {
         lang: 'py',
         exit: 'exit()',
-        ignore: ['>>>'],
+        ignore: ['None'],
     },
 ];
