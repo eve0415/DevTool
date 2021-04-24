@@ -1,4 +1,4 @@
-import { Collection } from 'discord.js';
+import { Collection, Message, MessageEmbed } from 'discord.js';
 import { getLogger } from 'log4js';
 import { DevToolBot, instance } from '..';
 import { Command } from '../interfaces';
@@ -31,5 +31,16 @@ export class CommandManager extends Collection<number, Command> {
         command.isEnabled = true;
         this.logger.info(`[${this.commandNo}] Successfully registered command: ${command.name}`);
         return command;
+    }
+
+    public getHelp(message: Message): void {
+        const embed = new MessageEmbed()
+            .setColor('BLUE')
+            .setTitle('Help')
+            .setDescription('Hi, thank you for using.\nThis help command will show you some commands that you can use.\nIf you need more help for any command, just send `<command name> help`.')
+            .addField('System Command', this.filter(c => c.madeBy === '0').map(c => c.name).join(', '))
+            .addField('Original Command', this.filter(c => c.madeBy === message.author.id || c.madeIn === message.guild?.id).map(c => c.name).concat(['None']).join(', '));
+
+        message.reply({ embed: embed, allowedMentions: { repliedUser: false } });
     }
 }

@@ -10,10 +10,14 @@ export default class extends Event {
     public run(message: Message): unknown {
         if (message.system || message.author.bot) return;
 
+        const prefixMention = new RegExp(`<@?!${this.client.user?.id}>`);
+        if (prefixMention.test(message.content) || prefixMention.test(message.content) && message.content.split(prefixMention)[0] === 'help') return this.client.commandManager.getHelp(message);
+
         const parsed = this.parseMessage(message);
         if (!parsed.command) return;
         this.logger.debug(parsed);
         const cmd = this.client.commandManager.find(c => c.name === parsed.command);
+        if (parsed.other === 'help') return cmd?.wantHelp(message);
         if (!parsed.codeBlock && !parsed.other && message.reference) {
             const referenced = message.referencedMessage ?? message.channel.messages.resolve(message.reference.messageID ?? '');
             if (!referenced) return;

@@ -1,6 +1,6 @@
 import { Message, MessageEmbed, Snowflake } from 'discord.js';
-import { Command } from '../../interfaces';
-import { CommandManager } from '../../manager';
+import { Command } from '../interfaces';
+import { CommandManager } from '../manager';
 
 export abstract class BaseCommandBuilder {
     public name!: string;

@@ -1,5 +1,5 @@
 import { Message, MessageEmbed, Snowflake } from 'discord.js';
-import { BaseCommandBuilder } from '../api';
+import { BaseCommandBuilder } from '../CommandBuilder';
 
 export class Command {
     public name: string;
@@ -16,7 +16,7 @@ export class Command {
         this.name = command.name;
         this.description = command.description;
         this.madeBy = command.madeBy;
-        this.madeIn = command.madeIn;
+        this.madeIn = command.private ? '' : command.madeIn;
         this.execute = command.execute;
     }
 
@@ -37,12 +37,13 @@ export class Command {
     }
 
     public async wantHelp(message: Message): Promise<void> {
-        const embed = new MessageEmbed()
-            .setTitle(this.name)
-            .setDescription(this.description)
-            .addField('Created by', await this.resolveUser(message));
+        const embed = this.description instanceof MessageEmbed ? this.description : new MessageEmbed();
+        if (!embed.title) embed.setTitle(this.name);
+        if (!embed.description) embed.setDescription(this.description);
+        if (!embed.color) embed.setColor('BLUE');
+        if (!embed.footer) embed.setFooter(`Created by ${await this.resolveUser(message)}(${this.madeBy}). Command ID: ${this.id}`);
 
-        message.reply(embed, { allowedMentions: { repliedUser: false } });
+        message.reply({ embed: embed, allowedMentions: { repliedUser: false } });
     }
 
     private async resolveUser(message: Message): Promise<string> {
