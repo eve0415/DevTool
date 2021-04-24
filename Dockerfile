@@ -9,6 +9,7 @@ COPY . .
 RUN yarn build
 
 FROM builder-base AS runner
+RUN apk add python3
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --production && yarn cache clean
