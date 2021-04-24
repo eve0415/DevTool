@@ -34,6 +34,8 @@ export class PythonEvaluationManager extends BaseEvaluation<PythonShell> {
             const res = this.processContent(data);
             if (res) result.push(res);
         });
+        process.on('stderr', err => result.push(err));
+        process.on('error', err => message.reply(this.createErrorMessage(err)));
         process.on('close', () => message.reply(this.createmessage(result.join('\n'), 'py')));
         process.stdin.write(`${this.processString(content)}\n`);
         setTimeout(() => {

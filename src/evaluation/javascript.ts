@@ -34,6 +34,8 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
             const res = this.processContent(data);
             if (res) result.push(res);
         });
+        process.on('stderr', err => result.push(err));
+        process.on('error', err => message.reply(this.createErrorMessage(err)));
         process.on('close', code => message.reply(this.createmessage(result.join('\n'), 'js', code)));
         process.stdin.write(`${this.processString(content)}\n${processData.find(p => p.lang === 'js')?.exit}\n`);
         setTimeout(() => {

@@ -60,4 +60,14 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
             allowedMentions: { repliedUser: false },
         };
     }
+
+    protected createErrorMessage(error: Error): MessageOptions {
+        return {
+            embed: new MessageEmbed()
+                .setColor('RED')
+                .setTitle(error.name)
+                .setDescription(`${error.message}\n${error.stack}`),
+            allowedMentions: { repliedUser: false },
+        };
+    }
 }
