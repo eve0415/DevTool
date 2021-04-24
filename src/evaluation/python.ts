@@ -6,7 +6,7 @@ export class PythonEvaluationManager extends BaseEvaluation<PythonShell> {
     public startEvaluate(channel: TextChannel | DMChannel): void {
         const process = this.startProcess();
         process.on('close', () => {
-            channel.send(this.createmessage(`Process exited with`, 'py'));
+            channel.send(this.createmessage(`Process exited with code ${process.exitCode}`, 'js', process.exitCode));
             this.delete(channel.id);
         });
         this.set(channel.id, process);
@@ -16,7 +16,7 @@ export class PythonEvaluationManager extends BaseEvaluation<PythonShell> {
         const process = this.get(message.channel.id);
         process?.stdout.once('data', data => {
             const res = this.processContent(data);
-            if (res) message.reply(this.createmessage(res, 'py'));
+            if (res) message.reply(this.createmessage(res, 'py', process.exitCode));
         });
         process?.stdin.write(`${this.processString(content)}\n`);
     }
@@ -36,7 +36,7 @@ export class PythonEvaluationManager extends BaseEvaluation<PythonShell> {
         });
         process.on('stderr', err => result.push(err));
         process.on('error', err => message.reply(this.createErrorMessage(err)));
-        process.on('close', () => message.reply(this.createmessage(result.join('\n'), 'py')));
+        process.on('close', () => message.reply(this.createmessage(result.join('\n'), 'py', process.exitCode)));
         process.stdin.write(`${this.processString(content)}\n`);
         setTimeout(() => {
             if (process.exitCode) return;
