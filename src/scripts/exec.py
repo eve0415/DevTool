@@ -16,8 +16,9 @@ async def main():
         func = env['func']
         ret = await func()
         print(ret)
-    except:
-        print(sys.exc_info())
+    except Exception as e:
+        print(e)
+        print(traceback.format_exc())
 
 loop = asyncio.get_event_loop()
 coroutine = main()

@@ -46,6 +46,7 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
     protected startProcess(): ChildProcessWithoutNullStreams {
         const process = spawn('node', ['-i']);
         process.stdout.setEncoding('utf8');
+        process.stderr.setEncoding('utf8');
         return process;
     }
 }
