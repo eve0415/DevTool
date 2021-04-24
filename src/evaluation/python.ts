@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { DMChannel, Message, TextChannel } from 'discord.js';
 import { PythonShell } from 'python-shell';
 import { BaseEvaluation } from '../interfaces';
@@ -46,7 +47,7 @@ export class PythonEvaluationManager extends BaseEvaluation<PythonShell> {
     }
 
     protected startProcess(): PythonShell {
-        const process = new PythonShell('./src/scripts/exec.py', { mode: 'text', timeout: 10000 });
+        const process = new PythonShell(join(__dirname, '../scripts/exec.py'), { mode: 'text', timeout: 10000 });
         process.stdout.setEncoding('utf8');
         process.stderr.setEncoding('utf8');
         return process;
