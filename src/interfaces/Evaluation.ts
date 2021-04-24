@@ -36,7 +36,7 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
         const string = this.processString(typeof content !== 'string' ? inspect(content, { depth: null, maxArrayLength: null }) : content).trim();
         if (string.includes('for more information.')) return;
         if (processData.flatMap(p => p.ignore).includes(string)) return;
-        return string.replaceAll('undefined\n>', '').replaceAll('>', '').replaceAll('undefined', '').trim();
+        return string.replaceAll('undefined\n>', '').replaceAll('>', '').trim();
     }
 
     protected createmessage(result: string, lang: PLanguage, code?: number | null): MessageOptions {
