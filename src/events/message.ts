@@ -11,7 +11,8 @@ export default class extends Event {
         if (message.system || message.author.bot) return;
 
         const prefixMention = new RegExp(`<@?!${this.client.user?.id}>`);
-        if (prefixMention.test(message.content) || prefixMention.test(message.content) && message.content.split(prefixMention)[0] === 'help') return this.client.commandManager.getHelp(message);
+        console.log(message.content.split(prefixMention));
+        if (prefixMention.test(message.content) && (!message.content.split(prefixMention).filter(s => s).length || message.content.split(prefixMention).filter(s => s)[0]?.trim() === 'help')) return this.client.commandManager.getHelp(message);
 
         const parsed = this.parseMessage(message);
         if (!parsed.command) return;
