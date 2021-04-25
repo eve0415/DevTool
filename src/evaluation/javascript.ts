@@ -1,6 +1,6 @@
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { DMChannel, Message, TextChannel } from 'discord.js';
-import { BaseEvaluation, processData } from '../interfaces';
+import { BaseEvaluation } from '../interfaces';
 
 export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullStreams> {
     public startEvaluate(channel: TextChannel | DMChannel): void {
@@ -37,7 +37,7 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
         process.on('stderr', err => result.push(err));
         process.on('error', err => message.reply(this.createErrorMessage(err)));
         process.on('close', code => message.reply(this.createmessage(result.join('\n'), 'js', code)));
-        process.stdin.write(`${this.processString(content)}\n${processData.find(p => p.lang === 'js')?.exit}\n`);
+        process.stdin.write(`${this.processString(content)}\n.exit\n`);
         setTimeout(() => {
             if (process.exitCode) return;
             result.push('10 seconds timeout exceeded');
@@ -50,5 +50,11 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
         process.stdout.setEncoding('utf8');
         process.stderr.setEncoding('utf8');
         return process;
+    }
+
+    protected processContent(content: unknown): string | undefined {
+        const result = super.processContent(content);
+        if (/\.+/.test(result ?? '')) return;
+        return result;
     }
 }

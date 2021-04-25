@@ -9,7 +9,7 @@ import {
     Snowflake,
     TextChannel,
 } from 'discord.js';
-import { PLanguage, processData } from '.';
+import { PLanguage } from '.';
 import { instance } from '..';
 
 export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
@@ -35,7 +35,6 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
     protected processContent(content: unknown): string | undefined {
         const string = this.processString(typeof content !== 'string' ? inspect(content, { depth: null, maxArrayLength: null }) : content).trim();
         if (string.includes('for more information.')) return;
-        if (processData.flatMap(p => p.ignore).includes(string)) return;
         return string.replaceAll('undefined\n>', '').replaceAll('>', '').trim();
     }
 
