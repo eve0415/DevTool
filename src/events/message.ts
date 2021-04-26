@@ -10,7 +10,7 @@ export default class extends Event {
     public run(message: Message): unknown {
         if (message.system || message.author.bot) return;
 
-        const prefixMention = new RegExp(`<@?!${this.client.user?.id}>`);
+        const prefixMention = new RegExp(`<@!?${this.client.user?.id}>`);
         console.log(message.content.split(prefixMention));
         if (prefixMention.test(message.content) && (!message.content.split(prefixMention).filter(s => s).length || message.content.split(prefixMention).filter(s => s)[0]?.trim() === 'help')) return this.client.commandManager.getHelp(message);
 
