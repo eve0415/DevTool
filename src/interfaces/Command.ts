@@ -2,13 +2,13 @@ import { Message, MessageEmbed, Snowflake } from 'discord.js';
 import { BaseCommandBuilder } from '../CommandBuilder';
 
 export class Command {
-    public name: string;
-    public description: string | MessageEmbed;
-    public madeBy: Snowflake;
-    public madeIn: Snowflake | null;
-    public createdAt = new Date();
-    public updatedAt = new Date();
-    public execute: (message: Message, arg: string[]) => unknown;
+    public readonly name: string;
+    public readonly description: string | MessageEmbed;
+    public readonly madeBy: Snowflake;
+    public readonly madeIn: Snowflake | null;
+    public readonly private: boolean;
+    public readonly createdAt = new Date();
+    public readonly execute: (message: Message, arg: string[]) => unknown;
     private commandNo!: number;
     private enabled = false;
 
@@ -16,7 +16,8 @@ export class Command {
         this.name = command.name;
         this.description = command.description;
         this.madeBy = command.madeBy;
-        this.madeIn = command.private ? '' : command.madeIn;
+        this.madeIn = command.madeIn;
+        this.private = command.private;
         this.execute = command.execute;
     }
 
@@ -48,8 +49,8 @@ export class Command {
 
     private async resolveUser(message: Message): Promise<string> {
         if (this.madeBy === '0') return 'System';
-        if (this.madeBy === message.author.id) return message.author.toString();
+        if (this.madeBy === message.author.id) return message.author.tag;
         const member = await message.guild?.members.fetch(this.madeBy);
-        return member ? member?.toString() : 'Unknown';
+        return member ? member?.user.tag : 'Unknown';
     }
 }

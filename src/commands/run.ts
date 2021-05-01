@@ -46,7 +46,7 @@ function run(message: Message, args: string[]) {
                     break;
 
                 default:
-                    message.reply(`Sorry, language \`${codeblock.lang}\` is not supported`, { allowedMentions: { repliedUser: false } });
+                    message.reply(`Sorry, language \`${codeblock.lang}\` is not supported at this time`, { allowedMentions: { repliedUser: false } });
                     break;
             }
         }

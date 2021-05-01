@@ -10,7 +10,11 @@ export class DevToolBot extends Client {
     public readonly evalManager: EvaluationManager;
 
     public constructor() {
-        super({ intents: ['GUILDS', 'GUILD_MESSAGES'] });
+        super({
+            intents: ['GUILDS', 'GUILD_MESSAGES'],
+            restTimeOffset: 0,
+        });
+
         getLogger().level = process.env.NODE_ENV ? 'trace' : 'info';
         this.commandManager = new CommandManager(this);
         this.eventManager = new EventManager(this);
@@ -40,12 +44,12 @@ export class DevToolBot extends Client {
         ['SIGTERM', 'SIGINT', 'uncaughtException', 'unhandledRejection']
             .forEach(signal => process.on(signal, e => {
                 if (this.fatalError) process.exit(-1);
-                if (e === 'unhandledRejection') {
+                if (signal === 'unhandledRejection' || signal === 'uncaughtException') {
                     this.logger.error('Unexpected error occured');
                     this.logger.error(e);
                     return;
                 }
-                if (!(e === 'SIGINT' || e === 'SIGTERM')) {
+                if (!(signal === 'SIGINT' || signal === 'SIGTERM')) {
                     this.fatalError++;
                     this.logger.fatal('Unexpected error occured');
                     this.logger.fatal(e);

@@ -25,7 +25,9 @@ export abstract class BaseCommandBuilder {
         return this;
     }
 
-    public buildAndRegister(): Command {
+    public buildAndRegister(): Promise<Command> {
+        if (!this.name) return Promise.reject(new Error('Command has no name'));
+        if (!this.description) return Promise.reject(new Error('Command has no description'));
         return CommandManager.register(new Command(this));
     }
 }
