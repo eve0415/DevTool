@@ -24,7 +24,6 @@
         "outDir": "dist",
         "pretty": true,
         "resolveJsonModule": true,
-        "skipLibCheck": false,
         "sourceMap": true,
         "strict": true,
         "strictBindCallApply": true,
