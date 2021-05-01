@@ -1,5 +1,5 @@
-FROM node:current-alpine AS builder-base
-RUN apk add --no-cache python3 make g++ git
+FROM node:15-alpine3.13 AS builder-base
+RUN apk add --no-cache python3 make g++
 
 FROM builder-base AS builder
 WORKDIR /app
