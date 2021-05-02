@@ -18,11 +18,10 @@ export default class extends Event {
 
         const cmd = this.client.commandManager.find(c => c.name === parsed.command);
         if (parsed.other.length === 1 && parsed.other[0] === 'help') return cmd?.wantHelp(message);
-        if (!parsed.other && message.reference) {
+        if (!parsed.other.length && message.reference) {
             const referenced = message.referencedMessage ?? message.channel.messages.resolve(message.reference.messageID ?? '');
             if (!referenced) return;
             const parsedTwo = this.parseMessage(referenced);
-            this.logger.debug(parsedTwo);
             if (cmd) this.call(cmd, message, parsedTwo.other);
         } else if (cmd) {
             this.call(cmd, message, parsed.other);
