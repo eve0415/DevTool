@@ -66,6 +66,6 @@ export default class extends Event {
             sortTwo.push(p.includes('```') || sortTwo[sortTwo.length - 1]?.includes('```') || !sortTwo.length ? p : `${sortTwo.pop()}${p}`);
         }
 
-        return { command: cmd, other: sortTwo.map(s => s.trim()) };
+        return { command: cmd, other: sortTwo.map(s => s.trim()).filter(s => s) };
     }
 }
