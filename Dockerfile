@@ -10,6 +10,7 @@ RUN yarn build
 
 FROM builder-base AS runner
 RUN apk add python3
+RUN npm install ts-node -g
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --production && yarn cache clean
