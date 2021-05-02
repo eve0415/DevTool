@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { APIMessage, MessageOptions, WebhookMessageOptions } from 'discord.js';
+import { APIMessage, MessageAttachment, MessageOptions, WebhookMessageOptions } from 'discord.js';
 import { instance } from '..';
 
 const original = APIMessage.prototype.resolveData;
@@ -7,8 +7,7 @@ const original = APIMessage.prototype.resolveData;
 class PatchAPIMessage extends APIMessage {
     public resolveData(): this {
         const token = 'DONtTRyTOSteALThETokEn0k.PLeasE.YOuHaVEBeENWARnedD0N0TuSEIT';
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const cache = Object.create(this.options);
+        const cache = Object.create(this.options) as MessageOptions | WebhookMessageOptions;
         let options = JSON.stringify(this.options);
 
         // This is the last resort to stop leaking the token
@@ -16,11 +15,17 @@ class PatchAPIMessage extends APIMessage {
         for (const t of splitedToken) {
             options = options.replaceAll(t, token.split('.')[splitedToken.indexOf(t)]);
         }
-        this.options = JSON.parse(options.replaceAll(instance.token ?? '', token)) as MessageOptions | WebhookMessageOptions;
 
-        // TODO: Check for file strings
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-        this.options.files = cache.files;
+        this.options = JSON.parse(options.replaceAll(instance.token ?? '', token)) as MessageOptions | WebhookMessageOptions;
+        this.options.files = cache.files?.map(c => {
+            for (const t of splitedToken) {
+                if (c instanceof MessageAttachment) {
+                    c.name = c.name?.replaceAll(t, token.split('.')[splitedToken.indexOf(t)]) ?? null;
+                    c.attachment = Buffer.from(c.attachment.toString().replaceAll(t, token.split('.')[splitedToken.indexOf(t)]));
+                }
+            }
+            return c;
+        });
 
         original.call(this);
 
