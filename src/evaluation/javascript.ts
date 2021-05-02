@@ -18,7 +18,7 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
             const res = this.processContent(data);
             if (res) message.reply(this.createmessage(res, 'js'));
         });
-        process?.stdin.write(`${this.processString(content)}\n`);
+        process?.stdin.write(`${content}\n`);
     }
 
     public killEvaluate(channel: TextChannel | DMChannel): void {
@@ -37,7 +37,7 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
         process.on('stderr', err => result.push(err));
         process.on('error', err => message.reply(this.createErrorMessage(err)));
         process.on('close', code => message.reply(this.createmessage(result.join('\n'), 'js', code)));
-        process.stdin.write(`${this.processString(content)}\n.exit\n`);
+        process.stdin.write(`${content}\n.exit\n`);
         setTimeout(() => {
             if (process.exitCode) return;
             result.push('10 seconds timeout exceeded');
@@ -46,7 +46,7 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
     }
 
     protected startProcess(): ChildProcessWithoutNullStreams {
-        const process = spawn('node', ['-i']);
+        const process = spawn('node', ['-i'], { env: { DISCORD_TOKEN: '' } });
         process.stdout.setEncoding('utf8');
         process.stderr.setEncoding('utf8');
         return process;

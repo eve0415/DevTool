@@ -19,7 +19,7 @@ export class PythonEvaluationManager extends BaseEvaluation<PythonShell> {
             const res = this.processContent(data);
             if (res) message.reply(this.createmessage(res, 'py', process.exitCode));
         });
-        process?.stdin.write(`${this.processString(content)}\n`);
+        process?.stdin.write(`${content}\n`);
     }
 
     public killEvaluate(channel: TextChannel | DMChannel): void {
@@ -38,7 +38,7 @@ export class PythonEvaluationManager extends BaseEvaluation<PythonShell> {
         process.on('stderr', err => result.push(err));
         process.on('error', err => message.reply(this.createErrorMessage(err)));
         process.on('close', () => message.reply(this.createmessage(result.join('\n'), 'py', process.exitCode)));
-        process.stdin.write(`${this.processString(content)}\n`);
+        process.stdin.write(`${content}\n`);
         setTimeout(() => {
             if (process.exitCode) return;
             result.push('10 seconds timeout exceeded');
@@ -47,7 +47,7 @@ export class PythonEvaluationManager extends BaseEvaluation<PythonShell> {
     }
 
     protected startProcess(): PythonShell {
-        const process = new PythonShell(join(__dirname, '../scripts/exec.py'), { mode: 'text', timeout: 10000 });
+        const process = new PythonShell(join(__dirname, '../scripts/exec.py'), { mode: 'text', timeout: 10000, env: { DISCORD_TOKEN: '' } });
         process.stdout.setEncoding('utf8');
         process.stderr.setEncoding('utf8');
         return process;

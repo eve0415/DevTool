@@ -10,7 +10,6 @@ import {
     TextChannel,
 } from 'discord.js';
 import { PLanguage } from '.';
-import { instance } from '..';
 
 export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
     public abstract startEvaluate(channel: TextChannel | DMChannel): void;
@@ -23,17 +22,8 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
 
     protected abstract startProcess(): unknown;
 
-    protected processString(string: string): string {
-        const token = 'DONtTRyTOSteALThETokEn0k.PLeasE.YOuHaVEBeENWARnedD0N0TuSEIT';
-        return string
-            .replaceAll(instance.token ?? '', token)
-            .replaceAll('instance.token', `'${token}'`)
-            .replaceAll('client.token', `'${token}'`)
-            .replaceAll('process.env.DISCORD_TOKEN', `'${token}'`);
-    }
-
     protected processContent(content: unknown): string | undefined {
-        const string = this.processString(typeof content !== 'string' ? inspect(content, { depth: null, maxArrayLength: null }) : content).trim();
+        const string = (typeof content !== 'string' ? inspect(content, { depth: null, maxArrayLength: null }) : content).trim();
         if (string.includes('for more information.')) return;
         return string.replaceAll('undefined\n>', '').replaceAll('>', '').trim();
     }
