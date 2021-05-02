@@ -54,7 +54,7 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
 
     protected processContent(content: unknown): string | undefined {
         const result = super.processContent(content);
-        if (/\.+/.test(result ?? '')) return;
+        if (/^\.{2,}$/.test(result ?? '')) return;
         return result;
     }
 }
