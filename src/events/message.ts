@@ -17,13 +17,14 @@ export default class extends Event {
         if (!parsed.command) return;
 
         const cmd = this.client.commandManager.find(c => c.name === parsed.command);
+        if (!cmd) return;
         if (parsed.other.length === 1 && parsed.other[0] === 'help') return cmd?.wantHelp(message);
         if (!parsed.other.length && message.reference) {
             const referenced = message.referencedMessage ?? message.channel.messages.resolve(message.reference.messageID ?? '');
             if (!referenced) return;
             const parsedTwo = this.parseMessage(referenced);
-            if (cmd) this.call(cmd, message, parsedTwo.other);
-        } else if (cmd) {
+            this.call(cmd, message, parsedTwo.other);
+        } else {
             this.call(cmd, message, parsed.other);
         }
     }
