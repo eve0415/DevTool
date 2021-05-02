@@ -1,1 +1,1 @@
-export type PLanguage = 'js' | 'py';
+export type PLanguage = 'js' | 'py' | 'ts';

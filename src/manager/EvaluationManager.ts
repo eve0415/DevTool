@@ -1,5 +1,5 @@
 import { Collection, DMChannel, Message, Snowflake, TextChannel } from 'discord.js';
-import { JSEvaluationManager, PythonEvaluationManager } from '../evaluation';
+import { JSEvaluationManager, PythonEvaluationManager, TSEvaluationManager } from '../evaluation';
 import { BaseEvaluation, PLanguage } from '../interfaces';
 
 export class EvaluationManager extends Collection<PLanguage, BaseEvaluation<unknown>> {
@@ -7,6 +7,7 @@ export class EvaluationManager extends Collection<PLanguage, BaseEvaluation<unkn
         super();
         this.set('js', new JSEvaluationManager());
         this.set('py', new PythonEvaluationManager());
+        this.set('ts', new TSEvaluationManager());
     }
 
     public startEvaluate(channel: TextChannel | DMChannel, lang: PLanguage): void {

@@ -1,5 +1,4 @@
 import { Message } from 'discord.js';
-import { transpile } from 'typescript';
 import { instance } from '..';
 import { SystemCommandBuilder } from '../CommandBuilder';
 
@@ -29,15 +28,18 @@ const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 function run(message: Message, args: string[]) {
     for (const arg of args) {
         if (!codeBlockRegex.test(arg)) {
-            instance.evalManager.evaluateOnce(message, transpile(arg), 'js');
+            instance.evalManager.evaluateOnce(message, arg, 'js');
         } else {
             const codeblock = codeBlockRegex.exec(arg)?.groups ?? {};
             switch (codeblock.lang.toLowerCase()) {
                 case 'js':
                 case 'javascript':
+                    instance.evalManager.evaluateOnce(message, codeblock.code, 'js');
+                    break;
+
                 case 'ts':
                 case 'typescript':
-                    instance.evalManager.evaluateOnce(message, transpile(codeblock.code), 'js');
+                    instance.evalManager.evaluateOnce(message, codeblock.code, 'ts');
                     break;
 
                 case 'py':
