@@ -26,6 +26,7 @@ class PatchAPIMessage extends APIMessage {
             }
             return c;
         });
+        if (!this.isWebhook) (this.options as MessageOptions).replyTo = (cache as MessageOptions).replyTo;
 
         original.call(this);
 
