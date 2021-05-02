@@ -47,7 +47,7 @@ export class PythonEvaluationManager extends BaseEvaluation<PythonShell> {
     }
 
     protected startProcess(): PythonShell {
-        const process = new PythonShell(join(__dirname, '../scripts/exec.py'), { mode: 'text', timeout: 10000, env: { DISCORD_TOKEN: '' } });
+        const process = new PythonShell(join(__dirname, '../scripts/exec.py'), { mode: 'text', env: { DISCORD_TOKEN: '' } });
         process.stdout.setEncoding('utf8');
         process.stderr.setEncoding('utf8');
         return process;
