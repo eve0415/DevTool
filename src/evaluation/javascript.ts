@@ -6,7 +6,7 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
     public startEvaluate(channel: TextChannel | DMChannel): void {
         const process = this.startProcess();
         process.on('close', code => {
-            channel.send(this.createmessage(`Process exited with code ${code}`, 'js', code));
+            channel.send(this.createmessage(`Process exited with code ${code}`, 'js'));
             this.delete(channel.id);
         });
         this.set(channel.id, process);
@@ -23,30 +23,44 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
 
     public killEvaluate(channel: TextChannel | DMChannel): void {
         const process = this.get(channel.id);
-        if (process?.exitCode) return;
+        if (!process?.connected) return;
         process?.kill('SIGKILL');
     }
 
     public evaluateOnce(message: Message, content: string): void {
         const process = this.startProcess();
         const result: string[] = [];
+        let hasError = false;
         process.stdout.on('data', data => {
             const res = this.processContent(data);
             if (res) result.push(res);
         });
-        process.on('stderr', err => result.push(err));
+        process.stderr.on('data', data => {
+            hasError = true;
+            const res = this.processContent(data);
+            if (res) result.push(res);
+        });
         process.on('error', err => message.reply(this.createErrorMessage(err)));
-        process.on('close', code => message.reply(this.createmessage(result.join('\n'), 'js', code)));
+        process.on('close', () => message.reply(this.createmessage(result.join('\n'), 'js', hasError)));
         process.stdin.write(`${content}\n.exit\n`);
         setTimeout(() => {
-            if (process.exitCode) return;
+            if (!process.connected) return;
+            hasError = true;
             result.push('10 seconds timeout exceeded');
             process.kill('SIGKILL');
         }, 10000);
     }
 
     protected startProcess(): ChildProcessWithoutNullStreams {
-        const process = spawn('node', ['-i'], { env: { DISCORD_TOKEN: '' } });
+        const process = spawn('node',
+            ['-i',
+                '--experimental-vm-modules',
+                '--experimental-repl-await',
+                '--experimental-import-meta-resolve',
+                '--experimental-json-modules',
+                '--disallow-code-generation-from-strings'],
+            { env: { DISCORD_TOKEN: '' } },
+        );
         process.stdout.setEncoding('utf8');
         process.stderr.setEncoding('utf8');
         return process;

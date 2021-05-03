@@ -28,12 +28,11 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
         return string.replaceAll('undefined\n>', '').replaceAll('>', '').trim();
     }
 
-    protected createmessage(result: string, lang: PLanguage, code?: number | null): MessageOptions {
+    protected createmessage(result: string, lang: PLanguage, hasError = false): MessageOptions {
         if (!result) result = 'No returned value';
-        if (!code) code = 0;
         if (result.length <= 1990) {
             const embed = new MessageEmbed()
-                .setColor(code === 0 ? 'BLUE' : 'RED')
+                .setColor(!hasError ? 'BLUE' : 'RED')
                 .setDescription(`\`\`\`${lang}\n${result}\n\`\`\``);
             return { embed: embed, allowedMentions: { repliedUser: false } };
         }
