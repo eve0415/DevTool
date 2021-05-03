@@ -36,8 +36,9 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
                 .setDescription(`\`\`\`${lang}\n${result}\n\`\`\``);
             return { embed: embed, allowedMentions: { repliedUser: false } };
         }
-        const overSize = Buffer.from(result).byteLength / 1024 / 1024 > 8;
+        let overSize = false;
         while (Buffer.from(result).byteLength / 1024 / 1024 > 8) {
+            overSize = true;
             const cache = result.split('\n');
             cache.splice(0, cache.length - Number(cache.length.toString().slice(0, -1)));
             result = cache.join('\n');
