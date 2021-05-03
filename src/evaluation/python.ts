@@ -63,7 +63,7 @@ export class PythonEvaluationManager extends BaseEvaluation<ChildProcessWithoutN
 
     protected processContent(content: unknown): string | undefined {
         const result = super.processContent(content);
-        if (/^Python.+on.+$/i.test(result ?? '')) return;
+        if (/^Python.+on.+$/s.test(result ?? '')) return;
         return result;
     }
 }
