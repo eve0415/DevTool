@@ -28,6 +28,7 @@
     "test": "nodemon -r dotenv/config src/index.ts"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "bufferutil": "^4.0.3",
     "discord.js": "discordjs/discord.js#master",
     "erlpack": "discord/erlpack",
