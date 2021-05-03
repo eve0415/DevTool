@@ -36,15 +36,18 @@ export class PythonEvaluationManager extends BaseEvaluation<ChildProcessWithoutN
             if (res) result.push(res);
         });
         process.stderr.on('data', data => {
-            hasError = true;
             const res = this.processContent(data);
-            if (res) result.push(res);
+            if (res) {
+                hasError = true;
+                result.push(res);
+            }
         });
         process.on('error', err => message.reply(this.createErrorMessage(err)));
         process.on('close', () => message.reply(this.createmessage(result.join('\n'), 'py', hasError)));
         process.stdin.write(`${content}\nexit()\n`);
         setTimeout(() => {
             if (!process.connected) return;
+            console.log('timeout');
             hasError = true;
             result.push('10 seconds timeout exceeded');
             process.kill('SIGKILL');
@@ -56,5 +59,11 @@ export class PythonEvaluationManager extends BaseEvaluation<ChildProcessWithoutN
         p.stdout.setEncoding('utf8');
         p.stderr.setEncoding('utf8');
         return p;
+    }
+
+    protected processContent(content: unknown): string | undefined {
+        const result = super.processContent(content);
+        if (/^Python.+on.+$/i.test(result ?? '')) return;
+        return result;
     }
 }

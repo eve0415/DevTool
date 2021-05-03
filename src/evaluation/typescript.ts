@@ -36,15 +36,19 @@ export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
             if (res) result.push(res);
         });
         process.stderr.on('data', data => {
-            hasError = true;
+            console.log(data);
             const res = this.processContent(data);
-            if (res) result.push(res);
+            if (res) {
+                hasError = true;
+                result.push(res);
+            }
         });
         process.on('error', err => message.reply(this.createErrorMessage(err)));
         process.on('close', () => message.reply(this.createmessage(result.join('\n'), 'ts', hasError)));
         process.stdin.write(`${content}\n.exit\n`);
         setTimeout(() => {
             if (!process.connected) return;
+            console.log('timeout');
             hasError = true;
             result.push('10 seconds timeout exceeded');
             process.kill('SIGKILL');

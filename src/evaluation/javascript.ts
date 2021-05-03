@@ -36,9 +36,11 @@ export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
             if (res) result.push(res);
         });
         process.stderr.on('data', data => {
-            hasError = true;
             const res = this.processContent(data);
-            if (res) result.push(res);
+            if (res) {
+                hasError = true;
+                result.push(res);
+            }
         });
         process.on('error', err => message.reply(this.createErrorMessage(err)));
         process.on('close', () => message.reply(this.createmessage(result.join('\n'), 'js', hasError)));
