@@ -61,4 +61,10 @@ export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
         p.stderr.setEncoding('utf8');
         return p;
     }
+
+    protected processContent(content: unknown): string | undefined {
+        const result = super.processContent(content);
+        if (/Could not open history file/.test(result ?? '')) return;
+        return result;
+    }
 }
