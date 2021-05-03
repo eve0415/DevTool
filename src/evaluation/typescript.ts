@@ -65,6 +65,7 @@ export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
     protected processContent(content: unknown): string | undefined {
         const result = super.processContent(content);
         if (/Could not open history file/.test(result ?? '')) return;
+        if (/^\.{2,}$/.test(result ?? '')) return;
         return result;
     }
 }
