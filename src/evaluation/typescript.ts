@@ -52,7 +52,7 @@ export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
     }
 
     protected startProcess(): ChildProcessWithoutNullStreams {
-        const process = spawn('npx', ['ts-node', '-p', '-i'], { shell: true, env: { DISCORD_TOKEN: '' } });
+        const process = spawn('ts-node', ['-p', '-i'], { shell: true, env: { DISCORD_TOKEN: '' } });
         process.stdout.setEncoding('utf8');
         process.stderr.setEncoding('utf8');
         return process;
