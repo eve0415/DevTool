@@ -43,7 +43,6 @@ async function registerCommand(message: Message, args: string[]) {
 
             case '-f':
                 if (!canCompile(mes, parseMessage(flag.value) ?? '')) return;
-
                 original.setFunction(vm.run(new VMScript(`module.exports = ${parseMessage(flag.value) ?? ''}`).compile().code, join(__dirname, '../vm/MessageEmbed.js')));
                 continue;
 
@@ -198,8 +197,15 @@ function testCode(code: string) {
 }
 
 function canCompile(mes: Message, code: string) {
+    const vm = new NodeVM({
+        eval: false,
+        require: {
+            external: ['MessageEmbed'],
+            resolve: moduleName => join(__dirname, '../vm', moduleName),
+        },
+    });
     try {
-        new VMScript(`module.exports = ${code}`).compile();
+        vm.run(new VMScript(`module.exports = ${code}`).compile().code, join(__dirname, '../vm/MessageEmbed.js'));
         return true;
     } catch (e) {
         const embed = new MessageEmbed()
