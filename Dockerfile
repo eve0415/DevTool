@@ -14,5 +14,4 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --production && yarn cache clean
 COPY --from=builder /app/dist ./
-COPY ./src/scripts ./scripts
 CMD ["node", "index.js"]
