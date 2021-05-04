@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Message, MessageEmbed } from 'discord.js';
 import { DevToolBot } from '..';
 import { Command, Event } from '../interfaces';
@@ -12,6 +13,8 @@ export default class extends Event {
 
         const prefixMention = new RegExp(`<@!?${this.client.user?.id}>`);
         if (prefixMention.test(message.content) && (!message.content.split(prefixMention).filter(s => s).length || message.content.split(prefixMention).filter(s => s)[0]?.trim() === 'help')) return this.client.commandManager.getHelp(message);
+
+        this.highlightGitLinks(message);
 
         const parsed = this.parseMessage(message);
         if (!parsed.command) return;
@@ -67,5 +70,15 @@ export default class extends Event {
         }
 
         return { command: cmd, other: sortTwo.map(s => s.trim()).filter(s => s) };
+    }
+
+    private async highlightGitLinks(message: Message) {
+        const links = [...message.content.matchAll(/https?:\/\/github\.com\/(?<owner>.+?)\/(?<repo>.+?)\/blob\/(?<branch>.+?)\/(?<path>.+?)#L(?<firstLine>\d+)-?L?(?<lastLine>\d+)?/gu)].map(link => link.groups ?? {});
+
+        for (const link of links) {
+            const res = await axios.get<Readonly<{extension: string, code: string[]}>>(`https://gh-highlighted-line.vercel.app/api/${link.owner}/${link.repo}/${link.branch}/${encodeURIComponent(link.path)}/${link.firstLine}/${link.lastLine ?? ''}`);
+            if (!res.data.code.length) continue;
+            message.reply(res.data.code.join('\n'), { code: res.data.extension, split: true, allowedMentions: { repliedUser: false } });
+        }
     }
 }
