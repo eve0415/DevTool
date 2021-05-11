@@ -1,5 +1,6 @@
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { DMChannel, Message, TextChannel } from 'discord.js';
+import stripAnsi from 'strip-ansi';
 import { BaseEvaluation } from '../interfaces';
 
 export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullStreams> {
@@ -64,7 +65,7 @@ export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
 
     protected processContent(content: unknown): string | undefined {
         // eslint-disable-next-line no-control-regex
-        const result = super.processContent(content)?.replaceAll(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+        const result = stripAnsi(super.processContent(content) ?? '');
         if (/Could not open history file/.test(result ?? '')) return;
         if (/^\.{2,}$/.test(result ?? '')) return;
         return result;

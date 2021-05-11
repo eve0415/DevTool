@@ -33,6 +33,7 @@
     "discord.js": "discordjs/discord.js#master",
     "erlpack": "discord/erlpack",
     "log4js": "^6.3.0",
+    "strip-ansi": "^7.0.0",
     "ts-node": "^9.1.1",
     "tslib": "^2.2.0",
     "utf-8-validate": "^5.0.5",
