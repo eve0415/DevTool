@@ -63,8 +63,10 @@ export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
     }
 
     protected processContent(content: unknown): string | undefined {
-        const regex = new RegExp(/[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))/g);
-        const result = super.processContent(content)?.replaceAll(regex, '');
+        const result = super
+            .processContent(content)
+            // eslint-disable-next-line no-control-regex
+            ?.replaceAll(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
         if (/Could not open history file/.test(result ?? '')) return;
         if (/^\.{2,}$/.test(result ?? '')) return;
         return result;
