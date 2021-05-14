@@ -8,7 +8,7 @@ export default class extends Event {
         super(client, 'message');
     }
 
-    public run(message: Message): unknown {
+    public async run(message: Message): Promise<unknown> {
         if (message.system || message.author.bot) return;
 
         const prefixMention = new RegExp(`<@!?${this.client.user?.id}>`);
@@ -23,7 +23,7 @@ export default class extends Event {
         if (!cmd) return;
         if (parsed.other.length === 1 && parsed.other[0] === 'help') return cmd?.wantHelp(message);
         if (!parsed.other.length && message.reference) {
-            const referenced = message.referencedMessage ?? message.channel.messages.resolve(message.reference.messageID ?? '');
+            const referenced = await message.fetchReference();
             if (!referenced) return;
             const parsedTwo = this.parseMessage(referenced);
             this.call(cmd, message, parsedTwo.other);
