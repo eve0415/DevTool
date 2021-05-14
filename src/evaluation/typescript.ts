@@ -36,7 +36,6 @@ export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
             if (res) result.push(res);
         });
         process.stderr.on('data', data => {
-            console.log(data);
             const res = this.processContent(data);
             if (res) {
                 hasError = true;
@@ -48,7 +47,6 @@ export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
         process.stdin.write(`${content}\n.exit\n`);
         setTimeout(() => {
             if (!process.connected) return;
-            console.log('timeout');
             hasError = true;
             result.push('10 seconds timeout exceeded');
             process.kill('SIGKILL');
