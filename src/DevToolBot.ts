@@ -37,6 +37,7 @@ export class DevToolBot extends Client {
 
     public shutdown(): void {
         shutdown();
+        this.destroy();
         process.exit();
     }
 
