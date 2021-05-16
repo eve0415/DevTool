@@ -64,7 +64,7 @@ export class CommandManager extends Collection<number, Command> {
             .setColor('BLUE')
             .setTitle('Help')
             .setDescription('Hi, thank you for using.\nThis help command will show you some commands that you can use.\nIf you need more help for any command, just send `<command> help`.')
-            .addField('System Command', this.filter(c => c.madeBy === '0').map(c => c.name).join(', '))
+            .addField('System Command', this.filter(c => c.madeBy === '0').map(c => c.humanReadable).join(', '))
             .addField('Original Command', original.join(', '));
 
         message.reply({ embed: embed, allowedMentions: { repliedUser: false } });
