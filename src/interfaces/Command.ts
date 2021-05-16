@@ -2,7 +2,8 @@ import { Message, MessageEmbed, Snowflake } from 'discord.js';
 import { BaseCommandBuilder } from '../CommandBuilder';
 
 export class Command {
-    public readonly name: string;
+    public readonly name: string | RegExp;
+    public readonly humanReadable: string;
     public readonly description: string | MessageEmbed;
     public readonly madeBy: Snowflake;
     public readonly madeIn: Snowflake | null;
@@ -14,6 +15,7 @@ export class Command {
 
     public constructor(command: BaseCommandBuilder) {
         this.name = command.name;
+        this.humanReadable = command.humanReadable;
         this.description = command.description;
         this.madeBy = command.madeBy;
         this.madeIn = command.madeIn;

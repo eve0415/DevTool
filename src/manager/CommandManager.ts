@@ -26,9 +26,9 @@ export class CommandManager extends Collection<number, Command> {
             return Promise.reject(new Error('Sorry, Could not register the command. Try again later!'));
         }
         const filtered = this.filter(c => c.madeBy === command.madeBy || c.madeIn === command.madeIn && !c.private);
-        if (filtered.map(c => c.name).indexOf(command.name) >= 0) {
+        if (filtered.map(c => c.name).indexOf(command.name) >= 0 || filtered.map(c => c.name).indexOf(command.humanReadable) >= 0) {
             this.logger.warn(`[${this.commandNo}] Could not register ${command.name} because it will conflict!`);
-            return Promise.reject(new Error('Sorry, Could not register the command because command name conflict with other. Try again later!'));
+            return Promise.reject(new Error('Sorry, Could not register the command because command name conflict with other. Try changing the command name!'));
         }
         this.set(this.commandNo, command);
         command.id = this.commandNo;
@@ -57,13 +57,13 @@ export class CommandManager extends Collection<number, Command> {
             ? this.filter(c => c.madeBy === (message.author.id && c.madeIn === message.guild?.id) || c.madeIn === message.guild?.id && !c.private)
             : this.filter(c => c.madeBy === message.author.id))
             .filter(c => c.isEnabled)
-            .map(c => c.name);
+            .map(c => c.humanReadable);
         if (!original.length) original.push('Not available');
 
         const embed = new MessageEmbed()
             .setColor('BLUE')
             .setTitle('Help')
-            .setDescription('Hi, thank you for using.\nThis help command will show you some commands that you can use.\nIf you need more help for any command, just send `<command name> help`.')
+            .setDescription('Hi, thank you for using.\nThis help command will show you some commands that you can use.\nIf you need more help for any command, just send `<command> help`.')
             .addField('System Command', this.filter(c => c.madeBy === '0').map(c => c.name).join(', '))
             .addField('Original Command', original.join(', '));
 

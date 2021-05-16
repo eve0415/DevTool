@@ -19,7 +19,7 @@ export default class extends Event {
         const parsed = this.parseMessage(message);
         if (!parsed.command) return;
 
-        const cmd = this.client.commandManager.find(c => c.name === parsed.command);
+        const cmd = this.client.commandManager.find(c => c.name === parsed.command || typeof c.name !== 'string' && c.name.test(parsed.command ?? ''));
         if (!cmd) return;
         if (parsed.other.length === 1 && parsed.other[0] === 'help') return cmd?.wantHelp(message);
         if (!parsed.other.length && message.reference) {
@@ -61,7 +61,7 @@ export default class extends Event {
 
         const parseTwo = sortOne.flatMap(p => p.includes('```') ? p : p.split(/(?=[\n ])|(?<=[\n ])/g));
 
-        const cmd = parseTwo.find(p => commands.map(c => c.name).indexOf(p) >= 0);
+        const cmd = parseTwo.find(p => commands.map(c => c.name).indexOf(p) >= 0 || commands.filter(c => typeof c.name !== 'string').some(c => (c.name as RegExp).test(p)));
         const filtered = parseTwo.filter(p => p !== cmd);
 
         const sortTwo: string[] = [];

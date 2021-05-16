@@ -6,7 +6,7 @@ const helpMessage = `
 __Run a code that you have sent!__
 There are several ways that it will recognize.
 
-1. Just puitting in \`run\` in your message will work.
+1. Just putting in \`run\` in your message will work.
 
 2. Use _code block_ for to recognize what language you used.
    (If you didn't use code block than it will fall back to use \`javascript\`)
@@ -14,7 +14,7 @@ There are several ways that it will recognize.
 3. You can also include multiple code block in one message.
    (One block will execute one script)
 
-4. _If_ you forgot to put \`run\` in your message, reply with the message and send \`run\`
+4. _If_ you forgot to put \`run\` in your message, reply to the message \`run\`
 `;
 
 new SystemCommandBuilder()
