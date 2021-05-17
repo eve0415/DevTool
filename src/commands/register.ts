@@ -14,7 +14,7 @@ async function registerCommand(message: Message, args: string[]) {
         .setTitle('Please wait...')
         .setDescription('Verifying your input...')
         .setColor('BLUE');
-    const mes = await message.reply({ embed: embed });
+    const mes = await message.reply(embed);
 
     const input = args.length ? args.join(' ') : await interactive(message, mes);
     if (!input) return;

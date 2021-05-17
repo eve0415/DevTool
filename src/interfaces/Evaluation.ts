@@ -46,7 +46,6 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
         return {
             content: `The result of evaluation. See attached.${overSize ? '\nThe result was omitted as the size was over 8 GB' : ''}`,
             files: [new MessageAttachment(Buffer.from(result), 'result.txt')],
-
         };
     }
 
@@ -56,7 +55,6 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
                 .setColor('RED')
                 .setTitle(error.name)
                 .setDescription(`${error.message}\n${error.stack}`),
-
         };
     }
 }
