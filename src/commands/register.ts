@@ -14,7 +14,7 @@ async function registerCommand(message: Message, args: string[]) {
         .setTitle('Please wait...')
         .setDescription('Verifying your input...')
         .setColor('BLUE');
-    const mes = await message.reply({ embed: embed, allowedMentions: { repliedUser: false } });
+    const mes = await message.reply({ embed: embed });
 
     const input = args.length ? args.join(' ') : await interactive(message, mes);
     if (!input) return;
@@ -56,7 +56,7 @@ async function registerCommand(message: Message, args: string[]) {
                     .setDescription('Unknown option found.')
                     .addField('Input', `${flag.key} ${flag.value}`)
                     .setColor('RED');
-                mes.edit({ embed: embed, allowedMentions: { repliedUser: false } });
+                mes.edit({ embed: embed });
                 return;
         }
     }
@@ -84,7 +84,7 @@ async function registerCommand(message: Message, args: string[]) {
                 .setDescription(err)
                 .setColor('RED');
         })
-        .finally(() => mes.edit({ embed: embed, allowedMentions: { repliedUser: false } }));
+        .finally(() => mes.edit({ embed: embed }));
 }
 
 async function interactive(message: Message, mes: Message) {
@@ -93,7 +93,7 @@ async function interactive(message: Message, mes: Message) {
         .setTitle('What do you want your command name to be?')
         .setDescription('You can use _one_ any word.\nNo space are allowed.')
         .setColor('BLUE');
-    mes.edit({ embed: embed, allowedMentions: { repliedUser: false } });
+    mes.edit({ embed: embed });
     const resultName = (await waitForAnswer(message))?.split(/(?=[\n ])|(?<=[\n ])/g);
     if (!resultName?.length) return timeout(mes);
     if (resultName.length > 1) {
@@ -102,7 +102,7 @@ async function interactive(message: Message, mes: Message) {
             .setDescription('You can only use **one** word for command name. Sorry')
             .addField('Your input', resultName.join(''))
             .setColor('RED');
-        return mes.edit({ embed: embed, allowedMentions: { repliedUser: false } }) as unknown as void;
+        return mes.edit({ embed: embed }) as unknown as void;
     }
 
     // Get description
@@ -111,7 +111,7 @@ async function interactive(message: Message, mes: Message) {
         .setDescription('The sentence need to be shorter than 2048 charactors.\n'
             + 'You can also use MessageEmbed but you need to write it in javascript code block. [Reference](https://discord.js.org/#/docs/main/master/class/MessageEmbed)\n'
             + '※There are no need to import nor require `MessageEmbed`. (This will be done automatically.)');
-    await mes.edit({ embed: embed, allowedMentions: { repliedUser: false } });
+    await mes.edit({ embed: embed });
     const resultDescription = parseMessage(await waitForAnswer(message));
     if (!resultDescription) return timeout(mes);
     const description = await testCode(resultDescription)
@@ -130,7 +130,7 @@ async function interactive(message: Message, mes: Message) {
             + ' // code\n'
             + '}\n'
             + '```');
-    await mes.edit({ embed: embed, allowedMentions: { repliedUser: false } });
+    await mes.edit({ embed: embed });
     const resultFunction = parseMessage(await waitForAnswer(message));
     if (!resultFunction) return timeout(mes);
 
@@ -143,7 +143,7 @@ async function interactive(message: Message, mes: Message) {
             + '- 1 or true for yes\n'
             + '- 0 or false for no',
         );
-    await mes.edit({ embed: embed, allowedMentions: { repliedUser: false } });
+    await mes.edit({ embed: embed });
     const resultPrivate = Boolean(Number(await waitForAnswer(message)));
 
     return `-n ${resultName} -d ${description} -f ${resultFunction} -p ${resultPrivate}`;
@@ -165,7 +165,7 @@ function timeout(message: Message) {
         .setTitle('10 minutes timeout')
         .setDescription('Could not register a command because you have not respond for 10 minutes')
         .setColor('RED');
-    message.edit({ embed: timeoutEmbed, allowedMentions: { repliedUser: false } });
+    message.edit({ embed: timeoutEmbed });
 }
 
 function parseMessage(content?: string) {
@@ -212,7 +212,7 @@ function canCompile(mes: Message, code: string) {
             .setTitle('Unable to compile function')
             .setDescription(`\`\`\`js${e}\`\`\``)
             .setColor('RED');
-        mes.edit({ embed: embed, allowedMentions: { repliedUser: false } });
+        mes.edit({ embed: embed });
         return false;
     }
 }

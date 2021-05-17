@@ -9,8 +9,8 @@ new SystemCommandBuilder()
     .buildAndRegister();
 
 async function docs(message: Message, args: string[]) {
-    if (!args.length) message.reply({ embed: { title: 'Missing inputs', description: 'You have forgotten to send what you want to search for', color: 'RED' }, allowedMentions: { repliedUser: false } });
+    if (!args.length) message.reply({ embed: { title: 'Missing inputs', description: 'You have forgotten to send what you want to search for', color: 'RED' } });
     const response = await axios.get<MessageEmbed>('https://djsdocs.sorta.moe/v2/embed', { params: { src: 'master', q: args.join(' ') } });
-    if (response.data) return message.reply({ embed: response.data, allowedMentions: { repliedUser: false } });
-    message.reply({ embed: { title: '404 Not found', description: 'I couldn\'t find what you were looking for.', color: 'RED' }, allowedMentions: { repliedUser: false } });
+    if (response.data) return message.reply({ embed: response.data });
+    message.reply({ embed: { title: '404 Not found', description: 'I couldn\'t find what you were looking for.', color: 'RED' } });
 }

@@ -34,7 +34,7 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
             const embed = new MessageEmbed()
                 .setColor(!hasError ? 'BLUE' : 'RED')
                 .setDescription(`\`\`\`${lang}\n${result}\n\`\`\``);
-            return { embed: embed, allowedMentions: { repliedUser: false } };
+            return { embed: embed };
         }
         let overSize = false;
         while (Buffer.from(result).byteLength / 1024 / 1024 > 8) {
@@ -46,7 +46,7 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
         return {
             content: `The result of evaluation. See attached.${overSize ? '\nThe result was omitted as the size was over 8 GB' : ''}`,
             files: [new MessageAttachment(Buffer.from(result), 'result.txt')],
-            allowedMentions: { repliedUser: false },
+
         };
     }
 
@@ -56,7 +56,7 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
                 .setColor('RED')
                 .setTitle(error.name)
                 .setDescription(`${error.message}\n${error.stack}`),
-            allowedMentions: { repliedUser: false },
+
         };
     }
 }

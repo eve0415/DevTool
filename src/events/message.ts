@@ -46,7 +46,7 @@ export default class extends Event {
             embed
                 .setDescription(e)
                 .addField('Command ID', cmd.id);
-            message.reply({ embed: embed, allowedMentions: { repliedUser: false } });
+            message.reply({ embed: embed });
         }
     }
 
@@ -78,7 +78,7 @@ export default class extends Event {
         for (const link of links) {
             const res = await axios.get<Readonly<{extension: string, code: string[]}>>(`https://gh-highlighted-line.vercel.app/api/${link.owner}/${link.repo}/${link.branch}/${encodeURIComponent(link.path)}/${link.firstLine}/${link.lastLine ?? ''}`);
             if (!res.data.code.length) continue;
-            message.reply(res.data.code.join('\n'), { code: res.data.extension, split: true, allowedMentions: { repliedUser: false } });
+            message.reply(res.data.code.join('\n'), { code: res.data.extension, split: true });
         }
     }
 }

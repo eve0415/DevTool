@@ -27,6 +27,7 @@ class PatchAPIMessage extends APIMessage {
             return c;
         });
         if (!this.isWebhook) (this.options as MessageOptions).reply = (cache as MessageOptions).reply;
+        if (this.options.allowedMentions?.repliedUser === undefined) this.options.allowedMentions = { repliedUser: false };
 
         original.call(this);
 

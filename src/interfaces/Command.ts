@@ -46,7 +46,7 @@ export class Command {
         if (!embed.color) embed.setColor('BLUE');
         if (!embed.footer) embed.setFooter(`Created by ${await this.resolveUser(message)}(${this.madeBy}). Command ID: ${this.id}`);
 
-        message.reply({ embed: embed, allowedMentions: { repliedUser: false } });
+        message.reply({ embed: embed });
     }
 
     private async resolveUser(message: Message): Promise<string> {

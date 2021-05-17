@@ -31,7 +31,6 @@ function toString(message: Message) {
                 .setColor('RED')
                 .setTitle('Missing reference')
                 .setDescription(helpMessage),
-            allowedMentions: { repliedUser: false },
         });
     }
     const referenced = message.channel.messages.resolve(message.reference.messageID ?? '');
@@ -41,7 +40,6 @@ function toString(message: Message) {
                 .setColor('RED')
                 .setTitle('There was an error reading reference message')
                 .setDescription('Sorry, there was an error reading reference message. Is message or embeds deleted? Do I have a permission to access?'),
-            allowedMentions: { repliedUser: false },
         });
     }
     const textArray: string[] = [];
@@ -59,5 +57,5 @@ function toString(message: Message) {
         }
     }
     if (!textArray.length) textArray.push('undefined');
-    message.reply(textArray.join('\n'), { allowedMentions: { repliedUser: false } });
+    message.reply(textArray.join('\n'));
 }
