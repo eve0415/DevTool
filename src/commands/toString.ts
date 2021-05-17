@@ -10,6 +10,9 @@ Are you using your mobile or table but want to copy some text from Embed?
 Here is your solution!
 
 Reply to the embed with \`toString()\`
+
+There are some options for filtering out from embeds
+toString(title | description | fields | field[number])
 `;
 
 new SystemCommandBuilder()
@@ -20,7 +23,7 @@ new SystemCommandBuilder()
     .buildAndRegister();
 
 function toString(message: Message) {
-    // const option = commandRegex.exec(message.content)?.groups?.option ?? {};
+    const option = commandRegex.exec(message.content)?.groups?.option ?? '';
     const embed = new MessageEmbed();
     if (!message.reference) {
         return message.reply({
@@ -43,11 +46,18 @@ function toString(message: Message) {
     }
     const textArray: string[] = [];
     for (const e of referenced.embeds) {
-        if (e.title) textArray.push(e.title);
-        if (e.description) textArray.push(e.description);
-        for (const field of e.fields) {
-            textArray.push(`${field.name}: ${field.value}`);
+        if (e.title && (!option || option === 'title')) textArray.push(e.title);
+        if (e.description && (!option || ['desc', 'description'].indexOf(option) >= 0)) textArray.push(e.description);
+        if (!option || option === 'fields') {
+            for (const field of e.fields) {
+                textArray.push(`${field.name}: ${field.value}`);
+            }
+        }
+        if (/field\[(?<number>\d)\]/.test(option)) {
+            const arrayNumber = Number(/field\[(?<number>\d)\]/.exec(option)?.groups?.number ?? '');
+            textArray.push(`${e.fields[arrayNumber].name}: ${e.fields[arrayNumber].value}`);
         }
     }
+    if (!textArray.length) textArray.push('undefined');
     message.reply(textArray.join('\n'), { allowedMentions: { repliedUser: false } });
 }
