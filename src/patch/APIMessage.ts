@@ -26,7 +26,11 @@ class PatchAPIMessage extends APIMessage {
             }
             return c;
         });
+
+        // Fix linking reference for replying to the message
         if (!this.isWebhook) (this.options as MessageOptions).reply = (cache as MessageOptions).reply;
+
+        // Make author of the Message being replied to should be pinged to be off by default
         if (this.options.allowedMentions?.repliedUser === undefined) this.options.allowedMentions = { repliedUser: false };
 
         original.call(this);
