@@ -3,11 +3,10 @@ import { Event } from '../interfaces';
 
 export default class extends Event {
     public constructor(client: DevToolBot) {
-        super(client, 'ready');
+        super(client, 'shardReconnecting');
     }
 
-    public run(): void {
-        this.logger.info('Succesfully logged in and is Ready.');
-        this.client.off('ready', () => null);
+    public run(id: number): void {
+        this.logger.info(`Shard: ${id} is now reconnecting.`);
     }
 }

@@ -3,11 +3,10 @@ import { Event } from '../interfaces';
 
 export default class extends Event {
     public constructor(client: DevToolBot) {
-        super(client, 'ready');
+        super(client, 'error');
     }
 
-    public run(): void {
-        this.logger.info('Succesfully logged in and is Ready.');
-        this.client.off('ready', () => null);
+    public run(error: Error): void {
+        this.logger.error(error);
     }
 }
