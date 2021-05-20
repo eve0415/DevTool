@@ -31,7 +31,6 @@ export class SessionManager {
     }
 
     private handleUserMessage(emoji: GuildEmoji | ReactionEmoji | undefined) {
-        console.log(emoji);
         if (!emoji) return;
         if (emoji.name === '🗑️') {
             this.botMessage.delete().catch(() => null);
@@ -40,7 +39,6 @@ export class SessionManager {
     }
 
     private handleBotMessage(emoji: GuildEmoji | ReactionEmoji | undefined) {
-        console.log(emoji);
         if (!emoji) return;
         if (emoji.name === '🗑️') {
             this.botMessage.delete().catch(() => null);

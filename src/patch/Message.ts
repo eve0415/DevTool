@@ -1,4 +1,4 @@
-import { Client, DMChannel, Message as IMessage, NewsChannel, Structures, TextChannel } from 'discord.js';
+import { Client, DMChannel, GuildChannel, Message as IMessage, NewsChannel, Structures, TextChannel } from 'discord.js';
 import { instance } from '..';
 import { SessionManager } from '../manager/SessionManager';
 
@@ -31,11 +31,16 @@ export class PatchMessage extends IMessage {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public extendedReply(...replyInjection: unknown[]): any {
         const message = this.reply(replyInjection);
-        message.then(mes => {
-            const clonedUserMessage = Object.defineProperty(Object.assign(Object.create(this), this), 'client', { value: instance }) as IMessage;
-            const clonedBotMessage = Object.defineProperty(Object.assign(Object.create(mes), mes), 'client', { value: instance }) as IMessage;
-            new SessionManager(clonedUserMessage, clonedBotMessage);
-        });
+
+        if (!this.guild?.me) return message;
+        if ((this.channel as GuildChannel).permissionsFor(this.guild.me).has('MANAGE_MESSAGES')) {
+            message.then(mes => {
+                const clonedUserMessage = Object.defineProperty(Object.assign(Object.create(this), this), 'client', { value: instance }) as IMessage;
+                const clonedBotMessage = Object.defineProperty(Object.assign(Object.create(mes), mes), 'client', { value: instance }) as IMessage;
+                new SessionManager(clonedUserMessage, clonedBotMessage);
+            });
+        }
+
         return message;
     }
 }
