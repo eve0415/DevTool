@@ -26,7 +26,7 @@ function toString(message: Message) {
     const option = commandRegex.exec(message.content)?.groups?.option ?? '';
     const embed = new MessageEmbed();
     if (!message.reference) {
-        return message.reply({
+        return message.extendedReply({
             embed: embed
                 .setColor('RED')
                 .setTitle('Missing reference')
@@ -35,7 +35,7 @@ function toString(message: Message) {
     }
     const referenced = message.channel.messages.resolve(message.reference.messageID ?? '');
     if (!referenced || !referenced.embeds.length) {
-        return message.reply({
+        return message.extendedReply({
             embed: embed
                 .setColor('RED')
                 .setTitle('There was an error reading reference message')
@@ -57,5 +57,5 @@ function toString(message: Message) {
         }
     }
     if (!textArray.length) textArray.push('undefined');
-    message.reply(textArray.join('\n'));
+    message.extendedReply(textArray.join('\n'));
 }

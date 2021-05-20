@@ -5,7 +5,7 @@ import {
     Message,
     MessageAttachment,
     MessageEmbed,
-    MessageOptions,
+    ReplyMessageOptions,
     Snowflake,
     TextChannel,
 } from 'discord.js';
@@ -28,7 +28,7 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
         return string.replaceAll('undefined\n>', '').replaceAll('>', '').trim();
     }
 
-    protected createmessage(result: string, lang: PLanguage, hasError = false): MessageOptions {
+    protected createmessage(result: string, lang: PLanguage, hasError = false): ReplyMessageOptions & { split?: false | undefined} {
         if (!result) result = 'No returned value';
         if (result.length <= 1990) {
             const embed = new MessageEmbed()
@@ -49,7 +49,7 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
         };
     }
 
-    protected createErrorMessage(error: Error): MessageOptions {
+    protected createErrorMessage(error: Error): ReplyMessageOptions & { split?: false | undefined} {
         return {
             embed: new MessageEmbed()
                 .setColor('RED')

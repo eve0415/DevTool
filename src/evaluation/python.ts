@@ -42,8 +42,8 @@ export class PythonEvaluationManager extends BaseEvaluation<ChildProcessWithoutN
                 result.push(res);
             }
         });
-        process.on('error', err => message.reply(this.createErrorMessage(err)));
-        process.on('close', () => message.reply(this.createmessage(result.join('\n'), 'py', hasError)));
+        process.on('error', err => message.extendedReply(this.createErrorMessage(err)));
+        process.on('close', () => message.extendedReply(this.createmessage(result.join('\n'), 'py', hasError)));
         process.stdin.write(`${content}\nexit()\n`);
         setTimeout(() => {
             if (!process.connected) return;

@@ -42,8 +42,8 @@ export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
                 result.push(res);
             }
         });
-        process.on('error', err => message.reply(this.createErrorMessage(err)));
-        process.on('close', () => message.reply(this.createmessage(result.join('\n'), 'ts', hasError)));
+        process.on('error', err => message.extendedReply(this.createErrorMessage(err)));
+        process.on('close', () => message.extendedReply(this.createmessage(result.join('\n'), 'ts', hasError)));
         process.stdin.write(`${content}\n.exit\n`);
         setTimeout(() => {
             if (!process.connected) return;

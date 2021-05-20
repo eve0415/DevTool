@@ -67,6 +67,6 @@ export class CommandManager extends Collection<number, Command> {
             .addField('System Command', this.filter(c => c.madeBy === '0').map(c => c.humanReadable).join(', '))
             .addField('Original Command', original.join(', '));
 
-        message.reply(embed);
+        message.extendedReply(embed);
     }
 }

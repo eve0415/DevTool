@@ -11,7 +11,7 @@ export class DevToolBot extends Client {
 
     public constructor() {
         super({
-            intents: ['GUILDS', 'GUILD_MESSAGES'],
+            intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS'],
             restTimeOffset: 0,
         });
 

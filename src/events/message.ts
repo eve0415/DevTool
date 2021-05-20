@@ -46,7 +46,7 @@ export default class extends Event {
             embed
                 .setDescription(e)
                 .addField('Command ID', cmd.id);
-            message.reply(embed);
+            message.extendedReply(embed);
         }
     }
 
