@@ -46,10 +46,9 @@ export class PythonEvaluationManager extends BaseEvaluation<ChildProcessWithoutN
         process.on('close', () => message.extendedReply(this.createmessage(result.join('\n'), 'py', hasError)));
         process.stdin.write(`${content}\nexit()\n`);
         setTimeout(() => {
-            if (!process.connected) return;
+            process.kill('SIGKILL');
             hasError = true;
             result.push('10 seconds timeout exceeded');
-            process.kill('SIGKILL');
         }, 10000);
     }
 

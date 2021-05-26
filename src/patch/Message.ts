@@ -1,6 +1,6 @@
 import { Client, DMChannel, GuildChannel, Message as IMessage, NewsChannel, Structures, TextChannel } from 'discord.js';
 import { instance } from '..';
-import { SessionManager } from '../manager/SessionManager';
+import { SessionManager } from '../manager';
 
 declare module 'discord.js' {
     interface Message {
@@ -28,9 +28,9 @@ export class PatchMessage extends IMessage {
         super(emptyClient, data, channel);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public extendedReply(...replyInjection: unknown[]): any {
-        const message = this.reply(replyInjection);
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/no-explicit-any
+    public extendedReply(content: any, options?: any): any {
+        const message = options ? this.reply(content, options) : this.reply(content);
 
         if (!this.guild?.me) return message;
         if ((this.channel as GuildChannel).permissionsFor(this.guild.me).has('MANAGE_MESSAGES')) {

@@ -46,10 +46,9 @@ export class TSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullS
         process.on('close', () => message.extendedReply(this.createmessage(result.join('\n'), 'ts', hasError)));
         process.stdin.write(`${content}\n.exit\n`);
         setTimeout(() => {
-            if (!process.connected) return;
+            process.kill('SIGKILL');
             hasError = true;
             result.push('10 seconds timeout exceeded');
-            process.kill('SIGKILL');
         }, 10000);
     }
 

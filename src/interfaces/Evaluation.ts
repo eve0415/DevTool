@@ -5,7 +5,7 @@ import {
     Message,
     MessageAttachment,
     MessageEmbed,
-    ReplyMessageOptions,
+    MessageOptions,
     Snowflake,
     TextChannel,
 } from 'discord.js';
@@ -28,17 +28,16 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
         return string.replaceAll('undefined\n>', '').replaceAll('>', '').trim();
     }
 
-    protected createmessage(result: string, lang: PLanguage, hasError = false): ReplyMessageOptions & { split?: false | undefined} {
+    protected createmessage(result: string, lang: PLanguage, hasError = false): MessageOptions {
         if (!result) result = 'No returned value';
         if (result.length <= 1990) {
             const embed = new MessageEmbed()
                 .setColor(!hasError ? 'BLUE' : 'RED')
                 .setDescription(`\`\`\`${lang}\n${result}\n\`\`\``);
-            return { embed: embed };
+            return { embed };
         }
-        let overSize = false;
+        const overSize = Buffer.from(result).byteLength / 1024 / 1024 > 8;
         while (Buffer.from(result).byteLength / 1024 / 1024 > 8) {
-            overSize = true;
             const cache = result.split('\n');
             cache.splice(0, cache.length - Number(cache.length.toString().slice(0, -1)));
             result = cache.join('\n');
@@ -49,7 +48,7 @@ export abstract class BaseEvaluation<T> extends Collection<Snowflake, T> {
         };
     }
 
-    protected createErrorMessage(error: Error): ReplyMessageOptions & { split?: false | undefined} {
+    protected createErrorMessage(error: Error): MessageOptions {
         return {
             embed: new MessageEmbed()
                 .setColor('RED')
