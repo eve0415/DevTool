@@ -8,6 +8,6 @@ export default class extends Event {
 
     public run(): void {
         this.logger.info('Succesfully logged in and is Ready.');
-        this.client.off('ready', () => null);
+        this.client.off('ready', (arg: void) => arg);
     }
 }
