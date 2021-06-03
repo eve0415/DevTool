@@ -33,7 +33,7 @@ function toString(message: Message) {
                 .setDescription(helpMessage),
         });
     }
-    const referenced = message.channel.messages.resolve(message.reference.messageID ?? '');
+    const referenced = message.reference.messageID ? message.channel.messages.resolve(message.reference.messageID) : null;
     if (!referenced || !referenced.embeds.length) {
         return message.extendedReply({
             embed: embed

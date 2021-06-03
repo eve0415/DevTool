@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Client, DMChannel, GuildChannel, Message as IMessage, NewsChannel, Structures, TextChannel } from 'discord.js';
 import { instance } from '..';
 import { SessionManager } from '../manager';
@@ -5,19 +6,19 @@ import { SessionManager } from '../manager';
 declare module 'discord.js' {
     interface Message {
         extendedReply(
-            content: APIMessageContentResolvable | (ReplyMessageOptions & { split?: false }) | MessageAdditions,
+            content: string | null | (ReplyMessageOptions & { split?: false }) | MessageAdditions,
         ): Promise<Message>;
         extendedReply(options: ReplyMessageOptions & { split: true | SplitOptions }): Promise<Message[]>;
         extendedReply(options: ReplyMessageOptions | APIMessage): Promise<Message | Message[]>;
         extendedReply(
-            content: StringResolvable,
+            content: string | null,
             options: (ReplyMessageOptions & { split?: false }) | MessageAdditions,
         ): Promise<Message>;
         extendedReply(
-            content: StringResolvable,
+            content: string | null,
             options: ReplyMessageOptions & { split: true | SplitOptions },
         ): Promise<Message[]>;
-        extendedReply(content: StringResolvable, options: ReplyMessageOptions): Promise<Message | Message[]>;
+        extendedReply(content: string | null, options: ReplyMessageOptions): Promise<Message | Message[]>;
     }
 }
 

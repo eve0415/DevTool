@@ -41,8 +41,8 @@ export class Command {
 
     public async wantHelp(message: Message): Promise<void> {
         const embed = this.description instanceof MessageEmbed ? this.description : new MessageEmbed();
-        if (!embed.title) embed.setTitle(this.name);
-        if (!embed.description) embed.setDescription(this.description);
+        if (!embed.title) embed.setTitle(this.name.toString());
+        if (!embed.description) embed.setDescription(this.description.toString());
         if (!embed.color) embed.setColor('BLUE');
         if (!embed.footer) embed.setFooter(`Created by ${await this.resolveUser(message)}(${this.madeBy}). Command ID: ${this.id}`);
 

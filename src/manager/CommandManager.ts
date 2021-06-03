@@ -54,7 +54,7 @@ export class CommandManager extends Collection<number, Command> {
 
     public getHelp(message: Message): void {
         const original = (message.guild
-            ? this.filter(c => c.madeBy === (message.author.id && c.madeIn === message.guild?.id) || c.madeIn === message.guild?.id && !c.private)
+            ? this.filter(c => c.madeBy === message.author.id && c.madeIn === message.guild?.id || c.madeIn === message.guild?.id && !c.private)
             : this.filter(c => c.madeBy === message.author.id))
             .filter(c => c.isEnabled)
             .map(c => c.humanReadable);

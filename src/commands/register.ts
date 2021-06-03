@@ -69,9 +69,9 @@ async function registerCommand(message: Message, args: string[]) {
                     `Command has been subscribed.\nSend \`${registered.name} help\` for help.\nPlease note that this command will expire in 5 minutes.\n\n`
                     + `You${registered.private ? '' : ' and your guild member'} can use your command.\nYou can also use in your DM.`,
                 )
-                .addField('Command ID', registered.id, true)
-                .addField('Command name', registered.name, true)
-                .addField('Private?', registered.private, true)
+                .addField('Command ID', registered.id.toString(), true)
+                .addField('Command name', registered.name.toString(), true)
+                .addField('Private?', registered.private.toString(), true)
                 .addField('Registered by', message.author.tag, true)
                 .addField('Registered on', registered.createdAt.toLocaleString(), true)
                 .setColor('BLUE')

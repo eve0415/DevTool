@@ -23,7 +23,7 @@ export default class extends Event {
         if (!cmd) return;
         if (parsed.other.length === 1 && parsed.other[0] === 'help') return cmd?.wantHelp(message);
         if (!parsed.other.length && message.reference) {
-            const referenced = message.channel.messages.resolve(message.reference.messageID ?? '');
+            const referenced = message.reference.messageID ? message.channel.messages.resolve(message.reference.messageID) : null;
             if (!referenced) return;
             const parsedTwo = this.parseMessage(referenced);
             this.call(cmd, message, parsedTwo.other);
@@ -45,7 +45,7 @@ export default class extends Event {
             }
             embed
                 .setDescription(e)
-                .addField('Command ID', cmd.id);
+                .addField('Command ID', cmd.id.toString());
             message.extendedReply(embed);
         }
     }
