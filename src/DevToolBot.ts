@@ -1,4 +1,5 @@
-import { Client } from 'discord.js';
+import { inspect } from 'util';
+import { Client, TextChannel } from 'discord.js';
 import { getLogger, shutdown } from 'log4js';
 import { CommandManager, EvaluationManager, EventManager } from './manager';
 
@@ -48,6 +49,20 @@ export class DevToolBot extends Client {
                 if (signal === 'unhandledRejection' || signal === 'uncaughtException') {
                     this.logger.error('Unexpected error occured');
                     this.logger.error(e);
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    if (e.code === 50006) {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                        const path = /^\/channels\/(?<channelID>\d+)\/messages$/.exec(e.path)?.groups ?? {};
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        (this.channels.resolve(path.channelID) as TextChannel).send({
+                            embed: {
+                                color: 'RED',
+                                title: 'An Error Occured When Sending A Message',
+                                description: inspect(e, { depth: null, maxArrayLength: null }),
+                            },
+                        });
+                    }
                     return;
                 }
                 if (!(signal === 'SIGINT' || signal === 'SIGTERM')) {
