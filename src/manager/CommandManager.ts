@@ -1,72 +1,49 @@
-import { Collection, Message, MessageEmbed } from 'discord.js';
+import { readdirSync } from 'fs';
+import { resolve } from 'path';
+import { Collection } from 'discord.js';
 import { getLogger } from 'log4js';
-import { DevToolBot, instance } from '..';
-import { Command } from '../interfaces';
+import { DevToolBot } from '../DevToolBot';
+import { Command } from '../interface';
 
-export class CommandManager extends Collection<number, Command> {
+export class CommandManager extends Collection<string, Command> {
     private readonly logger = getLogger('CommandManager');
-    private readonly client: DevToolBot;
-    private commandNo = 0;
 
-    public constructor(client: DevToolBot) {
+    public constructor(private readonly client: DevToolBot) {
         super();
-        this.client = client;
     }
 
-    public static register(command: Command): Promise<Command> {
-        return instance.commandManager.register(command);
-    }
-
-    public register(command: Command): Promise<Command> {
-        const user = command.madeBy === '0' ? 'System' : this.client.users.resolve(command.madeBy)?.username;
-        this.commandNo++;
-        this.logger.info(`[${this.commandNo}] ${user}(${command.madeBy}) has requested to register a command: ${command.name}`);
-        if (this.has(this.commandNo)) {
-            this.logger.warn(`[${this.commandNo}] Could not register ${command.name}. It is registered by someone!`);
-            return Promise.reject(new Error('Sorry, Could not register the command. Try again later!'));
+    public register(command: Command): void {
+        this.logger.info(`Registering command: ${command.data.name}`);
+        if (this.has(command.data.name)) {
+            this.logger.error(`Command name ${command.data.name} is already registered`);
+            throw new Error(`Command name ${command.data.name} is already registered`);
         }
-        const filtered = this.filter(c => c.madeBy === command.madeBy || c.madeIn === command.madeIn && !c.private);
-        if (filtered.map(c => c.name).indexOf(command.name) >= 0 || filtered.map(c => c.name).indexOf(command.humanReadable) >= 0) {
-            this.logger.warn(`[${this.commandNo}] Could not register ${command.name} because it will conflict!`);
-            return Promise.reject(new Error('Sorry, Could not register the command because command name conflict with other. Try changing the command name!'));
+        this.set(command.data.name, command);
+    }
+
+    public async registerAll(): Promise<void> {
+        this.logger.info('Starting to register all commands');
+        const dir = resolve(`${__dirname}/../command`);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        const modules = await Promise.all(readdirSync(dir).filter(file => /.js|.ts/.exec(file)).map(file => import(`${dir}/${file}`).then(a => new a.default(this.client))));
+        const commands = modules.filter<Command>((value): value is Command => value instanceof Command);
+        await Promise.all(commands.map(event => this.register(event)));
+        this.logger.info(`Successfully registered ${this.size} commands`);
+    }
+
+    public async subscribe(): Promise<void> {
+        const subscribed = await this.client.application?.commands.fetch();
+
+        const diffAdded = this.filter(c => !subscribed?.find(s => s.name === c.data.name));
+        const diffRemoved = subscribed?.filter(s => !this.find(c => s.name === c.data.name));
+
+        if (diffAdded.size || diffRemoved?.size) {
+            await this.client.application?.commands.set(this.map(c => c.data));
         }
-        this.set(this.commandNo, command);
-        command.id = this.commandNo;
-        this.logger.info(`[${this.commandNo}] Enabling command: ${command.name}....`);
-        command.isEnabled = true;
-        if (command.madeBy !== '0') this.countDown(command.id);
-        this.logger.info(`[${this.commandNo}] Successfully registered command: ${command.name}`);
-        return Promise.resolve(command);
-    }
 
-    private countDown(id: number) {
-        setTimeout(() => {
-            const command = this.get(id);
-            if (!command || command.madeBy === '0') return;
-            this.logger.info(`[${command.id}] 5 minutes passed! Disabling command: ${command.name}....`);
-            command.isEnabled = false;
-            setTimeout(() => {
-                this.logger.info(`[${command.id}] Removing command: ${command.name}....`);
-                this.delete(id);
-            }, 60000);
-        }, 5 * 60 * 1000);
-    }
-
-    public getHelp(message: Message): void {
-        const original = (message.guild
-            ? this.filter(c => c.madeBy === message.author.id && c.madeIn === message.guild?.id || c.madeIn === message.guild?.id && !c.private)
-            : this.filter(c => c.madeBy === message.author.id))
-            .filter(c => c.isEnabled)
-            .map(c => c.humanReadable);
-        if (!original.length) original.push('Not available');
-
-        const embed = new MessageEmbed()
-            .setColor('BLUE')
-            .setTitle('Help')
-            .setDescription('Hi, thank you for using.\nThis help command will show you some commands that you can use.\nIf you need more help for any command, just send `<command> help`.')
-            .addField('System Command', this.filter(c => c.madeBy === '0').map(c => c.humanReadable).join(', '))
-            .addField('Original Command', original.join(', '));
-
-        message.extendedReply(embed);
+        subscribed?.forEach(s => {
+            const find = this.find(c => c.data.name === s.name);
+            if (find?.data) this.client.application?.commands?.edit(s.id, find.data);
+        });
     }
 }

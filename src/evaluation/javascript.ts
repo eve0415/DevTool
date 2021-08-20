@@ -1,75 +1,37 @@
-import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
-import { DMChannel, Message, TextChannel } from 'discord.js';
-import { BaseEvaluation } from '../interfaces';
+import { spawn } from 'child_process';
+import { ReplyMessageOptions } from 'discord.js';
+import treeKill from 'tree-kill';
+import { BaseEvaluationSystem } from './base';
 
-export class JSEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullStreams> {
-    public startEvaluate(channel: TextChannel | DMChannel): void {
-        const process = this.startProcess();
-        process.on('close', code => {
-            channel.send(this.createmessage(`Process exited with code ${code}`, 'js'));
-            this.delete(channel.id);
+export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
+    public evaluate(content: string): Promise<ReplyMessageOptions> {
+        return new Promise(res => {
+            const result: unknown[] = [];
+            const child = spawn('node',
+                [
+                    '-i',
+                    '--experimental-vm-modules',
+                    '--experimental-repl-await',
+                    '--experimental-import-meta-resolve',
+                    '--experimental-json-modules',
+                    '--disallow-code-generation-from-strings',
+                ],
+            );
+            child.stdout.setEncoding('utf8');
+            child.stderr.setEncoding('utf8');
+            child.stdout.on('data', data => result.push(data));
+            child.stderr.on('data', data => {
+                this.embedColor = 'RED';
+                result.push(data);
+            });
+            child.on('error', err => res(this.createErrorMessage(err)));
+            child.on('close', () => res(this.createMessage(result, 'js')));
+            child.stdin.write(`${content}\n\n.exit\n`);
+            setTimeout(() => {
+                treeKill(child.pid ?? 100, 'SIGKILL');
+                this.embedColor = 'DARK_RED';
+                result.push('10秒を超過して実行することはできません');
+            }, 10000);
         });
-        this.set(channel.id, process);
-    }
-
-    public evaluateCode(message: Message, content: string): void {
-        const process = this.get(message.channel.id);
-        process?.stdout.once('data', data => {
-            const res = this.processContent(data);
-            if (res) message.reply(this.createmessage(res, 'js'));
-        });
-        process?.stdin.write(`${content}\n`);
-    }
-
-    public killEvaluate(channel: TextChannel | DMChannel): void {
-        const process = this.get(channel.id);
-        if (!process?.connected) return;
-        process?.kill('SIGKILL');
-    }
-
-    public evaluateOnce(message: Message, content: string): void {
-        const process = this.startProcess();
-        const result: string[] = [];
-        let hasError = false;
-        process.stdout.on('data', data => {
-            const res = this.processContent(data);
-            if (res) result.push(res);
-        });
-        process.stderr.on('data', data => {
-            const res = this.processContent(data);
-            if (res) {
-                hasError = true;
-                result.push(res);
-            }
-        });
-        process.on('error', err => message.extendedReply(this.createErrorMessage(err)));
-        process.on('close', () => message.extendedReply(this.createmessage(result.join('\n'), 'js', hasError)));
-        process.stdin.write(`${content}\n.exit\n`);
-        setTimeout(() => {
-            process.kill('SIGKILL');
-            hasError = true;
-            result.push('10 seconds timeout exceeded');
-        }, 10000);
-    }
-
-    protected startProcess(): ChildProcessWithoutNullStreams {
-        const process = spawn('node',
-            ['-i',
-                '--experimental-vm-modules',
-                '--experimental-repl-await',
-                '--experimental-import-meta-resolve',
-                '--experimental-json-modules',
-                '--disallow-code-generation-from-strings'],
-            { env: { DISCORD_TOKEN: '' } },
-        );
-        process.stdout.setEncoding('utf8');
-        process.stderr.setEncoding('utf8');
-        return process;
-    }
-
-    protected processContent(content: unknown): string | undefined {
-        const result = super.processContent(content);
-        if (/^\.{2,}$/.test(result ?? '')) return;
-        return result;
     }
 }

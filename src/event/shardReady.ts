@@ -1,9 +1,9 @@
-import { DevToolBot } from '..';
-import { Event } from '../interfaces';
+import { DevToolBot } from '../DevToolBot';
+import { Event } from '../interface';
 
 export default class extends Event {
-    public constructor(client: DevToolBot) {
-        super(client, 'shardReady');
+    public constructor(protected readonly client: DevToolBot) {
+        super(client, __filename, true);
     }
 
     public run(id: number, unavailableGuilds: Set<string> | undefined): void {

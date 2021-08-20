@@ -1,6 +1,18 @@
 name: CI
 
-on: push
+on:
+  push:
+    branches-ignore:
+      - dependabot/**
+    paths-ignore:
+      - README.md
+      - LICENSE
+      - nodemon.json
+      - Dockerfile
+      - .dockerignore
+      - .editorconfig
+      - .gitignore
+  pull_request_target:
 
 jobs:
   test:
@@ -13,21 +25,17 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install Node v15
+      - name: Install Node v16
         uses: actions/setup-node@v2
         with:
-          node-version: 15
-
-      - name: Install yarn
-        run: npm install -g yarn
+          node-version: 16
+          cache: "yarn"
 
       - name: Install dependencies
-        run: |
-          git config --global url."https://${{ secrets.PAT }}@github.com/".insteadOf ssh://git@github.com/
-          yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile
 
       - name: Build
         run: yarn build
 
       - name: Run ESLint
-        run: yarn lint
+        run: yarn eslint

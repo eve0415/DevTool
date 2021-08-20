@@ -1,67 +1,37 @@
-import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
-import { DMChannel, Message, TextChannel } from 'discord.js';
-import { BaseEvaluation } from '../interfaces';
+import { spawn } from 'child_process';
+import { ReplyMessageOptions } from 'discord.js';
+import treeKill from 'tree-kill';
+import { BaseEvaluationSystem } from './base';
+import { Language } from '../interface';
 
-export class PythonEvaluationManager extends BaseEvaluation<ChildProcessWithoutNullStreams> {
-    public startEvaluate(channel: TextChannel | DMChannel): void {
-        const process = this.startProcess();
-        process.on('close', () => {
-            channel.send(this.createmessage(`Process exited with code ${process.exitCode}`, 'js'));
-            this.delete(channel.id);
+export class PythonEvaluationSystem extends BaseEvaluationSystem {
+    public evaluate(content: string): Promise<ReplyMessageOptions> {
+        return new Promise(res => {
+            const result: unknown[] = [];
+            const child = spawn(
+                process.platform === 'win32'
+                    ? 'python'
+                    : 'python3',
+                ['-i', '-I'],
+                { shell: true },
+            );
+            child.stdout.setEncoding('utf8');
+            child.stderr.setEncoding('utf8');
+            child.stdout.on('data', data => result.push(data));
+            child.stderr.on('data', data => result.push(data));
+            child.on('error', err => res(this.createErrorMessage(err)));
+            child.on('close', () => res(this.createMessage(result, 'ts')));
+            child.stdin.write(`${content}\n\nexit()\n`);
+            setTimeout(() => {
+                treeKill(child.pid ?? 100, 'SIGKILL');
+                this.embedColor = 'DARK_RED';
+                result.push('10秒を超過して実行することはできません');
+            }, 10000);
         });
-        this.set(channel.id, process);
     }
 
-    public evaluateCode(message: Message, content: string): void {
-        const process = this.get(message.channel.id);
-        process?.stdout.once('data', data => {
-            const res = this.processContent(data);
-            if (res) message.reply(this.createmessage(res, 'py'));
-        });
-        process?.stdin.write(`${content}\n`);
-    }
-
-    public killEvaluate(channel: TextChannel | DMChannel): void {
-        const process = this.get(channel.id);
-        if (!process?.connected) return;
-        process?.kill('SIGKILL');
-    }
-
-    public evaluateOnce(message: Message, content: string): void {
-        const process = this.startProcess();
-        const result: string[] = [];
-        let hasError = false;
-        process.stdout.on('data', data => {
-            const res = this.processContent(data);
-            if (res) result.push(res);
-        });
-        process.stderr.on('data', data => {
-            const res = this.processContent(data);
-            if (res) {
-                hasError = true;
-                result.push(res);
-            }
-        });
-        process.on('error', err => message.extendedReply(this.createErrorMessage(err)));
-        process.on('close', () => message.extendedReply(this.createmessage(result.join('\n'), 'py', hasError)));
-        process.stdin.write(`${content}\nexit()\n`);
-        setTimeout(() => {
-            process.kill('SIGKILL');
-            hasError = true;
-            result.push('10 seconds timeout exceeded');
-        }, 10000);
-    }
-
-    protected startProcess(): ChildProcessWithoutNullStreams {
-        const p = spawn(process.platform !== 'win32' ? 'python3' : 'python', ['-i', '-I'], { shell: true, env: { DISCORD_TOKEN: '' } });
-        p.stdout.setEncoding('utf8');
-        p.stderr.setEncoding('utf8');
-        return p;
-    }
-
-    protected processContent(content: unknown): string | undefined {
-        const result = super.processContent(content);
-        if (/^Python.+on.+$/s.test(result ?? '')) return;
-        return result;
+    protected createMessage(contents: unknown[], lang: Language): ReplyMessageOptions {
+        const processed = this.processContent(contents).filter(c => !/^Python.+on.+$/s.test(c));
+        return super.createMessage(processed, lang);
     }
 }

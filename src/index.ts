@@ -1,2 +1,5 @@
-import './patch';
-export * from './DevToolBot';
+import { DevToolBot } from './DevToolBot';
+
+export const instance = new DevToolBot();
+
+instance.start().catch(e => console.error(e));

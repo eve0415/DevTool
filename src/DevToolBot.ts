@@ -1,79 +1,37 @@
-import { inspect } from 'util';
-import { Client, TextChannel } from 'discord.js';
-import { getLogger, shutdown } from 'log4js';
-import { CommandManager, EvaluationManager, EventManager } from './manager';
+import { Client } from 'discord.js';
+import { getLogger } from 'log4js';
+import { CommandManager, EventManager } from './manager';
 
 export class DevToolBot extends Client {
     private readonly logger = getLogger('DevToolBot');
-    private fatalError = 0;
     private readonly eventManager: EventManager;
+
     public readonly commandManager: CommandManager;
-    public readonly evalManager: EvaluationManager;
 
     public constructor() {
         super({
-            intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS'],
+            intents: ['GUILDS'],
             restTimeOffset: 0,
+            allowedMentions: { repliedUser: false },
+            http: { api: 'https://canary.discord.com/api' },
         });
 
         getLogger().level = process.env.NODE_ENV ? 'trace' : 'info';
-        this.commandManager = new CommandManager(this);
+
         this.eventManager = new EventManager(this);
-        this.evalManager = new EvaluationManager();
+        this.commandManager = new CommandManager(this);
     }
 
-    public async init(): Promise<void> {
+    public async start(): Promise<void> {
         this.logger.info('Initializing...');
-        // Before doing anythig, set error handler to handle unexpected errors
-        this.errorHandler();
-        await this.eventManager.registerAll();
-        await import('./commands');
-        this.logger.info('Initialize complete');
-    }
 
-    public async start(): Promise<string> {
-        await this.init();
-        return super.login();
-    }
+        await this.eventManager.registerAll().catch(e => this.logger.error(e));
+        await this.commandManager.registerAll().catch(e => this.logger.error(e));
+        // await this.interactionManager.registerAll().catch(e => this.logger.error(e));
 
-    public shutdown(): void {
-        shutdown();
-        this.destroy();
-        process.exit();
-    }
+        this.logger.info('Initialize done. Logging in...');
 
-    private errorHandler() {
-        ['SIGTERM', 'SIGINT', 'uncaughtException', 'unhandledRejection']
-            .forEach(signal => process.on(signal, e => {
-                if (this.fatalError) process.exit(-1);
-                if (signal === 'unhandledRejection' || signal === 'uncaughtException') {
-                    this.logger.error('Unexpected error occured');
-                    this.logger.error(e);
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    if (e.code === 50006) {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                        const path = /^\/channels\/(?<channelID>\d+)\/messages$/.exec(e.path)?.groups ?? {};
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        (this.channels.resolve(path.channelID) as TextChannel).send({
-                            embed: {
-                                color: 'RED',
-                                title: 'An Error Occured When Sending A Message',
-                                description: inspect(e, { depth: null, maxArrayLength: null }),
-                            },
-                        });
-                    }
-                    return;
-                }
-                if (!(signal === 'SIGINT' || signal === 'SIGTERM')) {
-                    this.fatalError++;
-                    this.logger.fatal('Unexpected error occured');
-                    this.logger.fatal(e);
-                }
-                this.shutdown();
-            }));
+        await super.login().catch(e => this.logger.error(e));
+        delete process.env.DISCORD_TOKEN;
     }
 }
-
-export const instance = new DevToolBot();
-instance.start().catch(console.error);

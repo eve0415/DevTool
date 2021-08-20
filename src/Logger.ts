@@ -3,7 +3,7 @@ import { configure } from 'log4js';
 configure({
     appenders: {
         console: {
-            type: 'console',
+            type: 'stdout',
             layout: {
                 type: 'pattern',
                 pattern: '%[[%d]%] %[[%p]%] %[[%c]%]: %m',
@@ -11,6 +11,6 @@ configure({
         },
     },
     categories: {
-        default: { appenders: ['console'], level: 'info' },
+        default: { appenders: ['console'], level: 'info', enableCallStack: true },
     },
 });

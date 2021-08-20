@@ -14,42 +14,34 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "engines": {
-    "node": ">=14"
-  },
   "scripts": {
     "build": "tsc -b",
-    "watch": "tsc -b -w",
-    "lint": "npx eslint . --ext ts --fix",
-    "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
-    "test": "nodemon -r dotenv/config src/index.ts"
+    "lint": "eslint --fix .",
+    "clean": "rimraf dist",
+    "test": "nodemon --config nodemon.json -r dotenv/config src/index.ts"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "bufferutil": "^4.0.3",
-    "discord.js": "discordjs/discord.js#master",
-    "erlpack": "discord/erlpack",
+    "discord.js": "^13.1.0",
+    "find-process": "^1.4.4",
     "log4js": "^6.3.0",
-    "ts-node": "^10.0.0",
-    "tslib": "^2.2.0",
+    "tree-kill": "^1.2.2",
+    "ts-node": "^10.2.1",
+    "tslib": "^2.3.1",
     "utf-8-validate": "^5.0.5",
     "vm2": "^3.9.3",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "@types/node": "^15.9.0",
-    "@types/ws": "^7.4.4",
-    "@typescript-eslint/eslint-plugin": "^4.26.0",
-    "@typescript-eslint/parser": "^4.26.0",
-    "discord-api-types": "^0.18.1",
+    "@types/node": "^16.6.2",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
     "dotenv": "^10.0.0",
-    "eslint": "^7.27.0",
-    "eslint-plugin-import": "^2.23.4",
-    "nodemon": "^2.0.7",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.24.1",
+    "nodemon": "^2.0.12",
     "rimraf": "^3.0.2",
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.5"
   }
 }

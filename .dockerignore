@@ -1,4 +1,7 @@
 node_modules
-.git
-.github
 kubernetes
+LICENSE
+README.md
+.git*
+.github
+.editorconfig
