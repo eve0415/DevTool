@@ -2,7 +2,7 @@ import { inspect } from 'util';
 import { DiscordAPIError, Message, MessageEditOptions } from 'discord.js';
 import { DevToolBot } from '../DevToolBot';
 import { Event } from '../interface';
-import { lint, run } from '../temporary';
+import { getHelp, lint, run } from '../temporary';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 
@@ -15,6 +15,12 @@ export default class extends Event {
         this.logger.trace('Recieved message event');
 
         if (message.author.bot) return;
+
+        if (new RegExp(`^<@!?${this.client.user?.id}>$`).test(message.content)) {
+            await message.reply(getHelp('message'));
+            return;
+        }
+
         if (!(['run', 'lint'].includes(message.content) && message.reference)) return;
 
         const mes = await message.reply('実行中です。少々お待ちください。');
