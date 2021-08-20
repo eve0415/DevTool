@@ -1,10 +1,13 @@
 import { Client } from 'discord.js';
+import fastify from 'fastify';
 import { getLogger } from 'log4js';
 import { CommandManager, EventManager } from './manager';
 
 export class DevToolBot extends Client {
     private readonly logger = getLogger('DevToolBot');
+    private readonly fastify = fastify();
     private readonly eventManager: EventManager;
+    private _ready = false;
 
     public readonly commandManager: CommandManager;
 
@@ -22,8 +25,18 @@ export class DevToolBot extends Client {
         this.commandManager = new CommandManager(this);
     }
 
+    public set ready(isReady: boolean) {
+        this._ready = isReady;
+    }
+
+    public get ready(): boolean {
+        return this._ready;
+    }
+
     public async start(): Promise<void> {
         this.logger.info('Initializing...');
+
+        this.setUp();
 
         await this.eventManager.registerAll().catch(e => this.logger.error(e));
         await this.commandManager.registerAll().catch(e => this.logger.error(e));
@@ -32,5 +45,12 @@ export class DevToolBot extends Client {
 
         await super.login().catch(e => this.logger.error(e));
         delete process.env.DISCORD_TOKEN;
+    }
+
+    private setUp() {
+        this.fastify.get('/healtz', (_, rep) => {
+            rep.code(this._ready ? 200 : 503).send();
+        });
+        this.fastify.listen(8080, '0.0.0.0');
     }
 }

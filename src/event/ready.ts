@@ -10,6 +10,8 @@ export default class extends Event {
         this.logger.info('Succesfully logged in and is Ready.');
         this.logger.trace(`Cached ${this.client.guilds.cache.size} guild${this.client.guilds.cache.size <= 1 ? '' : 's'}`);
 
+        this.client.ready = true;
+
         this.logger.info('Starting to subscribe commands to Discord Server');
         await this.client.commandManager.subscribe()
             .then(() => this.logger.info('Succesfully subscribed commands to Discord Server'))

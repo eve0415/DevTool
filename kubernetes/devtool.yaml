@@ -35,3 +35,21 @@ spec:
                 secretKeyRef:
                   name: discord
                   key: token
+          readinessProbe:
+            httpGet:
+              path: /healtz
+              port: 8080
+            failureThreshold: 1
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healtz
+              port: 8080
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 5

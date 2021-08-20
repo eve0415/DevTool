@@ -24,7 +24,7 @@
     "axios": "^0.21.1",
     "bufferutil": "^4.0.3",
     "discord.js": "^13.1.0",
-    "find-process": "^1.4.4",
+    "fastify": "^3.20.2",
     "log4js": "^6.3.0",
     "tree-kill": "^1.2.2",
     "ts-node": "^10.2.1",
