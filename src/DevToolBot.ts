@@ -47,6 +47,15 @@ export class DevToolBot extends Client {
         delete process.env.DISCORD_TOKEN;
     }
 
+    public async shutdown(): Promise<void> {
+        this.logger.info('Shutting down...');
+
+        await this.eventManager.unregisterAll().catch(e => this.logger.error(e));
+        this.fastify.server.close();
+
+        process.exit();
+    }
+
     private setUp() {
         this.fastify.get('/healtz', (_, rep) => {
             rep.code(this._ready ? 200 : 503).send();
