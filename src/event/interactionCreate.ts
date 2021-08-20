@@ -1,5 +1,5 @@
 import { inspect } from 'util';
-import { DiscordAPIError, Interaction } from 'discord.js';
+import { DiscordAPIError, Interaction, WebhookEditMessageOptions } from 'discord.js';
 import { DevToolBot } from '../DevToolBot';
 import { Event } from '../interface';
 
@@ -22,17 +22,22 @@ export default class extends Event {
             this.logger.error(e);
 
             const exec = /^\/webhooks\/\d+\/(?<token>.+)\/messages\/@original$/.exec((e as DiscordAPIError).path)?.groups ?? {};
+            const message: WebhookEditMessageOptions = {
+                embeds: [{
+                    color: 'RED',
+                    title: 'An Error Occured When Sending A Message',
+                    description: inspect(e, { depth: 1, maxArrayLength: null })
+                        .substring(0, 4096)
+                        .replace(exec.token, '*redacted*'),
+                }],
+            };
 
             if (interaction.isCommand()) {
-                await interaction.editReply({
-                    embeds: [{
-                        color: 'RED',
-                        title: 'An Error Occured When Sending A Message',
-                        description: inspect(e, { depth: 1, maxArrayLength: null })
-                            .substring(0, 4096)
-                            .replace(exec.token, '*redacted*'),
-                    }],
-                });
+                if (interaction.replied || interaction.deferred) {
+                    await interaction.editReply(message).catch(err => this.logger.error(err));
+                } else {
+                    await interaction.reply(message).catch(err => this.logger.error(err));
+                }
             }
         }
     }
