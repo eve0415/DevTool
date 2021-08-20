@@ -13,7 +13,8 @@ export class DevToolBot extends Client {
 
     public constructor() {
         super({
-            intents: ['GUILDS'],
+            intents: ['GUILDS', 'GUILD_MESSAGES'],
+            partials: ['MESSAGE'],
             restTimeOffset: 0,
             allowedMentions: { repliedUser: false },
             http: { api: 'https://canary.discord.com/api' },

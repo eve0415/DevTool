@@ -30,7 +30,6 @@ export default class extends Command {
             ].join('\n'));
         }
 
-
         for (const content of this.parseContent(message.content)) {
             if (!codeBlockRegex.test(content)) return;
 
