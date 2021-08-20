@@ -69,4 +69,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SECRET_KEY }}
-          script: kubectl set image --record deployment/devtool devtool=$IMAGE
+          script: kubectl set image deployment/devtool devtool=$IMAGE

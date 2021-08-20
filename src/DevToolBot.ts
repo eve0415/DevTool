@@ -27,7 +27,6 @@ export class DevToolBot extends Client {
 
         await this.eventManager.registerAll().catch(e => this.logger.error(e));
         await this.commandManager.registerAll().catch(e => this.logger.error(e));
-        // await this.interactionManager.registerAll().catch(e => this.logger.error(e));
 
         this.logger.info('Initialize done. Logging in...');
 

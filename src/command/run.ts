@@ -52,7 +52,7 @@ export default class extends Command {
                     break;
 
                 default:
-                    message.reply([
+                    await message.reply([
                         `現在この言語はまだ未対応です: \`${codeblock.lang}\``,
                         '一緒に開発してくれる方を募集しています',
                         `\`${codeblock.lang}\` が対応できるようにしませんか？`,
