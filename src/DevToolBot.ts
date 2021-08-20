@@ -50,6 +50,8 @@ export class DevToolBot extends Client {
     public async shutdown(): Promise<void> {
         this.logger.info('Shutting down...');
 
+        this.ready = false;
+
         await this.eventManager.unregisterAll().catch(e => this.logger.error(e));
         this.fastify.server.close();
 

@@ -1,7 +1,7 @@
 import { ContextMenuInteraction } from 'discord.js';
 import { DevToolBot } from '../DevToolBot';
-import { JavaScriptEvaluationSystem, PythonEvaluationSystem, TypeScriptEvaluationSystem } from '../evaluation';
 import { Command } from '../interface';
+import { CodeLintManager } from '../manager';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 
@@ -9,7 +9,7 @@ export default class extends Command {
     public constructor(protected readonly client: DevToolBot) {
         super(client, {
             type: 'MESSAGE',
-            name: '実行',
+            name: '整形',
         });
     }
 
@@ -38,24 +38,41 @@ export default class extends Command {
             switch (codeblock.lang.toLowerCase()) {
                 case 'js':
                 case 'javascript':
-                    await message.reply(await new JavaScriptEvaluationSystem().evaluate(codeblock.code));
+                    await message.reply(CodeLintManager.lintJavaScript(codeblock.code));
                     break;
 
                 case 'ts':
                 case 'typescript':
-                    await message.reply(await new TypeScriptEvaluationSystem().evaluate(codeblock.code));
+                    await message.reply(CodeLintManager.lintTypeScript(codeblock.code));
                     break;
 
-                case 'py':
-                case 'python':
-                    await message.reply(await new PythonEvaluationSystem().evaluate(codeblock.code));
+                case 'css':
+                    await message.reply(CodeLintManager.lintCss(codeblock.code));
+                    break;
+
+                case 'md':
+                case 'markdown':
+                    await message.reply(CodeLintManager.lintMd(codeblock.code));
+                    break;
+
+                case 'json':
+                    await message.reply(CodeLintManager.lintJson(codeblock.code));
+                    break;
+
+                case 'yml':
+                case 'yaml':
+                    await message.reply(CodeLintManager.lintYaml(codeblock.code));
+                    break;
+
+                case 'html':
+                    await message.reply(CodeLintManager.lintHtml(codeblock.code));
                     break;
 
                 default:
                     await message.reply([
                         `現在この言語はまだ未対応です: \`${codeblock.lang}\``,
                         '一緒に開発してくれる方を募集しています',
-                        `\`${codeblock.lang}\` が実行できるようにあなたの手で対応しませんか？`,
+                        `\`${codeblock.lang}\` が整形できるようにあなたの手で対応しませんか？`,
                     ].join('\n'));
                     break;
             }
