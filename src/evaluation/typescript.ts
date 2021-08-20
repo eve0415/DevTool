@@ -13,7 +13,7 @@ export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
                     ? 'ts-node'
                     : './node_modules/.bin/ts-node',
                 ['-p', '-i'],
-                { shell: true },
+                { shell: true, env: { TZ: process.env.TZ } },
             );
             child.stdout.setEncoding('utf8');
             child.stderr.setEncoding('utf8');

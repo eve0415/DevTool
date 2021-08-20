@@ -13,7 +13,7 @@ export class PythonEvaluationSystem extends BaseEvaluationSystem {
                     ? 'python'
                     : 'python3',
                 ['-i', '-I'],
-                { shell: true },
+                { shell: true, env: { TZ: process.env.TZ } },
             );
             child.stdout.setEncoding('utf8');
             child.stderr.setEncoding('utf8');

@@ -20,7 +20,6 @@ spec:
         - name: devtool
           image: ghcr.io/eve0415/devtool
           imagePullPolicy: Always
-          shareProcessNamespace: true
           securityContext:
             readOnlyRootFilesystem: true
             capabilities:
