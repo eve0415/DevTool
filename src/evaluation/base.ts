@@ -20,6 +20,7 @@ export abstract class BaseEvaluationSystem {
             .map(s => s.trimEnd())
             .map(c => c
                 .replaceAll('undefined\n>', '')
+                .replaceAll('jshell>', '')
                 .replaceAll('>', ''),
             );
     }

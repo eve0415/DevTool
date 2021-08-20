@@ -1,6 +1,11 @@
 import { ContextMenuInteraction } from 'discord.js';
 import { DevToolBot } from '../DevToolBot';
-import { JavaScriptEvaluationSystem, PythonEvaluationSystem, TypeScriptEvaluationSystem } from '../evaluation';
+import {
+    JavaEvaluationSystem,
+    JavaScriptEvaluationSystem,
+    PythonEvaluationSystem,
+    TypeScriptEvaluationSystem,
+} from '../evaluation';
 import { Command } from '../interface';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
@@ -48,6 +53,10 @@ export default class extends Command {
                 case 'py':
                 case 'python':
                     await message.reply(await new PythonEvaluationSystem().evaluate(codeblock.code));
+                    break;
+
+                case 'java':
+                    await message.reply(await new JavaEvaluationSystem().evaluate(codeblock.code));
                     break;
 
                 default:

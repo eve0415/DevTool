@@ -1,8 +1,9 @@
 export type Language =
     'css' |
     'html' |
-    'json' |
+    'java' |
     'js' |
+    'json' |
     'md' |
     'py' |
     'ts' |
