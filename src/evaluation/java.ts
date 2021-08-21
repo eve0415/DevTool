@@ -7,7 +7,10 @@ export class JavaEvaluationSystem extends BaseEvaluationSystem {
     public evaluate(content: string): Promise<ReplyMessageOptions> {
         return new Promise(res => {
             const result: unknown[] = [];
-            const child = spawn('jshell', ['-q']);
+            const child = spawn('jshell',
+                ['-q'],
+                { env: { TZ: process.env.TZ } },
+            );
             child.stdout.setEncoding('utf8');
             child.stderr.setEncoding('utf8');
             child.stdout.on('data', data => result.push(data));

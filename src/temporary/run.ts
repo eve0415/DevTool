@@ -1,5 +1,10 @@
 import { Message } from 'discord.js';
-import { JavaScriptEvaluationSystem, TypeScriptEvaluationSystem, PythonEvaluationSystem } from '../evaluation';
+import {
+    JavaEvaluationSystem,
+    JavaScriptEvaluationSystem,
+    PythonEvaluationSystem,
+    TypeScriptEvaluationSystem,
+} from '../evaluation';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 
@@ -22,6 +27,10 @@ export async function run(message: Message): Promise<void> {
             case 'py':
             case 'python':
                 await message.reply(await new PythonEvaluationSystem().evaluate(codeblock.code));
+                break;
+
+            case 'java':
+                await message.reply(await new JavaEvaluationSystem().evaluate(codeblock.code));
                 break;
 
             default:
