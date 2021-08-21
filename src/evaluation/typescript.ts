@@ -7,7 +7,6 @@ import { Language } from '../interface';
 export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
     public evaluate(content: string): Promise<ReplyMessageOptions> {
         return new Promise(res => {
-            const result: unknown[] = [];
             const child = spawn(
                 process.platform === 'win32'
                     ? 'ts-node'
@@ -17,18 +16,20 @@ export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
             );
             child.stdout.setEncoding('utf8');
             child.stderr.setEncoding('utf8');
-            child.stdout.on('data', data => result.push(data));
+            child.stdout.on('data', data => {
+                if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
+            });
             child.stderr.on('data', data => {
                 this.embedColor = 'RED';
-                result.push(data);
+                if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
             });
             child.on('error', err => res(this.createErrorMessage(err)));
-            child.on('close', () => res(this.createMessage(result, 'ts')));
+            child.on('close', () => res(this.createMessage(this.result, 'ts')));
             child.stdin.write(`${content}\n\n.exit\n`);
             setTimeout(() => {
                 treeKill(child.pid ?? 100, 'SIGKILL');
                 this.embedColor = 'DARK_RED';
-                result.push('10秒を超過して実行することはできません');
+                this.result.push('10秒を超過して実行することはできません');
             }, 10000);
         });
     }

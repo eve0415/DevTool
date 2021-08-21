@@ -1,11 +1,21 @@
 import { inspect } from 'util';
 import { ColorResolvable, MessageAttachment, MessageEmbed, ReplyMessageOptions } from 'discord.js';
+import treeKill from 'tree-kill';
 import { Language } from '../interface';
 
 export abstract class BaseEvaluationSystem {
     protected embedColor: ColorResolvable = 'BLURPLE';
+    protected result: unknown[] = [];
 
     public abstract evaluate(content: string): Promise<ReplyMessageOptions>;
+
+    protected kill(pid: number): void {
+        setTimeout(() => {
+            treeKill(pid, 'SIGKILL');
+            this.embedColor = 'DARK_RED';
+            this.result.push('10秒を超過して実行することはできません');
+        }, 10000);
+    }
 
     protected processContent(content: unknown[]): string[] {
         const str = content
