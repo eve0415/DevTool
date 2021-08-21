@@ -4,8 +4,10 @@ export type Language =
     'java' |
     'js' |
     'json' |
+    'kt' |
     'md' |
     'py' |
     'text' |
+    'sh' |
     'ts' |
     'yaml';

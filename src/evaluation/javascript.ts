@@ -14,7 +14,7 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
                     '--experimental-json-modules',
                     '--disallow-code-generation-from-strings',
                 ],
-                { env: { TZ: process.env.TZ } },
+                { env: { PATH: process.env.PATH } },
             );
             child.stdout.setEncoding('utf8');
             child.stderr.setEncoding('utf8');

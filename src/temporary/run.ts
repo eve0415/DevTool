@@ -3,6 +3,7 @@ import {
     BrainfuckEvaluationSystem,
     JavaEvaluationSystem,
     JavaScriptEvaluationSystem,
+    KotlinEvaluationSystem,
     PythonEvaluationSystem,
     TypeScriptEvaluationSystem,
 } from '../evaluation';
@@ -32,6 +33,11 @@ export async function run(message: Message): Promise<void> {
 
             case 'java':
                 await message.reply(await new JavaEvaluationSystem().evaluate(codeblock.code ?? ''));
+                break;
+
+            case 'kt':
+                            case 'kotlin':
+                await message.reply(await new KotlinEvaluationSystem().evaluate(codeblock.code ?? ''));
                 break;
 
             case 'brainfuck':
