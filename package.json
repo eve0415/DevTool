@@ -21,10 +21,10 @@
     "test": "nodemon --config nodemon.json -r dotenv/config src/index.ts"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.3",
     "bufferutil": "^4.0.3",
     "discord.js": "^13.1.0",
-    "fastify": "^3.20.2",
+    "fastify": "^3.21.0",
     "log4js": "^6.3.0",
     "prettier": "^2.3.2",
     "tree-kill": "^1.2.2",
