@@ -32,7 +32,7 @@ export default class extends Event {
                 }],
             };
 
-            if (interaction.isCommand()) {
+            if (interaction.isCommand() || interaction.isContextMenu()) {
                 if (interaction.replied || interaction.deferred) {
                     await interaction.editReply(message).catch(err => this.logger.error(err));
                 } else {
