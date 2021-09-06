@@ -50,8 +50,10 @@ export abstract class BaseEvaluationSystem {
 
         while (Buffer.from(result).byteLength / 1024 / 1024 > 8) {
             const cache = result.split('\n');
-            cache.splice(0, cache.length - Number(cache.length.toString().slice(0, -1)));
-            result = cache.join('\n');
+
+            result = cache.length === 1
+                ? cache[0].substring(cache[0].length - Number(cache[0].length.toString().slice(0, -1)))
+                : cache.splice(0, cache.length - Number(cache.length.toString().slice(0, -1))).join('\n');
         }
 
         return {
