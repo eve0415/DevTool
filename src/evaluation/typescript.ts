@@ -1,8 +1,8 @@
 import { spawn } from 'child_process';
-import { ReplyMessageOptions } from 'discord.js';
+import type { ReplyMessageOptions } from 'discord.js';
 import treeKill from 'tree-kill';
 import { BaseEvaluationSystem } from './base';
-import { Language } from '../interface';
+import type { Language } from '../interface';
 
 export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
     public evaluate(content: string): Promise<ReplyMessageOptions> {
@@ -34,7 +34,7 @@ export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
         });
     }
 
-    protected createMessage(contents: unknown[], lang: Language): ReplyMessageOptions {
+    protected override createMessage(contents: unknown[], lang: Language): ReplyMessageOptions {
         const processed = this.processContent(contents).map(c =>
             // eslint-disable-next-line no-control-regex
             c.replaceAll(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, ''),

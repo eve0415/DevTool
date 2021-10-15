@@ -1,12 +1,12 @@
-import { ContextMenuInteraction } from 'discord.js';
-import { DevToolBot } from '../DevToolBot';
+import type { ContextMenuInteraction } from 'discord.js';
+import type { DevToolBot } from '../DevToolBot';
 import { Command } from '../interface';
 import { lint } from '../temporary';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 
 export default class extends Command {
-    public constructor(protected readonly client: DevToolBot) {
+    public constructor(protected override readonly client: DevToolBot) {
         super(client, {
             type: 'MESSAGE',
             name: '整形',

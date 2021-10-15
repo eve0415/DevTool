@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { CodeLintManager } from '../manager';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
@@ -8,37 +8,37 @@ export async function lint(message: Message): Promise<void> {
         if (!codeBlockRegex.test(content)) return;
 
         const codeblock = codeBlockRegex.exec(content)?.groups ?? {};
-        switch (codeblock.lang.toLowerCase()) {
+        switch (codeblock.lang?.toLowerCase()) {
             case 'js':
             case 'javascript':
-                await message.reply(CodeLintManager.lintJavaScript(codeblock.code));
+                await message.reply(CodeLintManager.lintJavaScript(codeblock.code ?? ''));
                 break;
 
             case 'ts':
             case 'typescript':
-                await message.reply(CodeLintManager.lintTypeScript(codeblock.code));
+                await message.reply(CodeLintManager.lintTypeScript(codeblock.code ?? ''));
                 break;
 
             case 'css':
-                await message.reply(CodeLintManager.lintCss(codeblock.code));
+                await message.reply(CodeLintManager.lintCss(codeblock.code ?? ''));
                 break;
 
             case 'md':
             case 'markdown':
-                await message.reply(CodeLintManager.lintMd(codeblock.code));
+                await message.reply(CodeLintManager.lintMd(codeblock.code ?? ''));
                 break;
 
             case 'json':
-                await message.reply(CodeLintManager.lintJson(codeblock.code));
+                await message.reply(CodeLintManager.lintJson(codeblock.code ?? ''));
                 break;
 
             case 'yml':
             case 'yaml':
-                await message.reply(CodeLintManager.lintYaml(codeblock.code));
+                await message.reply(CodeLintManager.lintYaml(codeblock.code ?? ''));
                 break;
 
             case 'html':
-                await message.reply(CodeLintManager.lintHtml(codeblock.code));
+                await message.reply(CodeLintManager.lintHtml(codeblock.code ?? ''));
                 break;
 
             default:

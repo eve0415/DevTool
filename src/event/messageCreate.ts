@@ -1,13 +1,13 @@
 import { inspect } from 'util';
-import { DiscordAPIError, Message, MessageEditOptions } from 'discord.js';
-import { DevToolBot } from '../DevToolBot';
+import type { DiscordAPIError, Message, MessageEditOptions } from 'discord.js';
+import type { DevToolBot } from '../DevToolBot';
 import { Event } from '../interface';
 import { getHelp, lint, run } from '../temporary';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 
 export default class extends Event {
-    public constructor(protected readonly client: DevToolBot) {
+    public constructor(protected override readonly client: DevToolBot) {
         super(client, __filename);
     }
 
@@ -59,7 +59,7 @@ export default class extends Event {
                     title: 'An Error Occured When Sending A Message',
                     description: inspect(e, { depth: 1, maxArrayLength: null })
                         .substring(0, 4096)
-                        .replace(exec.token, '*redacted*'),
+                        .replace(exec.token ?? '', '*redacted*'),
                 }],
             };
 

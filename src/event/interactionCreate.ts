@@ -1,10 +1,10 @@
 import { inspect } from 'util';
-import { DiscordAPIError, Interaction, WebhookEditMessageOptions } from 'discord.js';
-import { DevToolBot } from '../DevToolBot';
+import type { DiscordAPIError, Interaction, WebhookEditMessageOptions } from 'discord.js';
+import type { DevToolBot } from '../DevToolBot';
 import { Event } from '../interface';
 
 export default class extends Event {
-    public constructor(protected readonly client: DevToolBot) {
+    public constructor(protected override readonly client: DevToolBot) {
         super(client, __filename);
     }
 
@@ -28,7 +28,7 @@ export default class extends Event {
                     title: 'An Error Occured When Sending A Message',
                     description: inspect(e, { depth: 1, maxArrayLength: null })
                         .substring(0, 4096)
-                        .replace(exec.token, '*redacted*'),
+                        .replace(exec.token ?? '', '*redacted*'),
                 }],
             };
 

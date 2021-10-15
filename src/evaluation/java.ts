@@ -1,5 +1,5 @@
 import { spawn } from 'child_process';
-import { ReplyMessageOptions } from 'discord.js';
+import type { ReplyMessageOptions } from 'discord.js';
 import { BaseEvaluationSystem } from './base';
 
 export class JavaEvaluationSystem extends BaseEvaluationSystem {

@@ -1,4 +1,4 @@
-import { InteractionReplyOptions, ReplyMessageOptions } from 'discord.js';
+import type { InteractionReplyOptions, ReplyMessageOptions } from 'discord.js';
 
 export function getHelp(replyTo: 'interaction'): InteractionReplyOptions;
 export function getHelp(replyTo: 'message'): ReplyMessageOptions;

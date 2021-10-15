@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import {
     JavaEvaluationSystem,
     JavaScriptEvaluationSystem,
@@ -13,24 +13,24 @@ export async function run(message: Message): Promise<void> {
         if (!codeBlockRegex.test(content)) return;
 
         const codeblock = codeBlockRegex.exec(content)?.groups ?? {};
-        switch (codeblock.lang.toLowerCase()) {
+        switch (codeblock.lang?.toLowerCase()) {
             case 'js':
             case 'javascript':
-                await message.reply(await new JavaScriptEvaluationSystem().evaluate(codeblock.code));
+                await message.reply(await new JavaScriptEvaluationSystem().evaluate(codeblock.code ?? ''));
                 break;
 
             case 'ts':
             case 'typescript':
-                await message.reply(await new TypeScriptEvaluationSystem().evaluate(codeblock.code));
+                await message.reply(await new TypeScriptEvaluationSystem().evaluate(codeblock.code ?? ''));
                 break;
 
             case 'py':
             case 'python':
-                await message.reply(await new PythonEvaluationSystem().evaluate(codeblock.code));
+                await message.reply(await new PythonEvaluationSystem().evaluate(codeblock.code ?? ''));
                 break;
 
             case 'java':
-                await message.reply(await new JavaEvaluationSystem().evaluate(codeblock.code));
+                await message.reply(await new JavaEvaluationSystem().evaluate(codeblock.code ?? ''));
                 break;
 
             default:

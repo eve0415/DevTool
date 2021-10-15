@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { DevToolBot } from '../DevToolBot';
+import type { CommandInteraction, MessageEmbed } from 'discord.js';
+import type { DevToolBot } from '../DevToolBot';
 import { Command } from '../interface';
 
 export default class extends Command {
-    public constructor(protected readonly client: DevToolBot) {
+    public constructor(protected override readonly client: DevToolBot) {
         super(client, {
             type: 'CHAT_INPUT',
             name: 'docs',

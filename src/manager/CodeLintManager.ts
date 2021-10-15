@@ -1,6 +1,7 @@
-import { MessageAttachment, ReplyMessageOptions } from 'discord.js';
+import type { ReplyMessageOptions } from 'discord.js';
+import { MessageAttachment } from 'discord.js';
 import { format } from 'prettier';
-import { Language } from '../interface';
+import type { Language } from '../interface';
 
 export class CodeLintManager {
     public static lintJavaScript(code: string): ReplyMessageOptions {

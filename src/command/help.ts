@@ -1,10 +1,10 @@
-import { CommandInteraction } from 'discord.js';
-import { DevToolBot } from '../DevToolBot';
+import type { CommandInteraction } from 'discord.js';
+import type { DevToolBot } from '../DevToolBot';
 import { Command } from '../interface';
 import { getHelp } from '../temporary';
 
 export default class extends Command {
-    public constructor(protected readonly client: DevToolBot) {
+    public constructor(protected override readonly client: DevToolBot) {
         super(client, {
             type: 'CHAT_INPUT',
             name: 'help',

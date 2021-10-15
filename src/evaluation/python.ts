@@ -1,8 +1,8 @@
 import { spawn } from 'child_process';
-import { ReplyMessageOptions } from 'discord.js';
+import type { ReplyMessageOptions } from 'discord.js';
 import treeKill from 'tree-kill';
 import { BaseEvaluationSystem } from './base';
-import { Language } from '../interface';
+import type { Language } from '../interface';
 
 export class PythonEvaluationSystem extends BaseEvaluationSystem {
     public evaluate(content: string): Promise<ReplyMessageOptions> {
@@ -33,7 +33,7 @@ export class PythonEvaluationSystem extends BaseEvaluationSystem {
         });
     }
 
-    protected createMessage(contents: unknown[], lang: Language): ReplyMessageOptions {
+    protected override createMessage(contents: unknown[], lang: Language): ReplyMessageOptions {
         const processed = this.processContent(contents).filter(c => !/^Python.+on.+$/s.test(c));
         return super.createMessage(processed, lang);
     }

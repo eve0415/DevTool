@@ -2,7 +2,7 @@ import { readdirSync } from 'fs';
 import { resolve } from 'path';
 import { Collection } from 'discord.js';
 import { getLogger } from 'log4js';
-import { DevToolBot } from '../DevToolBot';
+import type { DevToolBot } from '../DevToolBot';
 import { Event } from '../interface';
 
 export class EventManager extends Collection<string, Event> {

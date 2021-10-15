@@ -1,6 +1,7 @@
 import { basename } from 'path';
-import { getLogger, Logger } from 'log4js';
-import { DevToolBot } from '../DevToolBot';
+import type { Logger } from 'log4js';
+import { getLogger } from 'log4js';
+import type { DevToolBot } from '../DevToolBot';
 
 export abstract class Event {
     protected readonly logger: Logger;
