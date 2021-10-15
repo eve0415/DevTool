@@ -52,6 +52,6 @@ function createMessage(code: string, lang: Language): ReplyMessageOptions {
 
     return {
         content: '整形結果です。ファイルをご覧ください。',
-        files: [new MessageAttachment(Buffer.from(code), 'result.js')],
+        files: [new MessageAttachment(Buffer.from(code), `result.${lang}`)],
     };
 }
