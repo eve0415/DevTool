@@ -51,10 +51,7 @@
       }
     ],
     "@typescript-eslint/array-type": "error",
-    "@typescript-eslint/brace-style": [
-      "error",
-      "1tbs"
-    ],
+    "@typescript-eslint/brace-style": "error",
     "@typescript-eslint/comma-dangle": [
       "error",
       "always-multiline"
@@ -64,15 +61,29 @@
       "error",
       "index-signature"
     ],
+    "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/consistent-type-definitions": [
       "error",
       "interface"
+    ],
+    "@typescript-eslint/dot-notation": "error",
+    "@typescript-eslint/func-call-spacing": [
+      "error",
+      "never"
     ],
     "@typescript-eslint/indent": [
       "error",
       4,
       {
         "SwitchCase": 1
+      }
+    ],
+    "@typescript-eslint/keyword-spacing": "error",
+    "@typescript-eslint/lines-between-class-members": [
+      "error",
+      "always",
+      {
+        "exceptAfterSingleLine": true
       }
     ],
     "@typescript-eslint/member-delimiter-style": [
@@ -108,9 +119,21 @@
       }
     ],
     "@typescript-eslint/no-confusing-non-null-assertion": "error",
+    "@typescript-eslint/no-dupe-class-members": "error",
+    "@typescript-eslint/no-duplicate-imports": "error",
     "@typescript-eslint/no-dynamic-delete": "error",
-    "@typescript-eslint/no-extra-parens": 2,
+    "@typescript-eslint/no-empty-function": [
+      "error",
+      {
+        "allow": [
+          "private-constructors"
+        ]
+      }
+    ],
+    "@typescript-eslint/no-extra-parens": "error",
     "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/no-invalid-this": "error",
+    "@typescript-eslint/no-loop-func": "error",
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
@@ -118,13 +141,17 @@
       }
     ],
     "@typescript-eslint/no-require-imports": "error",
+    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-throw-literal": "error",
     "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
     "@typescript-eslint/no-unnecessary-qualifier": "error",
     "@typescript-eslint/no-unnecessary-type-arguments": "error",
-    "@typescript-eslint/no-unnecessary-type-constraint": "error",
-    "@typescript-eslint/no-unsafe-argument": "error",
-    "@typescript-eslint/no-unused-vars-experimental": "error",
+    "@typescript-eslint/no-unused-expressions": "error",
     "@typescript-eslint/no-useless-constructor": "error",
+    "@typescript-eslint/object-curly-spacing": [
+      "error",
+      "always"
+    ],
     "@typescript-eslint/prefer-function-type": "error",
     "@typescript-eslint/prefer-includes": "error",
     "@typescript-eslint/prefer-optional-chain": "error",
@@ -132,8 +159,25 @@
     "@typescript-eslint/prefer-reduce-type-parameter": "error",
     "@typescript-eslint/prefer-return-this-type": "error",
     "@typescript-eslint/prefer-string-starts-ends-with": "error",
+    "@typescript-eslint/quotes": [
+      "error",
+      "single",
+      {
+        "allowTemplateLiterals": true,
+        "avoidEscape": true
+      }
+    ],
     "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/return-await": "error",
     "@typescript-eslint/semi": "error",
+    "@typescript-eslint/space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "asyncArrow": "always",
+        "named": "never"
+      }
+    ],
     "@typescript-eslint/space-infix-ops": "error",
     "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/typedef": "error",
@@ -178,7 +222,7 @@
       "error",
       "property"
     ],
-    "dot-notation": "error",
+    "dot-notation": "off",
     "eol-last": "error",
     "eqeqeq": "error",
     "func-name-matching": "error",
@@ -230,7 +274,7 @@
     ],
     "no-array-constructor": "error",
     "no-console": "off",
-    "no-duplicate-imports": "error",
+    "no-duplicate-imports": "off",
     "no-empty-function": "error",
     "no-extra-semi": "error",
     "no-floating-decimal": "error",
