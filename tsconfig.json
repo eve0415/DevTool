@@ -32,7 +32,6 @@
       }
     ],
     "removeComments": true,
-    "sourceMap": true,
     "strict": true,
     "target": "ESNext",
     "useDefineForClassFields": true

@@ -1,4 +1,3 @@
-import 'source-map-support';
 import { DevToolBot } from './DevToolBot';
 
 const instance = new DevToolBot();
