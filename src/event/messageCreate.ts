@@ -1,5 +1,7 @@
 import { inspect } from 'util';
+import axios from 'axios';
 import type { DiscordAPIError, Message, MessageEditOptions } from 'discord.js';
+import { Util } from 'discord.js';
 import type { DevToolBot } from '../DevToolBot';
 import { Event } from '../interface';
 import { getHelp, lint, run } from '../temporary';
@@ -20,6 +22,8 @@ export default class extends Event {
             await message.reply(getHelp('message'));
             return;
         }
+
+        await this.highlightGitLinks(message);
 
         if (!(['run', 'lint'].includes(message.content) && message.reference)) return;
 
@@ -64,6 +68,16 @@ export default class extends Event {
             };
 
             await mes.edit(m).catch(err => this.logger.error(err));
+        }
+    }
+
+    private async highlightGitLinks(message: Message) {
+        const links = [...message.content.matchAll(/https?:\/\/github\.com\/(?<owner>.+?)\/(?<repo>.+?)\/blob\/(?<branch>.+?)\/(?<path>.+?)#L(?<firstLine>\d+)-?L?(?<lastLine>\d+)?/gu)].map(link => link.groups ?? {});
+
+        for (const link of links) {
+            const res = await axios.get<Readonly<{ extension: string, code: string[] }>>(`https://gh-highlighted-line.vercel.app/api/${link.owner}/${link.repo}/${link.branch}/${encodeURIComponent(link.path ?? '')}/${link.firstLine}/${link.lastLine ?? ''}`);
+            if (!res.data.code.length) continue;
+            Util.splitMessage(`\`\`\`${res.data.extension}\n${res.data.code.join('\n')}\n\`\`\``, { prepend: '```', append: '```' }).forEach(m => message.reply(m));
         }
     }
 }
