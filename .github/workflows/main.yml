@@ -14,12 +14,13 @@ on:
       - .editorconfig
       - .github/**
 
+env:
+  IMAGE_NAME: devtool
+
 jobs:
   build:
     name: Build Docker
     runs-on: ubuntu-latest
-    env:
-      REPO: eve0415/devtool
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -41,8 +42,8 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.PAT }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -50,8 +51,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ env.REPO }}:latest
-            ghcr.io/${{ env.REPO }}:${{ github.sha }}
+            ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
+            ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
@@ -63,7 +64,7 @@ jobs:
       - name: Rollout
         uses: appleboy/ssh-action@master
         env:
-          IMAGE: ghcr.io/eve0415/devtool:${{ github.sha }}
+          IMAGE: ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
