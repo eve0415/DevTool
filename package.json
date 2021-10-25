@@ -17,8 +17,7 @@
   "scripts": {
     "build": "tsc -b",
     "lint": "eslint --fix .",
-    "clean": "rimraf dist",
-    "test": "nodemon --config nodemon.json -r dotenv/config src/index.ts"
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "axios": "^0.23.0",
@@ -28,20 +27,18 @@
     "log4js": "^6.3.0",
     "prettier": "^2.4.1",
     "tree-kill": "^1.2.2",
-    "ts-node": "^10.3.1",
+    "ts-node": "^10.4.0",
     "tslib": "^2.3.1",
     "utf-8-validate": "^5.0.7",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "@types/node": "^16.11.3",
+    "@types/node": "^16.11.4",
     "@types/prettier": "^2.4.1",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
-    "dotenv": "^10.0.0",
-    "eslint": "^8.0.1",
+    "eslint": "^8.1.0",
     "eslint-plugin-import": "^2.25.2",
-    "nodemon": "^2.0.14",
     "rimraf": "^3.0.2",
     "typescript": "^4.4.4",
     "typescript-eslint-language-service": "^4.1.5"

@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Debug",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register"
+      ],
+      "args": [
+        "${workspaceFolder}/src/index.ts"
+      ],
+      "env": {
+        "NODE_ENV": "development",
+      },
+      "envFile": "${workspaceFolder}/.env",
+      "console": "internalConsole",
+      "outputCapture": "std"
+    }
+  ]
+}
