@@ -23,25 +23,23 @@ class Brainfuck {
 
     public constructor(input: string) {
         this.input = input.replaceAll(/[^+-[\].,<>]+/g, '');
-        console.log(this.input);
     }
 
     public execute() {
         for (let i = 0; i < this.input.length; i++) {
             i = this.run(i);
         }
-        console.log(this.output);
         return this.output;
     }
 
     private run(int: number) {
         switch (this.input[int]) {
             case '+':
-                this.increment();
+                this.block[this.pointer]++;
                 break;
 
             case '-':
-                this.decrement();
+                this.block[this.pointer]--;
                 break;
 
             case '[':
@@ -53,11 +51,14 @@ class Brainfuck {
                 throw new TypeError('`[` が足りません。');
 
             case '>':
-                this.incrementPointer();
+                this.pointer++;
+                if (this.block.length < this.pointer + 1) {
+                    this.block.push(0);
+                }
                 break;
 
             case '<':
-                this.decrementPointer();
+                this.pointer--;
                 break;
 
             case '.':
@@ -88,27 +89,5 @@ class Brainfuck {
             int++;
         }
         return int;
-    }
-
-    private increment() {
-        this.block[this.pointer]++;
-    }
-
-    private decrement() {
-        this.block[this.pointer]--;
-    }
-
-    private incrementPointer() {
-        this.pointer++;
-        if (this.block.length < this.pointer + 1) {
-            this.block.push(0);
-        }
-    }
-
-    private decrementPointer() {
-        this.pointer--;
-        if (this.block.length < this.pointer + 1) {
-            this.block.push(0);
-        }
     }
 }
