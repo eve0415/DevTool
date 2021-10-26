@@ -6,5 +6,6 @@ export type Language =
     'json' |
     'md' |
     'py' |
+    'text' |
     'ts' |
     'yaml';

@@ -1,5 +1,6 @@
 import type { Message } from 'discord.js';
 import {
+    BrainfuckEvaluationSystem,
     JavaEvaluationSystem,
     JavaScriptEvaluationSystem,
     PythonEvaluationSystem,
@@ -31,6 +32,10 @@ export async function run(message: Message): Promise<void> {
 
             case 'java':
                 await message.reply(await new JavaEvaluationSystem().evaluate(codeblock.code ?? ''));
+                break;
+
+            case 'brainfuck':
+                await message.reply(await new BrainfuckEvaluationSystem().evaluate(codeblock.code ?? ''));
                 break;
 
             default:

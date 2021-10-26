@@ -61,6 +61,7 @@ JavaScript | ✓ | ✓
 TypeScript | ✓ | ✓
 Python | ✓ |
 Java | ✓ |
+Brainfuck | ✓ |
 HTML | | ✓
 CSS | | ✓
 MarkDown | | ✓
