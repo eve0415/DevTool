@@ -20,7 +20,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "axios": "^0.23.0",
+    "axios": "^0.24.0",
     "bufferutil": "^4.0.5",
     "discord.js": "^13.2.0",
     "fastify": "^3.22.1",
@@ -33,10 +33,10 @@
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "@types/node": "^16.11.4",
+    "@types/node": "^16.11.6",
     "@types/prettier": "^2.4.1",
-    "@typescript-eslint/eslint-plugin": "^5.1.0",
-    "@typescript-eslint/parser": "^5.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.2.0",
+    "@typescript-eslint/parser": "^5.2.0",
     "eslint": "^8.1.0",
     "eslint-plugin-import": "^2.25.2",
     "rimraf": "^3.0.2",
