@@ -1,4 +1,4 @@
-import type { ApplicationCommandData } from 'discord.js';
+import type { ApplicationCommandData, AutocompleteInteraction, Interaction } from 'discord.js';
 import type { Logger } from 'log4js';
 import { getLogger } from 'log4js';
 import type { DevToolBot } from '../DevToolBot';
@@ -13,5 +13,7 @@ export abstract class Command {
         this.logger = getLogger(data.name);
     }
 
-    public abstract run(...args: unknown[]): Promise<unknown>;
+    public abstract run(interaction: Interaction): Promise<unknown>;
+
+    public abstract autoCompletion(interaction: AutocompleteInteraction): Promise<unknown>;
 }

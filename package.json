@@ -22,8 +22,9 @@
   "dependencies": {
     "axios": "^0.24.0",
     "bufferutil": "^4.0.5",
-    "discord.js": "^13.2.0",
+    "discord.js": "^13.3.0",
     "fastify": "^3.22.1",
+    "fuse.js": "^6.4.6",
     "log4js": "^6.3.0",
     "prettier": "^2.4.1",
     "tree-kill": "^1.2.2",

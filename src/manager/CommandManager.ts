@@ -32,18 +32,20 @@ export class CommandManager extends Collection<string, Command> {
     }
 
     public async subscribe(): Promise<void> {
-        const subscribed = await this.client.application?.commands.fetch();
+        const subscribed = await this.client.application?.commands.fetch() ?? new Collection();
 
-        const diffAdded = this.filter(c => !subscribed?.find(s => s.name === c.data.name));
+        const diffAdded = this.filter(c => !subscribed.find(s => s.name === c.data.name));
         const diffRemoved = subscribed?.filter(s => !this.find(c => s.name === c.data.name));
+        const diff = this.filter(c => !(subscribed.find(s => s.name === c.data.name)?.equals(c.data) ?? false));
 
-        if (diffAdded.size || diffRemoved?.size) {
-            await this.client.application?.commands.set(this.map(c => c.data));
+        for (const add of diffAdded.values()) {
+            await this.client.application?.commands.create(add.data);
         }
-
-        subscribed?.forEach(s => {
-            const find = this.find(c => c.data.name === s.name);
-            if (find?.data) this.client.application?.commands?.edit(s.id, find.data);
-        });
+        for (const remove of diffRemoved.values()) {
+            await this.client.application?.commands.delete(remove.id);
+        }
+        for (const change of diff.values()) {
+            await this.client.application?.commands.edit(subscribed.find(s => s.name === change.data.name)?.id as string, change.data);
+        }
     }
 }

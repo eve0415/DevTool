@@ -12,6 +12,9 @@ export default class extends Event {
         this.logger.trace('Recieved interaction event');
 
         try {
+            if (interaction.isAutocomplete()) {
+                await this.client.commandManager.get(interaction.commandName)?.autoCompletion(interaction);
+            }
             if (interaction.isCommand()) {
                 await this.client.commandManager.get(interaction.commandName)?.run(interaction);
             }
@@ -28,7 +31,7 @@ export default class extends Event {
                     title: 'An Error Occured When Sending A Message',
                     description: inspect(e, { depth: 1, maxArrayLength: null })
                         .substring(0, 4096)
-                        .replace(exec.token ?? '', '*redacted*'),
+                        .replace(exec.token ?? 'ABCDEFGHIJKLMN', '*redacted*'),
                 }],
             };
 

@@ -15,4 +15,8 @@ export default class extends Command {
     public async run(interaction: CommandInteraction): Promise<void> {
         await interaction.reply(getHelp('interaction'));
     }
+
+    public autoCompletion(): Promise<never> {
+        return Promise.reject(new Error('This command does not support auto completion'));
+    }
 }

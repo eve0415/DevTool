@@ -34,4 +34,8 @@ export default class extends Command {
 
         await interaction.editReply('実行完了しました');
     }
+
+    public autoCompletion(): Promise<never> {
+        return Promise.reject(new Error('This command does not support auto completion'));
+    }
 }
