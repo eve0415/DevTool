@@ -28,21 +28,27 @@ export default class extends Command {
     }
 
     private async fetchDocs(): Promise<void> {
-        const response = await axios.get<DJSDocument>('https://djsdocs.sorta.moe/v2', { params: { src: 'stable' } });
+        const stable = await axios.get<DJSDocument>('https://djsdocs.sorta.moe/v2', { params: { src: 'stable' } });
+        const collection = await axios.get<DJSDocument>('https://djsdocs.sorta.moe/v2', { params: { src: 'collection' } });
 
         this.docs = new Fuse([
-            ...response.data.classes.flatMap(c => {
+            ...stable.data.classes.flatMap(c => {
                 const res = [c.name];
                 if (c.props) res.push(...c.props.map(p => `${c.name}#${p}`));
                 if (c.methods) res.push(...c.methods.map(m => `${c.name}#${m}`));
                 if (c.events) res.push(...c.events.map(e => `${c.name}#${e}`));
                 return res;
             }),
-            ...response.data.typedefs.map(t => t.name),
-            ...response.data.interfaces.flatMap(i => {
+            ...stable.data.typedefs.map(t => t.name),
+            ...stable.data.interfaces.flatMap(i => {
                 const res = [i.name];
                 if (i.props) res.push(...i.props.flatMap(p => `${i.name}#${p}`));
                 res.push(...i.methods.flatMap(m => `${i.name}#${m}`));
+                return res;
+            }),
+            ...collection.data.classes.flatMap(c => {
+                const res = [c.name];
+                if (c.methods) res.push(...c.methods.map(m => `${c.name}#${m}`));
                 return res;
             }),
         ]);
@@ -50,8 +56,10 @@ export default class extends Command {
 
     public async run(interaction: CommandInteraction): Promise<void> {
         await interaction.deferReply();
+
+        const input = interaction.options.getString('query', true);
         const response = await axios.get<MessageEmbed>('https://djsdocs.sorta.moe/v2/embed', {
-            params: { src: 'stable', q: interaction.options.getString('query', true) },
+            params: { src: input.startsWith('Collection') ? 'collection' : 'stable', q: input },
         });
         await interaction.editReply({ embeds: [response.data] });
     }
@@ -62,7 +70,6 @@ export default class extends Command {
         const input = `${interaction.options.getFocused()}`.replaceAll('.', '#');
         const search = this.docs.search(input, { limit: 25 });
 
-        await interaction.respond(search.map(s => ({ name: s.item, value: s.item })),
-        );
+        await interaction.respond(search.map(s => ({ name: s.item, value: s.item })));
     }
 }
