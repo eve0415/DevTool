@@ -71,7 +71,7 @@ export default class extends Event {
         }
     }
 
-    private async highlightGitLinks(message: Message) {
+    private async highlightGitLinks(message: Message): Promise<void> {
         const links = [...message.content.matchAll(/https?:\/\/github\.com\/(?<owner>.+?)\/(?<repo>.+?)\/blob\/(?<branch>.+?)\/(?<path>.+?)#L(?<firstLine>\d+)-?L?(?<lastLine>\d+)?/gu)].map(link => link.groups ?? {});
 
         for (const link of links) {

@@ -60,7 +60,7 @@ export class DevToolBot extends Client {
         process.exit();
     }
 
-    private setUp() {
+    private setUp(): void {
         this.fastify.get('/healtz', (_, rep) => {
             rep.code(this._ready ? 200 : 503).send();
         });

@@ -52,7 +52,7 @@ export async function lint(message: Message): Promise<void> {
     }
 }
 
-function parseContent(content: string) {
+function parseContent(content: string): string[] {
     const parse = content.split(/(?:`{3}(`{3})`{3}|(`{3}))/g).filter(s => s);
     const sort: string[] = [];
     for (const p of parse) {

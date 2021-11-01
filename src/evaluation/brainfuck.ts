@@ -25,14 +25,14 @@ class Brainfuck {
         this.input = input.replaceAll(/[^+-[\].,<>]+/g, '');
     }
 
-    public execute() {
+    public execute(): string {
         for (let i = 0; i < this.input.length; i++) {
             i = this.run(i);
         }
         return this.output;
     }
 
-    private run(int: number) {
+    private run(int: number): number {
         switch (this.input[int]) {
             case '+':
                 this.block[this.pointer]++;
@@ -68,7 +68,7 @@ class Brainfuck {
         return int;
     }
 
-    private loop(int: number) {
+    private loop(int: number): number {
         if (this.block[this.pointer] === 0) {
             while (this.input[int] !== ']' && int <= this.input.length) int++;
             return int;
