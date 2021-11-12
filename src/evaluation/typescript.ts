@@ -25,13 +25,17 @@ export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
             });
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'ts')));
-            child.stdin.write(`${content}\n\n.exit\n`);
+            child.stdin.write(`${this.patchContent(content)}\n\n.exit\n`);
             setTimeout(() => {
                 treeKill(child.pid ?? 100, 'SIGKILL');
                 this.embedColor = 'DARK_RED';
                 this.result.push('10秒を超過して実行することはできません');
             }, 10000);
         });
+    }
+
+    private patchContent(input: string): string {
+        return input.replaceAll(/process.kill\(.+?\)/g, 'process.kill()');
     }
 
     protected override createMessage(contents: unknown[], lang: Language): ReplyMessageOptions {
