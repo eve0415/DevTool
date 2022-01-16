@@ -39,6 +39,7 @@
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.1",
     "eslint": "8.6.0",
+    "eslint-import-resolver-node": "^0.3.6",
     "eslint-plugin-import": "^2.25.4",
     "rimraf": "^3.0.2",
     "typescript-eslint-language-service": "^5.0.0"

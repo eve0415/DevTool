@@ -848,6 +848,7 @@ __metadata:
     bufferutil: ^4.0.6
     discord.js: ^13.6.0
     eslint: 8.6.0
+    eslint-import-resolver-node: ^0.3.6
     eslint-plugin-import: ^2.25.4
     fastify: ^3.25.3
     fuse.js: ^6.5.3

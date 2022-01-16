@@ -6,7 +6,7 @@ FROM builder-base AS builder
 WORKDIR /app
 COPY .yarn/ ./.yarn
 COPY .yarnrc.yml package.json yarn.lock ./
-RUN yarn install --immutable --network-timeout 100000 && yarn cache clean
+RUN yarn install --immutable --network-timeout 100000
 COPY . .
 RUN yarn build
 
@@ -14,8 +14,8 @@ RUN yarn build
 FROM builder-base AS production
 WORKDIR /app
 COPY .yarn/ ./.yarn
-COPY .yarnrc.yml package.json yarn.lock ./
-RUN yarn workspaces focus --production && yarn cache clean
+COPY .yarnrc.yml .pnp* package.json yarn.lock ./
+RUN yarn workspaces focus --production
 COPY --from=builder /app/dist ./
 
 
@@ -28,4 +28,4 @@ RUN rm -rf /usr/bin/wget
 WORKDIR /app
 COPY --from=production /app ./
 USER devtool
-CMD ["node", "index.js"]
+CMD ["yarn", "node", "index.js"]
