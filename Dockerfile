@@ -4,16 +4,18 @@ RUN apk add python3 make g++
 
 FROM builder-base AS builder
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --network-timeout 100000 && yarn cache clean
+COPY .yarn/ ./.yarn
+COPY .yarnrc.yml package.json yarn.lock ./
+RUN yarn install --immutable --network-timeout 100000 && yarn cache clean
 COPY . .
 RUN yarn build
 
 
 FROM builder-base AS production
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production --network-timeout 100000 && yarn cache clean
+COPY .yarn/ ./.yarn
+COPY .yarnrc.yml package.json yarn.lock ./
+RUN yarn workspaces focus --production && yarn cache clean
 COPY --from=builder /app/dist ./
 
 

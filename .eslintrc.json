@@ -282,7 +282,7 @@
     "no-floating-decimal": "error",
     "no-implied-eval": "error",
     "no-inline-comments": "error",
-    "no-invalid-this": "error",
+    "no-invalid-this": "off",
     "no-label-var": "error",
     "no-lone-blocks": "error",
     "no-lonely-if": "error",

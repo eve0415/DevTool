@@ -4,15 +4,12 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - README.md
-      - LICENSE
-      - nodemon.json
-      - .gitignore
-      - .eslintignore
-      - .eslintrc.json
-      - .editorconfig
-      - .github/**
+    paths:
+      - "**/*.js"
+      - "**/*.ts"
+      - "**/*.json"
+      - "Dockerfile"
+      - ".github/workflows/main.yml"
 
 env:
   IMAGE_NAME: devtool

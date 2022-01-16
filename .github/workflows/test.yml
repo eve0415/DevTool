@@ -4,26 +4,19 @@ on:
   push:
     branches-ignore:
       - dependabot/**
-    paths-ignore:
-      - README.md
-      - LICENSE
-      - nodemon.json
-      - Dockerfile
-      - .dockerignore
-      - .editorconfig
-      - .gitignore
-  pull_request_target:
+    paths:
+      - "**/*.js"
+      - "**/*.ts"
+      - "**/*.json"
+      - ".github/workflows/test.yml"
 
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    if: "! contains(github.event.head_commit.message, '[skip]')"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          persist-credentials: false
 
       - name: Install Node v16
         uses: actions/setup-node@v2
@@ -32,10 +25,10 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Build
         run: yarn build
 
       - name: Run ESLint
-        run: yarn eslint
+        run: yarn eslint .
