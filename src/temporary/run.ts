@@ -36,7 +36,7 @@ export async function run(message: Message): Promise<void> {
                 break;
 
             case 'kt':
-                            case 'kotlin':
+            case 'kotlin':
                 await message.reply(await new KotlinEvaluationSystem().evaluate(codeblock.code ?? ''));
                 break;
 
