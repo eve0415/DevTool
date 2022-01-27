@@ -47,7 +47,7 @@ export abstract class BaseEvaluationSystem {
             return { embeds: [embed] };
         }
 
-        const content = `実行結果です。ファイルをご覧ください。${Buffer.from(result).byteLength / 1024 / 1024 > 8 ? '\nファイルの容量が8GBを超えたため、一部の結果が省略されています' : ''}`;
+        const content = `実行結果です。ファイルをご覧ください。${Buffer.from(result).byteLength / 1024 / 1024 > 8 ? '\nファイルの容量が8MBを超えたため、一部の結果が省略されています' : ''}`;
 
         while (Buffer.from(result).byteLength / 1024 / 1024 > 8) {
             const cache = result.split('\n');
