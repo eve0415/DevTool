@@ -54,6 +54,7 @@ export class DevToolBot extends Client {
         this.ready = false;
 
         await this.eventManager.unregisterAll().catch(e => this.logger.error(e));
+
         this.destroy();
         this.fastify.server.close();
 
