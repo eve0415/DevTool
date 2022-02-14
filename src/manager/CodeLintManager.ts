@@ -37,7 +37,7 @@ function createMessage(code: string, lang: Language): ReplyMessageOptions {
     if (code.length <= 4080) {
         return {
             embeds: [{
-                title: '整形結果(Prittier 標準設定)',
+                title: '整形結果(Prettier 標準設定)',
                 description: `\`\`\`${lang}\n${code}\n\`\`\``,
                 color: 'BLURPLE',
             }],
