@@ -42,7 +42,6 @@
     "eslint": "8.10.0",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-plugin-import": "^2.25.4",
-    "rimraf": "^3.0.2",
-    "typescript-eslint-language-service": "^5.0.0"
+    "rimraf": "^3.0.2"
   }
 }

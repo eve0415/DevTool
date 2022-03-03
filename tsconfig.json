@@ -4,36 +4,29 @@
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "alwaysStrict": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "lib": [
-      "ESNext",
-      "ESNext.AsyncIterable",
-      "ESNext.Array",
-      "ESNext.Intl",
-      "ESNext.Symbol",
-      "ESNext.BigInt",
-      "ESNext.Promise",
-      "ESNext.String",
+      "ESNext"
     ],
-    "module": "commonjs",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "noEmitHelpers": true,
     "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitThis": true,
+    "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "dist",
-    "plugins": [
-      {
-        "name": "typescript-eslint-language-service"
-      }
-    ],
     "removeComments": true,
     "strict": true,
-    "target": "ESNext",
-    "useDefineForClassFields": true
-  }
+    "target": "ESNext"
+  },
+  "include": [
+    "src"
+  ]
 }
