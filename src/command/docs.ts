@@ -1,8 +1,8 @@
-import axios from 'axios';
-import type { AutocompleteInteraction, CommandInteraction, MessageEmbed } from 'discord.js';
-import Fuse from 'fuse.js';
 import type { DevToolBot } from '../DevToolBot';
 import type { DJSDocument } from '../interface';
+import type { AutocompleteInteraction, CommandInteraction, MessageEmbed } from 'discord.js';
+import axios from 'axios';
+import Fuse from 'fuse.js';
 import { Command } from '../interface';
 
 export default class extends Command {

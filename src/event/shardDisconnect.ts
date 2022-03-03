@@ -1,5 +1,5 @@
-import type { CloseEvent } from 'discord.js';
 import type { DevToolBot } from '../DevToolBot';
+import type { CloseEvent } from 'discord.js';
 import { Event } from '../interface';
 
 export default class extends Event {

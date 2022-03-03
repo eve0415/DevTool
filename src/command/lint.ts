@@ -1,5 +1,5 @@
-import type { ContextMenuInteraction } from 'discord.js';
 import type { DevToolBot } from '../DevToolBot';
+import type { ContextMenuInteraction } from 'discord.js';
 import { Command } from '../interface';
 import { lint } from '../temporary';
 

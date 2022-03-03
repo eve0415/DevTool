@@ -15,40 +15,40 @@ export async function run(message: Message): Promise<void> {
         if (!codeBlockRegex.test(content)) return;
 
         const codeblock = codeBlockRegex.exec(content)?.groups ?? {};
-        switch (codeblock.lang?.toLowerCase()) {
+        switch (codeblock['lang']?.toLowerCase()) {
             case 'js':
             case 'javascript':
-                await message.reply(await new JavaScriptEvaluationSystem().evaluate(codeblock.code ?? ''));
+                await message.reply(await new JavaScriptEvaluationSystem().evaluate(codeblock['code'] ?? ''));
                 break;
 
             case 'ts':
             case 'typescript':
-                await message.reply(await new TypeScriptEvaluationSystem().evaluate(codeblock.code ?? ''));
+                await message.reply(await new TypeScriptEvaluationSystem().evaluate(codeblock['code'] ?? ''));
                 break;
 
             case 'py':
             case 'python':
-                await message.reply(await new PythonEvaluationSystem().evaluate(codeblock.code ?? ''));
+                await message.reply(await new PythonEvaluationSystem().evaluate(codeblock['code'] ?? ''));
                 break;
 
             case 'java':
-                await message.reply(await new JavaEvaluationSystem().evaluate(codeblock.code ?? ''));
+                await message.reply(await new JavaEvaluationSystem().evaluate(codeblock['code'] ?? ''));
                 break;
 
             case 'kt':
             case 'kotlin':
-                await message.reply(await new KotlinEvaluationSystem().evaluate(codeblock.code ?? ''));
+                await message.reply(await new KotlinEvaluationSystem().evaluate(codeblock['code'] ?? ''));
                 break;
 
             case 'brainfuck':
-                await message.reply(await new BrainfuckEvaluationSystem().evaluate(codeblock.code ?? ''));
+                await message.reply(await new BrainfuckEvaluationSystem().evaluate(codeblock['code'] ?? ''));
                 break;
 
             default:
                 await message.reply([
-                    `現在この言語はまだ未対応です: \`${codeblock.lang}\``,
+                    `現在この言語はまだ未対応です: \`${codeblock['lang']}\``,
                     '一緒に開発してくれる方を募集しています',
-                    `\`${codeblock.lang}\` が実行できるようにあなたの手で対応しませんか？`,
+                    `\`${codeblock['lang']}\` が実行できるようにあなたの手で対応しませんか？`,
                 ].join('\n'));
                 break;
         }

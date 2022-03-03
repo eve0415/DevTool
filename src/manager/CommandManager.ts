@@ -1,8 +1,8 @@
+import type { DevToolBot } from '../DevToolBot';
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
 import { Collection } from 'discord.js';
 import { getLogger } from 'log4js';
-import type { DevToolBot } from '../DevToolBot';
 import { Command } from '../interface';
 
 export class CommandManager extends Collection<string, Command> {

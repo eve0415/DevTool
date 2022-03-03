@@ -20,7 +20,7 @@ export class DevToolBot extends Client {
             http: { api: 'https://canary.discord.com/api' },
         });
 
-        getLogger().level = process.env.NODE_ENV ? 'trace' : 'info';
+        getLogger().level = process.env['NODE_ENV'] ? 'trace' : 'info';
 
         this.eventManager = new EventManager(this);
         this.commandManager = new CommandManager(this);
@@ -45,6 +45,8 @@ export class DevToolBot extends Client {
         this.logger.info('Initialize done. Logging in...');
 
         await super.login().catch(e => this.logger.error(e));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore:next-line
         delete process.env.DISCORD_TOKEN;
     }
 

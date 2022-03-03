@@ -1,8 +1,8 @@
-import { spawn } from 'child_process';
+import type { Language } from '../interface';
 import type { ReplyMessageOptions } from 'discord.js';
+import { spawn } from 'child_process';
 import treeKill from 'tree-kill';
 import { BaseEvaluationSystem } from './base';
-import type { Language } from '../interface';
 
 export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
     public evaluate(content: string): Promise<ReplyMessageOptions> {

@@ -1,5 +1,5 @@
-import type { CommandInteraction } from 'discord.js';
 import type { DevToolBot } from '../DevToolBot';
+import type { CommandInteraction } from 'discord.js';
 import { Command } from '../interface';
 import { getHelp } from '../temporary';
 

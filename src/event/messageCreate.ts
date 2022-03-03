@@ -1,8 +1,8 @@
+import type { DevToolBot } from '../DevToolBot';
+import type { DiscordAPIError, Message, MessageEditOptions } from 'discord.js';
 import { inspect } from 'util';
 import axios from 'axios';
-import type { DiscordAPIError, Message, MessageEditOptions } from 'discord.js';
 import { Util } from 'discord.js';
-import type { DevToolBot } from '../DevToolBot';
 import { Event } from '../interface';
 import { getHelp, lint, run } from '../temporary';
 
@@ -63,7 +63,7 @@ export default class extends Event {
                     title: 'An Error Occured When Sending A Message',
                     description: inspect(e, { depth: 1, maxArrayLength: null })
                         .substring(0, 4096)
-                        .replace(exec.token ?? 'ABCDEFGHIJKLMN', '*redacted*'),
+                        .replace(exec['token'] ?? 'ABCDEFGHIJKLMN', '*redacted*'),
                 }],
             };
 
@@ -75,7 +75,7 @@ export default class extends Event {
         const links = [...message.content.matchAll(/https?:\/\/github\.com\/(?<owner>.+?)\/(?<repo>.+?)\/blob\/(?<branch>.+?)\/(?<path>.+?)#L(?<firstLine>\d+)-?L?(?<lastLine>\d+)?/gu)].map(link => link.groups ?? {});
 
         for (const link of links) {
-            const res = await axios.get<Readonly<{ extension: string, code: string[] }>>(`https://gh-highlighted-line.vercel.app/api/${link.owner}/${link.repo}/${link.branch}/${encodeURIComponent(link.path ?? '')}/${link.firstLine}/${link.lastLine ?? ''}`);
+            const res = await axios.get<Readonly<{ extension: string, code: string[] }>>(`https://gh-highlighted-line.vercel.app/api/${link['owner']}/${link['repo']}/${link['branch']}/${encodeURIComponent(link['path'] ?? '')}/${link['firstLine']}/${link['lastLine'] ?? ''}`);
             if (!res.data.code.length) continue;
             Util.splitMessage(`\`\`\`${res.data.extension}\n${res.data.code.join('\n')}\n\`\`\``, { prepend: '```', append: '```' }).forEach(m => message.reply(m));
         }

@@ -1,7 +1,7 @@
+import type { DevToolBot } from '../DevToolBot';
 import type { ApplicationCommandData, AutocompleteInteraction, Interaction } from 'discord.js';
 import type { Logger } from 'log4js';
 import { getLogger } from 'log4js';
-import type { DevToolBot } from '../DevToolBot';
 
 export abstract class Command {
     protected readonly logger: Logger;

@@ -1,8 +1,8 @@
-import { inspect } from 'util';
+import type { Language } from '../interface';
 import type { ColorResolvable, ReplyMessageOptions } from 'discord.js';
+import { inspect } from 'util';
 import { MessageAttachment, MessageEmbed } from 'discord.js';
 import treeKill from 'tree-kill';
-import type { Language } from '../interface';
 
 export abstract class BaseEvaluationSystem {
     protected embedColor: ColorResolvable = 'BLURPLE';
@@ -54,8 +54,8 @@ export abstract class BaseEvaluationSystem {
 
             result = (cache.length === 1
                 ? cache[0]?.substring(cache[0].length - Number(cache[0].length.toString().slice(0, -1)))
-                : cache.splice(0, cache.length - Number(cache.length.toString().slice(0, -1))).join('\n'))
-            ?? '';
+                : cache.splice(0, cache.length - Number(cache.length.toString().slice(0, -1))).join('\n')) ??
+            '';
         }
 
         return {
