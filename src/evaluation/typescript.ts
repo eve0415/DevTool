@@ -1,41 +1,25 @@
 import type { Language } from '../interface';
 import type { ReplyMessageOptions } from 'discord.js';
-import { spawn } from 'child_process';
-import treeKill from 'tree-kill';
+import type { CompilerOptions } from 'typescript';
+import { transpileModule } from 'typescript';
 import { BaseEvaluationSystem } from './base';
+import { JavaScriptEvaluationSystem } from './javascript';
+import tsconfig from '../../tsconfig.json';
 
 export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
     public evaluate(content: string): Promise<ReplyMessageOptions> {
         return new Promise(res => {
-            const child = spawn(
-                process.platform === 'win32'
-                    ? 'ts-node'
-                    : './node_modules/.bin/ts-node',
-                ['-p', '-i'],
-                { shell: true, env: { TZ: process.env.TZ } },
-            );
-            child.stdout.setEncoding('utf8');
-            child.stderr.setEncoding('utf8');
-            child.stdout.on('data', data => {
-                if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
+            const script = transpileModule(content, {
+                ...tsconfig,
+                compilerOptions: {
+                    ...tsconfig.compilerOptions as unknown as CompilerOptions,
+                    noImplicitUseStrict: true,
+                    alwaysStrict: false,
+                    strict: false
+                }
             });
-            child.stderr.on('data', data => {
-                this.embedColor = 'RED';
-                if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
-            });
-            child.on('error', err => res(this.createErrorMessage(err)));
-            child.on('close', () => res(this.createMessage(this.result, 'ts')));
-            child.stdin.write(`${this.patchContent(content)}\n\n.exit\n`);
-            setTimeout(() => {
-                treeKill(child.pid ?? 100, 'SIGKILL');
-                this.embedColor = 'DARK_RED';
-                this.result.push('10秒を超過して実行することはできません');
-            }, 10000);
+            res(new JavaScriptEvaluationSystem().evaluate(script.outputText));
         });
-    }
-
-    private patchContent(input: string): string {
-        return input.replaceAll(/process.kill\(.+?\)/g, 'process.kill()');
     }
 
     protected override createMessage(contents: unknown[], lang: Language): ReplyMessageOptions {

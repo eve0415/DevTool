@@ -24,7 +24,8 @@
     "outDir": "dist",
     "removeComments": true,
     "strict": true,
-    "target": "ESNext"
+    "target": "ESNext",
+    "resolveJsonModule": true
   },
   "include": [
     "src"
