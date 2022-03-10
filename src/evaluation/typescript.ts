@@ -1,9 +1,10 @@
 import type { Language } from '../interface';
 import type { ReplyMessageOptions } from 'discord.js';
-import * as tsc from "typescript";
+import type { CompilerOptions } from 'typescript';
+import { transpileModule } from 'typescript';
+import { BaseEvaluationSystem } from './base';
 import { JavaScriptEvaluationSystem } from './javascript';
 import tsconfig from '../../tsconfig.json';
-import { BaseEvaluationSystem } from './base';
 
 export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
     public evaluate(content: string): Promise<ReplyMessageOptions> {
