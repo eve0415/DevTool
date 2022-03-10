@@ -11,6 +11,10 @@ on:
       - "Dockerfile"
       - ".github/workflows/main.yml"
 
+concurrency:
+  group: ci-tests-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   IMAGE_NAME: devtool
 

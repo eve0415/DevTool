@@ -10,25 +10,48 @@ on:
       - "**/*.json"
       - ".github/workflows/test.yml"
 
+concurrency:
+  group: ci-tests-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
-    name: Test
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Node v16
+      - name: Setup Node.js v16
         uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: yarn
 
       - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Build
-        run: yarn build
+        run: yarn install --immutable --immutable-cache --check-cache
 
       - name: Run ESLint
         run: yarn eslint .
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js v16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable --immutable-cache --check-cache
+
+      - name: Grant execute permission for building
+        run: chmod +x build.js
+
+      - name: Build
+        run: yarn build
