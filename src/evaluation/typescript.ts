@@ -12,7 +12,7 @@ export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
             const script = transpileModule(content, {
                 ...tsconfig,
                 compilerOptions: {
-                    ...tsconfig.compilerOptions,
+                    ...tsconfig.compilerOptions as unknown as CompilerOptions,
                     noImplicitUseStrict: true,
                     alwaysStrict: false,
                     strict: false
