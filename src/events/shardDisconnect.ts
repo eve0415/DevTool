@@ -3,8 +3,8 @@ import type { CloseEvent } from 'discord.js';
 import { Event } from '../interface';
 
 export default class extends Event {
-    public constructor(protected override readonly client: DevToolBot) {
-        super(client, __filename, true);
+    public constructor(client: DevToolBot) {
+        super(client, 'shardDisconnect');
     }
 
     public run(event: CloseEvent, id: number): void {

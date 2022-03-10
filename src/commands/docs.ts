@@ -8,7 +8,7 @@ import { Command } from '../interface';
 export default class extends Command {
     private docs: Fuse<string> | null = null;
 
-    public constructor(protected override readonly client: DevToolBot) {
+    public constructor(client: DevToolBot) {
         super(client, {
             type: 'CHAT_INPUT',
             name: 'docs',
@@ -59,9 +59,9 @@ export default class extends Command {
     public async run(interaction: CommandInteraction): Promise<void> {
         await interaction.deferReply();
 
-        const input = interaction.options.getString('query', true);
+        const input = interaction.options.getString('query');
         const response = await axios.get<MessageEmbed>('https://djsdocs.sorta.moe/v2/embed', {
-            params: { src: input.startsWith('Collection') ? 'collection' : 'stable', q: input },
+            params: { src: input?.startsWith('Collection') ? 'collection' : 'stable', q: input },
         });
         await interaction.editReply({ embeds: [response.data] });
     }

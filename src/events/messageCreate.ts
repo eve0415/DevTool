@@ -9,8 +9,8 @@ import { getHelp, lint, run } from '../temporary';
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 
 export default class extends Event {
-    public constructor(protected override readonly client: DevToolBot) {
-        super(client, __filename);
+    public constructor(client: DevToolBot) {
+        super(client, 'messageCreate');
     }
 
     public async run(message: Message): Promise<void> {

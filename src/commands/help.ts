@@ -4,7 +4,7 @@ import { Command } from '../interface';
 import { getHelp } from '../temporary';
 
 export default class extends Command {
-    public constructor(protected override readonly client: DevToolBot) {
+    public constructor(client: DevToolBot) {
         super(client, {
             type: 'CHAT_INPUT',
             name: 'help',

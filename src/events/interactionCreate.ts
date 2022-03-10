@@ -4,8 +4,8 @@ import { inspect } from 'util';
 import { Event } from '../interface';
 
 export default class extends Event {
-    public constructor(protected override readonly client: DevToolBot) {
-        super(client, __filename);
+    public constructor(client: DevToolBot) {
+        super(client, 'interactionCreate');
     }
 
     public async run(interaction: Interaction): Promise<void> {
@@ -15,10 +15,7 @@ export default class extends Event {
             if (interaction.isAutocomplete()) {
                 await this.client.commandManager.get(interaction.commandName)?.autoCompletion(interaction);
             }
-            if (interaction.isCommand()) {
-                await this.client.commandManager.get(interaction.commandName)?.run(interaction);
-            }
-            if (interaction.isContextMenu()) {
+            if (interaction.isCommand() || interaction.isContextMenu()) {
                 await this.client.commandManager.get(interaction.commandName)?.run(interaction);
             }
         } catch (e) {

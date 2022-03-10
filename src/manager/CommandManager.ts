@@ -1,33 +1,21 @@
 import type { DevToolBot } from '../DevToolBot';
-import { readdirSync } from 'fs';
-import { resolve } from 'path';
+import type { Command } from '../interface';
 import { Collection } from 'discord.js';
-import { getLogger } from 'log4js';
-import { Command } from '../interface';
+import log4js from 'log4js';
 
 export class CommandManager extends Collection<string, Command> {
-    private readonly logger = getLogger('CommandManager');
+    private readonly logger = log4js.getLogger('CommandManager');
 
     public constructor(private readonly client: DevToolBot) {
         super();
     }
 
-    public register(command: Command): void {
-        this.logger.info(`Registering command: ${command.data.name}`);
-        if (this.has(command.data.name)) {
-            this.logger.error(`Command name ${command.data.name} is already registered`);
-            throw new Error(`Command name ${command.data.name} is already registered`);
-        }
-        this.set(command.data.name, command);
-    }
-
     public async registerAll(): Promise<void> {
         this.logger.info('Starting to register all commands');
-        const dir = resolve(`${__dirname}/../command`);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        const modules = await Promise.all(readdirSync(dir).filter(file => /.js|.ts/.exec(file)).map(file => import(`${dir}/${file}`).then(a => new a.default(this.client))));
-        const commands = modules.filter<Command>((value): value is Command => value instanceof Command);
-        await Promise.all(commands.map(event => this.register(event)));
+        await import('../commands/docs').then(i => this.set('docs', new i.default(this.client)));
+        await import('../commands/help').then(i => this.set('help', new i.default(this.client)));
+        await import('../commands/lint').then(i => this.set('lint', new i.default(this.client)));
+        await import('../commands/run').then(i => this.set('run', new i.default(this.client)));
         this.logger.info(`Successfully registered ${this.size} commands`);
     }
 
@@ -45,7 +33,8 @@ export class CommandManager extends Collection<string, Command> {
             await this.client.application?.commands.delete(remove.id);
         }
         for (const change of diff.values()) {
-            await this.client.application?.commands.edit(subscribed.find(s => s.name === change.data.name)?.id as string, change.data);
+            const id = subscribed.find(s => s.name === change.data.name)?.id;
+            if (id) await this.client.application?.commands.edit(id, change.data);
         }
     }
 }

@@ -1,6 +1,6 @@
-import { configure } from 'log4js';
+import log4js from 'log4js';
 
-configure({
+log4js.configure({
     appenders: {
         console: {
             type: 'stdout',

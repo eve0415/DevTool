@@ -1,12 +1,13 @@
 import { Client } from 'discord.js';
 import fastify from 'fastify';
-import { getLogger } from 'log4js';
-import { CommandManager, EventManager } from './manager';
+import log4js from 'log4js';
+import { CommandManager } from './manager';
+
+const { getLogger } = log4js;
 
 export class DevToolBot extends Client {
     private readonly logger = getLogger('DevToolBot');
     private readonly fastify = fastify();
-    private readonly eventManager: EventManager;
     private _ready = false;
 
     public readonly commandManager: CommandManager;
@@ -22,7 +23,6 @@ export class DevToolBot extends Client {
 
         getLogger().level = process.env['NODE_ENV'] ? 'trace' : 'info';
 
-        this.eventManager = new EventManager(this);
         this.commandManager = new CommandManager(this);
     }
 
@@ -39,12 +39,24 @@ export class DevToolBot extends Client {
 
         this.setUp();
 
-        await this.eventManager.registerAll().catch(e => this.logger.error(e));
+        await import('./events/error').then(i => this.on('error', arg => new i.default(this).run(arg)));
+        await import('./events/interactionCreate').then(i => this.on('interactionCreate', arg => new i.default(this).run(arg)));
+        await import('./events/messageCreate').then(i => this.on('messageCreate', arg => new i.default(this).run(arg)));
+        await import('./events/rateLimit').then(i => this.on('rateLimit', arg => new i.default(this).run(arg)));
+        await import('./events/ready').then(i => this.once('ready', arg => new i.default(this).run(arg)));
+        await import('./events/shardDisconnect').then(i => this.on('shardDisconnect', (...arg) => new i.default(this).run(...arg)));
+        await import('./events/shardError').then(i => this.on('shardError', (...arg) => new i.default(this).run(...arg)));
+        await import('./events/shardReady').then(i => this.on('shardReady', (...arg) => new i.default(this).run(...arg)));
+        await import('./events/shardReconnecting').then(i => this.on('shardReconnecting', arg => new i.default(this).run(arg)));
+        await import('./events/shardResume').then(i => this.on('shardResume', (...arg) => new i.default(this).run(...arg)));
+        await import('./events/warn').then(i => this.on('warn', arg => new i.default(this).run(arg)));
+
         await this.commandManager.registerAll().catch(e => this.logger.error(e));
 
         this.logger.info('Initialize done. Logging in...');
 
         await super.login().catch(e => this.logger.error(e));
+
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:next-line
         delete process.env.DISCORD_TOKEN;
@@ -55,7 +67,8 @@ export class DevToolBot extends Client {
 
         this.ready = false;
 
-        await this.eventManager.unregisterAll().catch(e => this.logger.error(e));
+        this.removeAllListeners();
+        await new Promise(resolve => setTimeout(resolve, 5000));
 
         this.destroy();
         this.fastify.server.close();

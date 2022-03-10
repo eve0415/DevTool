@@ -1,15 +1,15 @@
 import type { DevToolBot } from '../DevToolBot';
 import type { ContextMenuInteraction } from 'discord.js';
 import { Command } from '../interface';
-import { run } from '../temporary';
+import { lint } from '../temporary';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 
 export default class extends Command {
-    public constructor(protected override readonly client: DevToolBot) {
+    public constructor(client: DevToolBot) {
         super(client, {
             type: 'MESSAGE',
-            name: '実行',
+            name: '整形',
         });
     }
 
@@ -30,7 +30,7 @@ export default class extends Command {
             ].join('\n'));
         }
 
-        await run(message);
+        await lint(message);
 
         await interaction.editReply('実行完了しました');
     }
