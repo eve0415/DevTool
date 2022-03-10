@@ -12,7 +12,7 @@ on:
       - ".github/workflows/main.yml"
 
 concurrency:
-  group: ci-tests-${{ github.ref }}
+  group: ci-tests-${{ github.ref }}-main
   cancel-in-progress: true
 
 env:
