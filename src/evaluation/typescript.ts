@@ -9,7 +9,7 @@ import tsconfig from '../../tsconfig.json';
 export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
     public evaluate(content: string): Promise<ReplyMessageOptions> {
         return new Promise(res => {
-            const script = tsc.transpileModule(content, {
+            const script = transpileModule(content, {
                 ...tsconfig,
                 compilerOptions: {
                     ...tsconfig.compilerOptions,
