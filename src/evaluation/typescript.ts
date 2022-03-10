@@ -15,8 +15,8 @@ export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
                     ...tsconfig.compilerOptions as unknown as CompilerOptions,
                     noImplicitUseStrict: true,
                     alwaysStrict: false,
-                    strict: false
-                }
+                    strict: false,
+                },
             });
             res(new JavaScriptEvaluationSystem().evaluate(script.outputText));
         });

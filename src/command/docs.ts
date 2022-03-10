@@ -24,7 +24,9 @@ export default class extends Command {
 
         this.fetchDocs()
             .catch(e => this.logger.error(e))
-            .finally(() => setInterval(() => this.fetchDocs().catch(e => this.logger.error(e)), 1000 * 60 * 60 * 3));
+            .finally(() => setInterval(() => {
+                this.fetchDocs().catch(e => this.logger.error(e));
+            }, 1000 * 60 * 60 * 3));
     }
 
     private async fetchDocs(): Promise<void> {
