@@ -14,8 +14,8 @@ export class CommandManager extends Collection<string, Command> {
         this.logger.info('Starting to register all commands');
         await import('../commands/docs').then(i => this.set('docs', new i.default(this.client)));
         await import('../commands/help').then(i => this.set('help', new i.default(this.client)));
-        await import('../commands/lint').then(i => this.set('lint', new i.default(this.client)));
-        await import('../commands/run').then(i => this.set('run', new i.default(this.client)));
+        await import('../commands/lint').then(i => this.set('整形', new i.default(this.client)));
+        await import('../commands/run').then(i => this.set('実行', new i.default(this.client)));
         this.logger.info(`Successfully registered ${this.size} commands`);
     }
 
