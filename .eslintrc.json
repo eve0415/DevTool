@@ -343,14 +343,95 @@
         "@typescript-eslint/naming-convention": [
           "error",
           {
+            "selector": "default",
+            "format": [
+              "strictCamelCase"
+            ]
+          },
+          {
+            "selector": "typeLike",
+            "format": [
+              "StrictPascalCase"
+            ]
+          },
+          {
+            "selector": "memberLike",
+            "modifiers": [
+              "private"
+            ],
+            "format": [
+              "camelCase"
+            ],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": "class",
+            "format": [
+              "PascalCase"
+            ]
+          },
+          {
+            "selector": "interface",
+            "format": [
+              "PascalCase"
+            ],
+            "filter": {
+              "regex": "^I[A-Z]",
+              "match": true
+            }
+          },
+          {
+            "selector": "variable",
+            "format": [
+              "strictCamelCase",
+              "UPPER_CASE"
+            ]
+          },
+          {
+            "selector": [
+              "parameter",
+              "parameterProperty"
+            ],
+            "format": [
+              "strictCamelCase"
+            ],
+            "leadingUnderscore": "allow"
+          },
+          {
             "selector": "objectLiteralProperty",
             "format": [
+              "strictCamelCase",
               "camelCase",
-              "UPPER_CASE",
               "PascalCase",
               "snake_case"
             ],
             "leadingUnderscore": "allow"
+          },
+          {
+            "selector": "typeProperty",
+            "format": [
+              "strictCamelCase",
+              "StrictPascalCase",
+              "camelCase",
+              "snake_case"
+            ],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": [
+              "classProperty",
+              "objectLiteralProperty",
+              "typeProperty",
+              "classMethod",
+              "objectLiteralMethod",
+              "typeMethod",
+              "accessor",
+              "enumMember"
+            ],
+            "format": null,
+            "modifiers": [
+              "requiresQuotes"
+            ]
           }
         ],
         "@typescript-eslint/no-confusing-non-null-assertion": "error",
@@ -369,12 +450,7 @@
         "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/no-invalid-this": "error",
         "@typescript-eslint/no-loop-func": "error",
-        "@typescript-eslint/no-misused-promises": [
-          "error",
-          {
-            "checksVoidReturn": false
-          }
-        ],
+        "@typescript-eslint/no-misused-promises": "error",
         "@typescript-eslint/no-redundant-type-constituents": "error",
         "@typescript-eslint/no-require-imports": "error",
         "@typescript-eslint/no-shadow": "error",
