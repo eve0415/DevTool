@@ -16,7 +16,7 @@ export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
                     noImplicitUseStrict: true,
                     alwaysStrict: false,
                     strict: false
-                } as any
+                }
             });
             res(new JavaScriptEvaluationSystem().evaluate(script.outputText));
         });
