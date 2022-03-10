@@ -19,7 +19,7 @@ RUN yarn workspaces focus --production
 RUN wget https://github.com/JetBrains/kotlin/releases/download/v${VERSION}/kotlin-compiler-${VERSION}.zip && \
     unzip kotlin-compiler-${VERSION}.zip && \
     rm kotlin-compiler-${VERSION}.zip
-COPY --from=builder /app/dist ./
+COPY --from=builder /app/out ./
 
 
 FROM node:16-alpine3.14 AS runner
