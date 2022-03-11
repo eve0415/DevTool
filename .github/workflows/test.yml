@@ -9,6 +9,12 @@ on:
       - "**/*.ts"
       - "**/*.json"
       - ".github/workflows/test.yml"
+  pull_request:
+    paths:
+      - "**/*.js"
+      - "**/*.ts"
+      - "**/*.json"
+      - ".github/workflows/test.yml"
 
 concurrency:
   group: ci-tests-${{ github.ref }}-test
