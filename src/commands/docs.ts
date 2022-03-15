@@ -384,12 +384,7 @@ export default class extends Command {
             resolved.push('\n');
         }
 
-        let result = resolved
-            .join(' ')
-            .replaceAll('<warn>', '⚠️ ')
-            .replaceAll('</warn>', '')
-            .replaceAll('<info>', '📖 ')
-            .replaceAll('</info>', '');
+        let result = resolved.join(' ');
 
         const seeLinkWithTitleRegex = /{@link (?<url>https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+) (?<title>.+)}/;
         const seeLinkWithTitle = seeLinkWithTitleRegex.exec(result)?.groups ?? {};
@@ -407,13 +402,19 @@ export default class extends Command {
         }
 
         return result
+            .replaceAll('<warn>', '⚠️ ')
+            .replaceAll('</warn>', '')
+            .replaceAll('<info>', '📖 ')
+            .replaceAll('</info>', '')
             .replaceAll('Array | < | ', 'Array\\<')
             .replaceAll('Object | < | ', 'Object\\<')
+            .replaceAll('Set | < | ', 'Set\\<')
             .replaceAll(' | ,  |', ',')
             .replaceAll(' | ,', ',')
             .replaceAll('( | ', '(')
             .replaceAll(' | |', '')
             .replaceAll(' | )', ')')
+            .replaceAll(' | ()', '()')
             .replaceAll(' | >', '\\>');
     }
 
