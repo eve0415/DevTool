@@ -4,6 +4,7 @@ export type DJSDocument =
     DJSClassDocument |
     DJSPropDocument |
     DJSMethodDocument |
+    DJSEventDocument |
     DJSInterfaceDocument |
     DJSTypedefDocument |
     DJSExternalDocument;
@@ -33,10 +34,13 @@ export interface DJSPropDocument extends DJSBaseDocument {
     docType: 'prop';
     type: string[];
     optional: boolean;
+    abstract: boolean;
+    static: boolean;
     private: boolean;
     readonly: boolean;
     nullable: boolean;
     deprecated: boolean | string;
+    default?: string;
     see?: string;
 }
 
@@ -44,12 +48,21 @@ export interface DJSMethodDocument extends DJSBaseDocument {
     docType: 'method';
     implements?: string[];
     examples?: string[];
-    inherits: string;
+    inherits?: string;
+    abstract: boolean;
     static: boolean;
+    deprecated?: string;
     private: boolean;
     async: boolean;
-    returns: string;
+    params?: DJSParam[];
+    returns?: string;
     returnDesc?: string;
+}
+
+export interface DJSEventDocument extends DJSBaseDocument {
+    docType: 'event';
+    params?: DJSParam[];
+    deprecated?: string;
 }
 
 export interface DJSInterfaceDocument extends DJSBaseDocument {
@@ -59,10 +72,18 @@ export interface DJSInterfaceDocument extends DJSBaseDocument {
 export interface DJSTypedefDocument extends DJSBaseDocument {
     docType: 'typedef';
     type: string;
+    private: boolean;
+    returns?: string;
+    returnDesc?: string;
+    see?: string;
 }
 
-export interface DJSExternalDocument {
-    name: string;
+export interface DJSExternalDocument extends DJSBaseDocument {
     docType: 'external';
-    link: string;
+}
+
+interface DJSParam {
+    name: string;
+    description: string;
+    type: string[];
 }

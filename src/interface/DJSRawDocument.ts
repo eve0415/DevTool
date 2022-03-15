@@ -54,7 +54,7 @@ export interface Class {
         meta: Meta;
         access?: 'private';
         examples?: string[];
-        params?: ParamElement[];
+        params?: Props[];
         async?: boolean;
         inherits?: string;
         inherited?: boolean;
@@ -110,7 +110,7 @@ interface Typedef {
     name: string;
     description?: string;
     type: string[][][];
-    props?: ParamElement[];
+    props?: Props[];
     meta: Meta;
     see?: string[];
     params?: Params[];
@@ -136,27 +136,25 @@ interface Meta {
 interface Params {
     name: string;
     description: string;
-    type: TypeElement[][];
+    type: string[][];
     nullable?: true;
     variable?: boolean;
 }
 
-type TypeElement = string[] | '*';
-
-interface ParamElement {
+interface Props {
     name: string;
     description: string;
     optional?: boolean;
-    default?: FluffyDefault;
-    type: TypeElement[][];
+    default?: DefaultValue;
+    type: string[][];
     nullable?: true;
     variable?: boolean;
 }
 
-type FluffyDefault = boolean | number | null | string;
+type DefaultValue = boolean | number | string | null;
 
-type TentacledReturns = TypeElement[][] | {
-    types: TypeElement[][];
+type TentacledReturns = string[][] | {
+    types: string[][];
     description?: string;
     nullable?: true;
 };
