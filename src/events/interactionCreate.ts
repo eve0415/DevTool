@@ -21,7 +21,7 @@ export default class extends Event {
         } catch (e) {
             this.logger.error(e);
 
-            const exec = /^\/webhooks\/\d+\/(?<token>.+)\/messages\/@original$/.exec((e as DiscordAPIError).path)?.groups ?? {};
+            const exec = /^\/interactions\/\d+\/(?<token>.+)\/callback$/.exec((e as DiscordAPIError).path)?.groups ?? {};
             const message: WebhookEditMessageOptions = {
                 embeds: [{
                     color: 'RED',
