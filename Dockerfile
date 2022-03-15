@@ -7,8 +7,8 @@ COPY .yarn/ ./.yarn
 COPY .yarnrc.yml package.json yarn.lock ./
 RUN yarn install --immutable --network-timeout 100000
 COPY . .
-RUN chmod +x build.cjs
-RUN yarn build
+RUN chmod +x build.js
+RUN yarn build:prod
 
 
 FROM builder-base AS production

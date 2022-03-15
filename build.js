@@ -4,10 +4,10 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 
-const { join } = require('path');
-const { cwd } = require('process');
-const { build } = require('esbuild');
-const { nodeExternalsPlugin } = require('esbuild-node-externals');
+import { join } from 'path';
+import { cwd } from 'process';
+import { build } from 'esbuild';
+import { nodeExternalsPlugin } from 'esbuild-node-externals';
 
 build({
     entryPoints: [join(cwd(), 'src', 'index.js')],

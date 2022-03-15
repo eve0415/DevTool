@@ -15,9 +15,9 @@
   "type": "module",
   "packageManager": "yarn@3.2.0",
   "scripts": {
-    "build": "./build.cjs",
-    "build:prod": "./build.cjs && tsc",
-    "dev": "nodemon --watch src -e ts --exec \"yarn build -inline-sourcemap && yarn node -r dotenv/config ./out/index.js\"",
+    "build": "./build.js -inline-sourcemap && tsc",
+    "build:prod": "./build.js",
+    "dev": "nodemon --watch src -e ts --exec \"yarn build && yarn node -r dotenv/config ./out/index.js\"",
     "lint": "eslint --fix .",
     "clean": "rimraf out"
   },
