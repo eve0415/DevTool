@@ -205,9 +205,9 @@ __metadata:
   linkType: hard
 
 "@types/json-schema@npm:^7.0.9":
-  version: 7.0.9
-  resolution: "@types/json-schema@npm:7.0.9"
-  checksum: 259d0e25f11a21ba5c708f7ea47196bd396e379fddb79c76f9f4f62c945879dc21657904914313ec2754e443c5018ea8372362f323f30e0792897fdb2098a705
+  version: 7.0.10
+  resolution: "@types/json-schema@npm:7.0.10"
+  checksum: 369f12207298e3c8931100ab86c9c60d9217ab930a8ae0b851495f4f30695d3f0eb431eedc8e8d9c69357869899ea0fe6f9d65ddde5ea70415d67ef340dfdd1f
   languageName: node
   linkType: hard
 
@@ -678,17 +678,17 @@ __metadata:
   linkType: hard
 
 "cacache@npm:^16.0.0":
-  version: 16.0.0
-  resolution: "cacache@npm:16.0.0"
+  version: 16.0.1
+  resolution: "cacache@npm:16.0.1"
   dependencies:
     "@npmcli/fs": ^1.0.0
     "@npmcli/move-file": ^1.1.2
     chownr: ^2.0.0
     fs-minipass: ^2.1.0
-    glob: ^7.1.4
+    glob: ^7.2.0
     infer-owner: ^1.0.4
-    lru-cache: ^6.0.0
-    minipass: ^3.1.1
+    lru-cache: ^7.5.1
+    minipass: ^3.1.6
     minipass-collect: ^1.0.2
     minipass-flush: ^1.0.5
     minipass-pipeline: ^1.2.4
@@ -699,7 +699,7 @@ __metadata:
     ssri: ^8.0.1
     tar: ^6.1.11
     unique-filename: ^1.1.1
-  checksum: 1a5404958f60b1dc7c484e00ac5bb0466d8163cda77d20f827875c4fb6043cfedba852340291e96bfbf5995fc5ea8258c31be7a292e92008081d822902ddf22b
+  checksum: 7f461244a6ed30b8e34a1c8d598712035135b5489152cc6458642858ebd8075f39bf0998b768cc29e41263524632af93b41987f8debb703d9a2f29f37cc0552b
   languageName: node
   linkType: hard
 
@@ -902,7 +902,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-format@npm:^4.0.4, date-format@npm:^4.0.5":
+"date-format@npm:^4.0.5":
   version: 4.0.5
   resolution: "date-format@npm:4.0.5"
   checksum: 8ef7b34699ea218ff9e049e2650e0f7e4c0820d92b937dc4934ade93782bf7d9647819e45cb50c0c3dc8d67d4fb210a0a114353fcb7f1400506e91be9fdd189a
@@ -1025,9 +1025,9 @@ __metadata:
     eslint-plugin-import: ^2.25.4
     fastify: ^3.27.4
     fuse.js: ^6.5.3
-    log4js: ^6.4.2
+    log4js: ^6.4.3
     nodemon: ^2.0.15
-    prettier: ^2.5.1
+    prettier: ^2.6.0
     rimraf: ^3.0.2
     tree-kill: ^1.2.2
     ts-node: ^10.7.0
@@ -1974,7 +1974,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.1.3, glob@npm:^7.1.4":
+"glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.2.0":
   version: 7.2.0
   resolution: "glob@npm:7.2.0"
   dependencies:
@@ -1998,11 +1998,11 @@ __metadata:
   linkType: hard
 
 "globals@npm:^13.6.0, globals@npm:^13.9.0":
-  version: 13.12.1
-  resolution: "globals@npm:13.12.1"
+  version: 13.13.0
+  resolution: "globals@npm:13.13.0"
   dependencies:
     type-fest: ^0.20.2
-  checksum: cf7877629c8f2a293b0a7d09d1dcce7f2d426ec2528600c481c5b3f3d070b0a120eb2499439ac0404990fb8a5742c0165b1bf1f52603364001ddc89bea3dda24
+  checksum: c55ea8fd3afecb72567bac41605577e19e68476993dfb0ca4c49b86075af5f0ae3f0f5502525f69010f7c5ea5db6a1c540a80a4f80ebdfb2f686d87b0f05d7e9
   languageName: node
   linkType: hard
 
@@ -2602,16 +2602,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"log4js@npm:^6.4.2":
-  version: 6.4.2
-  resolution: "log4js@npm:6.4.2"
+"log4js@npm:^6.4.3":
+  version: 6.4.3
+  resolution: "log4js@npm:6.4.3"
   dependencies:
-    date-format: ^4.0.4
+    date-format: ^4.0.5
     debug: ^4.3.3
     flatted: ^3.2.5
     rfdc: ^1.3.0
-    streamroller: ^3.0.4
-  checksum: 580665024952c2f123e9f3e8646e5b1151a27ca56c95aa26cea606e4f22de7107cb1979b21934a7b73d37b680afd6d4fe8979084efc5850bf7b96586085101b6
+    streamroller: ^3.0.5
+  checksum: 03b277d67e1fe000f82eb5314affc80c8b50561ba8f1c5983ff9f37050460dd3a2d21616ad47f5ffd47702ca16e52816df85d100262b013e9f60e777afedc074
   languageName: node
   linkType: hard
 
@@ -3204,12 +3204,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "prettier@npm:2.5.1"
+"prettier@npm:^2.6.0":
+  version: 2.6.0
+  resolution: "prettier@npm:2.6.0"
   bin:
     prettier: bin-prettier.js
-  checksum: 21b9408476ea1c544b0e45d51ceb94a84789ff92095abb710942d780c862d0daebdb29972d47f6b4d0f7ebbfb0ffbf56cc2cfa3e3e9d1cca54864af185b15b66
+  checksum: 3e527ad62279676778a8404d18174d7ca2365ada4caba6eebbcdd9907d1187afd3bc6ade5b4e5f5d4549bb9fb71e45ca8930d71500017635524f8fc05bc52e93
   languageName: node
   linkType: hard
 
@@ -3627,7 +3627,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"streamroller@npm:^3.0.4":
+"streamroller@npm:^3.0.5":
   version: 3.0.5
   resolution: "streamroller@npm:3.0.5"
   dependencies:
