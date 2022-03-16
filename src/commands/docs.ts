@@ -277,19 +277,19 @@ export default class extends Command {
         }
 
         if (!docs) {
-            embed
-                .setColor('RED')
-                .setFooter({ text: `Query: ${query}` });
+            embed.setColor('RED').setFooter({ text: `Query: ${query}` });
         } else if (docs.docType === 'class') {
             description[0] = `${description[0]} ${docs.extends ? `extends ${docs.extends}` : ''}`;
             description[0] = `${description[0]} ${docs.implements?.length ? `implement ${docs.implements.join(', ')}` : ''}`;
 
+            embed.setColor('BLURPLE');
             if (docs.construct) embed.addField('Construct', this.resolveType(docs.construct.map(({ name, type, optional, default: def, nullable }) => `**${name}**${optional ? '?' : ''}: ${type}${def ? ` = \`${def}` : ''}${nullable ? ' | null' : ''}\``).join('\n')));
             if (docs.abstract) {
                 description[0] = `🇦 ${description[0]}`;
                 embed.addField('Abstract', `This class is abstract.\n>>> ${abstractDef}`, true);
             }
         } else if (docs.docType === 'typedef') {
+            embed.setColor('GREEN');
             if (docs.see) {
                 description.push('');
                 description.push(`See: ${docs.see}`);
@@ -299,6 +299,7 @@ export default class extends Command {
         } else if (docs.docType === 'interface') {
             //
         } else if (docs.docType === 'event') {
+            embed.setColor('AQUA');
             if (docs.params?.length) embed.addField('Params', this.resolveType(docs.params?.map(({ name, description: desc, type }) => `**${name}**: ${type}${desc ? `\n${desc}` : ''}`).join('\n')), true);
             if (docs.deprecated) {
                 description[0] = `~~${description[0]}`;
@@ -306,6 +307,7 @@ export default class extends Command {
                 embed.addField('Deprecated', this.resolveType(docs.deprecated));
             }
         } else if (docs.docType === 'method') {
+            embed.setColor('ORANGE');
             if (docs.params?.length) embed.addField('Params', this.resolveType(docs.params?.map(({ name, description: desc, type }) => `**${name}**: ${type}${desc ? `\n${desc}` : ''}`).join('\n')), true);
             if (docs.returns) embed.addField('Returns', `${this.resolveType(docs.returns)}${docs.returnDesc ? `\n${docs.returnDesc}` : ''}`, true);
             if (docs.deprecated) {
@@ -326,6 +328,7 @@ export default class extends Command {
                 embed.addField('🇵rivate', `This method is private.\n>>> ${privateDef}`, true);
             }
         } else if (docs.docType === 'prop') {
+            embed.setColor('DARK_ORANGE');
             if (docs.see) {
                 description.push('');
                 description.push(`See: ${docs.see}`);
