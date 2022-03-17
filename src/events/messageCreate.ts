@@ -45,12 +45,8 @@ export default class extends Event {
         }
 
         try {
-            if (message.content === 'run') {
-                await run(reference);
-            }
-            if (message.content === 'lint') {
-                await lint(reference);
-            }
+            if (message.content === 'run') await run(reference);
+            if (message.content === 'lint') await lint(reference);
 
             await mes.edit('実行完了しました');
         } catch (e) {
@@ -63,7 +59,7 @@ export default class extends Event {
                     title: 'An Error Occured When Sending A Message',
                     description: inspect(e, { depth: 1, maxArrayLength: null })
                         .substring(0, 4096)
-                        .replace(exec['token'] ?? 'ABCDEFGHIJKLMN', '*redacted*'),
+                        .replace(`${exec['token']}`, '*redacted*'),
                 }],
             };
 
@@ -77,7 +73,7 @@ export default class extends Event {
         for (const link of links) {
             const res = await axios.get<Readonly<{ extension: string, code: string[] }>>(`https://gh-highlighted-line.vercel.app/api/${link['owner']}/${link['repo']}/${link['branch']}/${encodeURIComponent(link['path'] ?? '')}/${link['firstLine']}/${link['lastLine'] ?? ''}`);
             if (!res.data.code.length) continue;
-            for (const m of Util.splitMessage(`\`\`\`${res.data.extension}\n${res.data.code.join('\n')}\n\`\`\``, { prepend: '```', append: '```' })) {
+            for (const m of Util.splitMessage(`\`\`\`${res.data.extension}\n${res.data.code.join('\n')}\n\`\`\``, { prepend: `\`\`\`${res.data.extension}`, append: '```' })) {
                 await message.reply(m);
             }
         }
