@@ -8,12 +8,14 @@ on:
       - "**/*.js"
       - "**/*.ts"
       - "**/*.json"
+      - "yarn.lock"
       - ".github/workflows/test.yml"
   pull_request:
     paths:
       - "**/*.js"
       - "**/*.ts"
       - "**/*.json"
+      - "yarn.lock"
       - ".github/workflows/test.yml"
 
 concurrency:

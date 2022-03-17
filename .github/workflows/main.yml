@@ -8,6 +8,7 @@ on:
       - "**/*.js"
       - "**/*.ts"
       - "**/*.json"
+      - "yarn.lock"
       - "Dockerfile"
       - ".github/workflows/main.yml"
 
