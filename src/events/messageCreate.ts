@@ -73,7 +73,7 @@ export default class extends Event {
         for (const link of links) {
             const res = await axios.get<Readonly<{ extension: string, code: string[] }>>(`https://gh-highlighted-line.vercel.app/api/${link['owner']}/${link['repo']}/${link['branch']}/${encodeURIComponent(link['path'] ?? '')}/${link['firstLine']}/${link['lastLine'] ?? ''}`);
             if (!res.data.code.length) continue;
-            for (const m of Util.splitMessage(`\`\`\`${res.data.extension}\n${res.data.code.join('\n')}\n\`\`\``, { prepend: `\`\`\`${res.data.extension}`, append: '```' })) {
+            for (const m of Util.splitMessage(`\`\`\`${res.data.extension}\n${res.data.code.join('\n')}\n\`\`\``, { prepend: `\`\`\`${res.data.extension}\n`, append: '```' })) {
                 await message.reply(m);
             }
         }
