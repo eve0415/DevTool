@@ -314,6 +314,8 @@ export default class extends Command {
                 description[0] = `~~${description[0]}`;
                 description[description.length - 1] = `${description[description.length - 1]}~~`;
                 embed.addField('Deprecated', this.resolveType(docs.deprecated));
+            } else {
+                embed.addField('​', '​');
             }
             if (docs.abstract) {
                 description[0] = `🇦 ${description[0]}`;
