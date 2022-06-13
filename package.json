@@ -15,7 +15,7 @@
   "type": "module",
   "packageManager": "yarn@3.2.1",
   "scripts": {
-    "build": "build.js --develop && tsc",
+    "build": "./build.js --develop && tsc",
     "build:prod": "./build.js",
     "dev": "nodemon --watch src -e ts --exec \"yarn build && yarn node -r dotenv/config ./out/index.js\"",
     "lint": "eslint --fix .",
