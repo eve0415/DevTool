@@ -18,5 +18,9 @@ build({
     format: 'esm',
     platform: 'node',
     tsconfig: join(cwd(), 'tsconfig.json'),
-    plugins: [nodeExternalsPlugin()]
+    plugins: [nodeExternalsPlugin()],
+    ...process.argv[2] === '--develop' ? {
+        sourcemap: 'inline',
+        sourcesContent: true
+    } : {},
 });

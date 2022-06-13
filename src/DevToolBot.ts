@@ -80,6 +80,6 @@ export class DevToolBot extends Client {
         this.fastify.get('/healtz', (_, rep) => {
             rep.code(this._ready ? 200 : 503).send();
         });
-        this.fastify.listen(8080, '0.0.0.0');
+        this.fastify.listen({ port: 8080, host: '0.0.0.0' });
     }
 }
