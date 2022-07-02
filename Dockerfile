@@ -12,7 +12,7 @@ RUN yarn build:prod
 
 
 FROM builder-base AS production
-ENV VERSION=1.6.10
+ENV VERSION=1.7.0
 WORKDIR /app
 COPY .yarn/ ./.yarn
 COPY .yarnrc.yml .pnp* package.json yarn.lock ./
