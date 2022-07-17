@@ -29,7 +29,7 @@ export default class extends Event {
             const res = await axios.get<Readonly<{ extension: string, code: string[] }>>(`https://gh-highlighted-line.vercel.app/api/${link['owner']}/${link['repo']}/${link['branch']}/${encodeURIComponent(link['path'] ?? '')}/${link['firstLine']}/${link['lastLine'] ?? ''}`);
             if (!res.data.code.length) continue;
 
-            await Promise.allSettled(res.data.code.join('\n').match(/.{1,2000}/g)?.map(chunk => message.reply(`\`\`\`${res.data.extension}\n${chunk}\n\`\`\``)) ?? []);
+            await Promise.allSettled(res.data.code.join('\n').match(/.{1,2000}/gs)?.map(chunk => message.reply(`\`\`\`${res.data.extension}\n${chunk}\n\`\`\``)) ?? []);
         }
     }
 }
