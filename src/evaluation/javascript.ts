@@ -10,10 +10,10 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
                 [
                     '-e',
                     'repl.start({ useGlobal: true, breakEvalOnSigint: true, prompt: "" })',
-                    '--experimental-vm-modules',
-                    '--experimental-repl-await',
                     '--experimental-import-meta-resolve',
                     '--experimental-json-modules',
+                    '--experimental-top-level-await',
+                    '--experimental-vm-modules',
                     '--disallow-code-generation-from-strings',
                 ],
                 { env: { TZ: process.env.TZ } },
