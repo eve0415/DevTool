@@ -29,13 +29,14 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
             });
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'js')));
-            child.stdin.write(`${this.patchContent(content)}\n\n.exit\n`);
+            child.stdin.write(`;\n${this.patchContent(content)}\n\n.exit\n`);
         });
     }
 
     protected override processContent(content: unknown[]): string[] {
         return content
             .map(c => typeof c === 'string' ? c : inspect(c, { depth: null, maxArrayLength: null }))
+            .slice(1)
             .flatMap(s => s.split('\\n'))
             .map(s => s.trimEnd());
     }
