@@ -9,7 +9,7 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
             const child = spawn('node',
                 [
                     '-e',
-                    'repl.start({ ignoreUndefined: false, useGlobal: true, breakEvalOnSigint: true, prompt: "" })',
+                    'repl.start({ useGlobal: true, breakEvalOnSigint: true, prompt: "" })',
                     '--experimental-vm-modules',
                     '--experimental-repl-await',
                     '--experimental-import-meta-resolve',
