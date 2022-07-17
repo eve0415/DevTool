@@ -1,7 +1,8 @@
 import type { DevToolBot } from '../DevToolBot';
 import type { ContextMenuInteraction } from 'discord.js';
+import { BrainfuckEvaluationSystem, JavaEvaluationSystem, JavaScriptEvaluationSystem, KotlinEvaluationSystem, PythonEvaluationSystem, TypeScriptEvaluationSystem } from '../evaluation';
+import { parseContent } from '../helper';
 import { Command } from '../interface';
-import { run } from '../temporary';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 
@@ -30,7 +31,48 @@ export default class extends Command {
             ].join('\n'));
         }
 
-        await run(message);
+        for await (const content of parseContent(message.content)) {
+            if (!codeBlockRegex.test(content)) return;
+
+            const codeblock = codeBlockRegex.exec(content)?.groups ?? {};
+            switch (codeblock['lang']?.toLowerCase()) {
+                case 'js':
+                case 'javascript':
+                    await message.reply(await new JavaScriptEvaluationSystem().evaluate(codeblock['code'] ?? ''));
+                    break;
+
+                case 'ts':
+                case 'typescript':
+                    await message.reply(await new TypeScriptEvaluationSystem().evaluate(codeblock['code'] ?? ''));
+                    break;
+
+                case 'py':
+                case 'python':
+                    await message.reply(await new PythonEvaluationSystem().evaluate(codeblock['code'] ?? ''));
+                    break;
+
+                case 'java':
+                    await message.reply(await new JavaEvaluationSystem().evaluate(codeblock['code'] ?? ''));
+                    break;
+
+                case 'kt':
+                case 'kotlin':
+                    await message.reply(await new KotlinEvaluationSystem().evaluate(codeblock['code'] ?? ''));
+                    break;
+
+                case 'brainfuck':
+                    await message.reply(await new BrainfuckEvaluationSystem().evaluate(codeblock['code'] ?? ''));
+                    break;
+
+                default:
+                    await message.reply([
+                        `現在この言語はまだ未対応です: \`${codeblock['lang']}\``,
+                        '一緒に開発してくれる方を募集しています',
+                        `\`${codeblock['lang']}\` が実行できるようにあなたの手で対応しませんか？`,
+                    ].join('\n'));
+                    break;
+            }
+        }
 
         await interaction.editReply('実行完了しました');
     }

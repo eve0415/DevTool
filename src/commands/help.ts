@@ -1,7 +1,7 @@
 import type { DevToolBot } from '../DevToolBot';
 import type { CommandInteraction } from 'discord.js';
+import { getHelp } from '../helper';
 import { Command } from '../interface';
-import { getHelp } from '../temporary';
 
 export default class extends Command {
     public constructor(client: DevToolBot) {

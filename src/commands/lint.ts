@@ -1,7 +1,8 @@
 import type { DevToolBot } from '../DevToolBot';
 import type { ContextMenuInteraction } from 'discord.js';
+import { parseContent } from '../helper';
 import { Command } from '../interface';
-import { lint } from '../temporary';
+import { CodeLintManager } from '../manager';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 
@@ -30,7 +31,52 @@ export default class extends Command {
             ].join('\n'));
         }
 
-        await lint(message);
+        for await (const content of parseContent(message.content)) {
+            if (!codeBlockRegex.test(content)) return;
+
+            const codeblock = codeBlockRegex.exec(content)?.groups ?? {};
+            switch (codeblock['lang']?.toLowerCase()) {
+                case 'js':
+                case 'javascript':
+                    await message.reply(CodeLintManager.lintJavaScript(codeblock['code'] ?? ''));
+                    break;
+
+                case 'ts':
+                case 'typescript':
+                    await message.reply(CodeLintManager.lintTypeScript(codeblock['code'] ?? ''));
+                    break;
+
+                case 'css':
+                    await message.reply(CodeLintManager.lintCss(codeblock['code'] ?? ''));
+                    break;
+
+                case 'md':
+                case 'markdown':
+                    await message.reply(CodeLintManager.lintMd(codeblock['code'] ?? ''));
+                    break;
+
+                case 'json':
+                    await message.reply(CodeLintManager.lintJson(codeblock['code'] ?? ''));
+                    break;
+
+                case 'yml':
+                case 'yaml':
+                    await message.reply(CodeLintManager.lintYaml(codeblock['code'] ?? ''));
+                    break;
+
+                case 'html':
+                    await message.reply(CodeLintManager.lintHtml(codeblock['code'] ?? ''));
+                    break;
+
+                default:
+                    await message.reply([
+                        `現在この言語はまだ未対応です: \`${codeblock['lang']}\``,
+                        '一緒に開発してくれる方を募集しています',
+                        `\`${codeblock['lang']}\` が整形できるようにあなたの手で対応しませんか？`,
+                    ].join('\n'));
+                    break;
+            }
+        }
 
         await interaction.editReply('実行完了しました');
     }
