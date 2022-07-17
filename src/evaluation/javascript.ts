@@ -1,5 +1,6 @@
 import type { ReplyMessageOptions } from 'discord.js';
 import { spawn } from 'child_process';
+import { inspect } from 'util';
 import { BaseEvaluationSystem } from './base';
 
 export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
@@ -7,7 +8,8 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
         return new Promise(res => {
             const child = spawn('node',
                 [
-                    '-i',
+                    '-e',
+                    'repl.start({ useGlobal: true, breakEvalOnSigint: true, prompt: "" })',
                     '--experimental-vm-modules',
                     '--experimental-repl-await',
                     '--experimental-import-meta-resolve',
@@ -27,8 +29,16 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
             });
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'js')));
-            child.stdin.write(`${this.patchContent(content)}\n\n.exit\n`);
+            child.stdin.write(`;\n${this.patchContent(content)}\n\n.exit\n`);
         });
+    }
+
+    protected override processContent(content: unknown[]): string[] {
+        return content
+            .map(c => typeof c === 'string' ? c : inspect(c, { depth: null, maxArrayLength: null }))
+            .slice(1)
+            .flatMap(s => s.split('\\n'))
+            .map(s => s.trimEnd());
     }
 
     private patchContent(input: string): string {
