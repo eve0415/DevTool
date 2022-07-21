@@ -13,32 +13,32 @@
   },
   "private": true,
   "type": "module",
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@3.2.2",
   "scripts": {
     "build": "./build.js --develop && tsc",
     "build:prod": "./build.js",
     "dev": "nodemon --watch src -e ts --exec \"yarn build && yarn node -r dotenv/config ./out/index.js\"",
     "lint": "eslint --fix .",
-    "clean": "rimraf out"
+    "clean": "rimraf out",
+    "sdk": "yarn dlx @yarnpkg/sdks"
   },
   "dependencies": {
     "axios": "^0.27.2",
     "bufferutil": "^4.0.6",
-    "discord.js": "^13.8.1",
-    "fastify": "^4.2.1",
+    "discord.js": "^14.0.3",
+    "fastify": "^4.3.0",
     "fuse.js": "^6.6.2",
     "log4js": "^6.6.0",
     "prettier": "^2.7.1",
     "tree-kill": "^1.2.2",
     "typescript": "^4.7.4",
-    "utf-8-validate": "^5.0.9",
-    "zlib-sync": "^0.1.7"
+    "utf-8-validate": "^5.0.9"
   },
   "devDependencies": {
-    "@types/node": "^18.0.5",
+    "@types/node": "^18.0.6",
     "@types/prettier": "^2.6.3",
-    "@typescript-eslint/eslint-plugin": "^5.30.6",
-    "@typescript-eslint/parser": "^5.30.6",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7",
     "dotenv": "^16.0.1",
     "esbuild": "^0.14.49",
     "esbuild-node-externals": "^1.4.1",
