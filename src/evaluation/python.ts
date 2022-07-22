@@ -1,6 +1,7 @@
 import type { Language } from '../interface';
 import type { ReplyMessageOptions } from 'discord.js';
 import { spawn } from 'child_process';
+import { Colors } from 'discord.js';
 import treeKill from 'tree-kill';
 import { BaseEvaluationSystem } from './base';
 
@@ -27,7 +28,7 @@ export class PythonEvaluationSystem extends BaseEvaluationSystem {
             child.stdin.write(`${content}\n\nexit()\n`);
             setTimeout(() => {
                 treeKill(child.pid ?? 100, 'SIGKILL');
-                this.embedColor = 'DARK_RED';
+                this.embedColor = Colors.DarkRed;
                 this.result.push('10秒を超過して実行することはできません');
             }, 10000);
         });

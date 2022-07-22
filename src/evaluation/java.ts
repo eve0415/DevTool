@@ -1,5 +1,6 @@
 import type { ReplyMessageOptions } from 'discord.js';
 import { spawn } from 'child_process';
+import { Colors } from 'discord.js';
 import { BaseEvaluationSystem } from './base';
 
 export class JavaEvaluationSystem extends BaseEvaluationSystem {
@@ -15,7 +16,7 @@ export class JavaEvaluationSystem extends BaseEvaluationSystem {
                 if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
             });
             child.stderr.on('data', data => {
-                this.embedColor = 'RED';
+                this.embedColor = Colors.Red;
                 if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
             });
             child.on('error', err => res(this.createErrorMessage(err)));

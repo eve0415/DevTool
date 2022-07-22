@@ -1,5 +1,6 @@
 import type { DevToolBot } from '../DevToolBot';
-import type { ContextMenuInteraction } from 'discord.js';
+import type { MessageContextMenuCommandInteraction } from 'discord.js';
+import { ApplicationCommandType } from 'discord.js';
 import { BrainfuckEvaluationSystem, JavaEvaluationSystem, JavaScriptEvaluationSystem, KotlinEvaluationSystem, PythonEvaluationSystem, TypeScriptEvaluationSystem } from '../evaluation';
 import { parseContent } from '../helper';
 import { Command } from '../interface';
@@ -9,12 +10,12 @@ const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 export default class extends Command {
     public constructor(client: DevToolBot) {
         super(client, {
-            type: 'MESSAGE',
+            type: ApplicationCommandType.Message,
             name: '実行',
         });
     }
 
-    public async run(interaction: ContextMenuInteraction): Promise<unknown> {
+    public async run(interaction: MessageContextMenuCommandInteraction): Promise<unknown> {
         await interaction.deferReply({ ephemeral: true });
 
         const message = await interaction.channel?.messages.fetch(interaction.targetId);

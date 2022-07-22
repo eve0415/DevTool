@@ -1,8 +1,8 @@
 import type { DevToolBot } from '../DevToolBot';
 import type { DJSDocument, DJSRawDocument } from '../interface';
-import type { AutocompleteInteraction, CommandInteraction } from 'discord.js';
+import type { AutocompleteInteraction, ChatInputCommandInteraction } from 'discord.js';
 import axios from 'axios';
-import { MessageEmbed } from 'discord.js';
+import { ApplicationCommandOptionType, ApplicationCommandType, Colors, EmbedBuilder } from 'discord.js';
 import Fuse from 'fuse.js';
 import { Command } from '../interface';
 
@@ -22,11 +22,11 @@ export default class extends Command {
 
     public constructor(client: DevToolBot) {
         super(client, {
-            type: 'CHAT_INPUT',
+            type: ApplicationCommandType.ChatInput,
             name: 'docs',
             description: 'discord.js のドキュメントを表示します',
             options: [{
-                type: 'STRING',
+                type: ApplicationCommandOptionType.String,
                 name: 'query',
                 description: '検索したい単語を入力してください',
                 autocomplete: true,
@@ -264,10 +264,10 @@ export default class extends Command {
         this.fuse = new Fuse([...this.docs.keys()]);
     }
 
-    public async run(interaction: CommandInteraction): Promise<void> {
+    public async run(interaction: ChatInputCommandInteraction): Promise<void> {
         const query = interaction.options.getString('query', true);
         const docs = this.docs.get(query);
-        const embed = new MessageEmbed();
+        const embed = new EmbedBuilder();
 
         const description = [docs ? `**${query}**` : '検索結果が見つかりませんでした'];
 
@@ -277,83 +277,83 @@ export default class extends Command {
         }
 
         if (!docs) {
-            embed.setColor('RED').setFooter({ text: `Query: ${query}` });
+            embed.setColor(Colors.Red).setFooter({ text: `Query: ${query}` });
         } else if (docs.docType === 'class') {
             description[0] = `${description[0]} ${docs.extends ? `extends ${docs.extends}` : ''}`;
             description[0] = `${description[0]} ${docs.implements?.length ? `implement ${docs.implements.join(', ')}` : ''}`;
 
-            embed.setColor('BLURPLE');
-            if (docs.construct) embed.addField('Construct', this.resolveType(docs.construct.map(({ name, type, optional, default: def, nullable }) => `**${name}**${optional ? '?' : ''}: ${type}${def ? ` = \`${def}` : ''}${nullable ? ' | null' : ''}\``).join('\n')));
+            embed.setColor(Colors.Blurple);
+            if (docs.construct) embed.addFields({ name: 'Construct', value: this.resolveType(docs.construct.map(({ name, type, optional, default: def, nullable }) => `**${name}**${optional ? '?' : ''}: ${type}${def ? ` = \`${def}` : ''}${nullable ? ' | null' : ''}\``).join('\n')) });
             if (docs.abstract) {
                 description[0] = `🇦 ${description[0]}`;
-                embed.addField('Abstract', `This class is abstract.\n>>> ${abstractDef}`, true);
+                embed.addFields({ name: 'Abstract', value: `This class is abstract.\n>>> ${abstractDef}`, inline: true });
             }
         } else if (docs.docType === 'typedef') {
-            embed.setColor('GREEN');
+            embed.setColor(Colors.Green);
             if (docs.see) {
                 description.push('');
                 description.push(`See: ${docs.see}`);
             }
-            embed.addField('Types', this.resolveType(docs.type));
-            if (docs.returns) embed.addField('Returns', `${this.resolveType(docs.returns)}${docs.returnDesc ? `\n${docs.returnDesc}` : ''}`);
+            embed.addFields({ name: 'Types', value: this.resolveType(docs.type) });
+            if (docs.returns) embed.addFields({ name: 'Returns', value: `${this.resolveType(docs.returns)}${docs.returnDesc ? `\n${docs.returnDesc}` : ''}` });
         } else if (docs.docType === 'interface') {
             //
         } else if (docs.docType === 'event') {
-            embed.setColor('AQUA');
-            if (docs.params?.length) embed.addField('Params', this.resolveType(docs.params?.map(({ name, description: desc, type }) => `**${name}**: ${type}${desc ? `\n${desc}` : ''}`).join('\n')), true);
+            embed.setColor(Colors.Aqua);
+            if (docs.params?.length) embed.addFields({ name: 'Params', value: this.resolveType(docs.params?.map(({ name, description: desc, type }) => `**${name}**: ${type}${desc ? `\n${desc}` : ''}`).join('\n')), inline: true });
             if (docs.deprecated) {
                 description[0] = `~~${description[0]}`;
                 description[description.length - 1] = `${description[description.length - 1]}~~`;
-                embed.addField('Deprecated', this.resolveType(docs.deprecated));
+                embed.addFields({ name: 'Deprecated', value: this.resolveType(docs.deprecated) });
             }
         } else if (docs.docType === 'method') {
-            embed.setColor('ORANGE');
-            if (docs.params?.length) embed.addField('Params', this.resolveType(docs.params?.map(({ name, description: desc, type }) => `**${name}**: ${type}${desc ? `\n${desc}` : ''}`).join('\n')), true);
-            if (docs.returns) embed.addField('Returns', `${this.resolveType(docs.returns)}${docs.returnDesc ? `\n${docs.returnDesc}` : ''}`, true);
+            embed.setColor(Colors.Orange);
+            if (docs.params?.length) embed.addFields({ name: 'Params', value: this.resolveType(docs.params?.map(({ name, description: desc, type }) => `**${name}**: ${type}${desc ? `\n${desc}` : ''}`).join('\n')), inline: true });
+            if (docs.returns) embed.addFields({ name: 'Returns', value: `${this.resolveType(docs.returns)}${docs.returnDesc ? `\n${docs.returnDesc}` : ''}`, inline: true });
             if (docs.deprecated) {
                 description[0] = `~~${description[0]}`;
                 description[description.length - 1] = `${description[description.length - 1]}~~`;
-                embed.addField('Deprecated', this.resolveType(docs.deprecated));
+                embed.addFields({ name: 'Deprecated', value: this.resolveType(docs.deprecated) });
             } else {
-                embed.addField('​', '​');
+                embed.addFields({ name: '​', value: '​' });
             }
             if (docs.abstract) {
                 description[0] = `🇦 ${description[0]}`;
-                embed.addField('Abstract', `This method is abstract.\n>>> ${abstractDef}`, true);
+                embed.addFields({ name: 'Abstract', value: `This method is abstract.\n>>> ${abstractDef}`, inline: true });
             }
             if (docs.static) {
                 description[0] = `🇸 ${description[0]}`;
-                embed.addField('🇸tatic', `This method is static.\n>>> ${staticDef}`, true);
+                embed.addFields({ name: '🇸tatic', value: `This method is static.\n>>> ${staticDef}`, inline: true });
             }
             if (docs.private) {
                 description[0] = `🇵 ${description[0]}`;
-                embed.addField('🇵rivate', `This method is private.\n>>> ${privateDef}`, true);
+                embed.addFields({ name: '🇵rivate', value: `This method is private.\n>>> ${privateDef}`, inline: true });
             }
         } else if (docs.docType === 'prop') {
-            embed.setColor('DARK_ORANGE');
+            embed.setColor(Colors.DarkOrange);
             if (docs.see) {
                 description.push('');
                 description.push(`See: ${docs.see}`);
             }
-            embed.addField('Type', `${docs.nullable ? '?' : ''}${this.resolveType(docs.type.join(' | '))}`);
+            embed.addFields({ name: 'Type', value: `${docs.nullable ? '?' : ''}${this.resolveType(docs.type.join(' | '))}` });
             if (docs.deprecated) {
                 description[0] = `~~${description[0]}`;
                 description[description.length - 1] = `${description[description.length - 1]}~~`;
-                embed.addField('Deprecated', typeof docs.deprecated === 'string' ? this.resolveType(docs.deprecated) : `This property is deprecated.\n>>> ${deprecatedDef}`);
+                embed.addFields({ name: 'Deprecated', value: typeof docs.deprecated === 'string' ? this.resolveType(docs.deprecated) : `This property is deprecated.\n>>> ${deprecatedDef}` });
             }
             if (docs.abstract) {
                 description[0] = `🇦 ${description[0]}`;
-                embed.addField('Abstract', `This class is abstract.\n>>> ${abstractDef}`, true);
+                embed.addFields({ name: 'Abstract', value: `This class is abstract.\n>>> ${abstractDef}`, inline: true });
             }
             if (docs.static) {
                 description[0] = `🇸 ${description[0]}`;
-                embed.addField('🇸tatic', `This property is static.\n>>> ${staticDef}`, true);
+                embed.addFields({ name: '🇸tatic', value: `This property is static.\n>>> ${staticDef}`, inline: true });
             }
             if (docs.private) {
                 description[0] = `🇵 ${description[0]}`;
-                embed.addField('🇵rivate', `This property is private.\n>>> ${privateDef}`, true);
+                embed.addFields({ name: '🇵rivate', value: `This property is private.\n>>> ${privateDef}`, inline: true });
             }
-            if (docs.readonly) embed.addField('Readonly', `This property is readonly.\n>>> ${readonlyDef}`, true);
+            if (docs.readonly) embed.addFields({ name: 'Readonly', value: `This property is readonly.\n>>> ${readonlyDef}`, inline: true });
         } else if (docs.docType === 'external') {
             //
         }

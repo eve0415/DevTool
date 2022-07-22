@@ -1,11 +1,11 @@
 import type { Language } from '../interface';
 import type { ColorResolvable, ReplyMessageOptions } from 'discord.js';
 import { inspect } from 'util';
-import { MessageAttachment, MessageEmbed } from 'discord.js';
+import { AttachmentBuilder, Colors, EmbedBuilder } from 'discord.js';
 import treeKill from 'tree-kill';
 
 export abstract class BaseEvaluationSystem {
-    protected embedColor: ColorResolvable = 'BLURPLE';
+    protected embedColor: ColorResolvable = Colors.Blurple;
     protected result: unknown[] = [];
 
     public abstract evaluate(content: string): Promise<ReplyMessageOptions>;
@@ -13,7 +13,7 @@ export abstract class BaseEvaluationSystem {
     protected kill(pid: number): void {
         setTimeout(() => {
             treeKill(pid, 'SIGKILL');
-            this.embedColor = 'DARK_RED';
+            this.embedColor = Colors.DarkRed;
             this.result.push('10秒を超過して実行することはできません');
         }, 10000);
     }
@@ -41,7 +41,7 @@ export abstract class BaseEvaluationSystem {
         if (!result) result = '返り値がありません';
 
         if (result.length <= 4080) {
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setColor(this.embedColor)
                 .setDescription(`\`\`\`${lang}\n${result}\n\`\`\``);
             return { embeds: [embed] };
@@ -60,14 +60,14 @@ export abstract class BaseEvaluationSystem {
 
         return {
             content: content,
-            files: [new MessageAttachment(Buffer.from(result), 'result.txt')],
+            files: [new AttachmentBuilder(Buffer.from(result), { name: 'result.txt' })],
         };
     }
 
     protected createErrorMessage(error: Error): ReplyMessageOptions {
         return {
             embeds: [{
-                color: 'DARK_RED',
+                color: Colors.DarkRed,
                 title: error.name,
                 description: `${error.message}\n${error.stack}`,
             }],

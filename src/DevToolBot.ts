@@ -1,4 +1,4 @@
-import { Client } from 'discord.js';
+import { Client, Partials } from 'discord.js';
 import fastify from 'fastify';
 import log4js from 'log4js';
 import { CommandManager } from './manager';
@@ -14,11 +14,9 @@ export class DevToolBot extends Client {
 
     public constructor() {
         super({
-            intents: ['GUILDS', 'GUILD_MESSAGES'],
-            partials: ['MESSAGE'],
-            restTimeOffset: 0,
+            intents: ['Guilds', 'GuildMessages'],
+            partials: [Partials.Message],
             allowedMentions: { repliedUser: false },
-            http: { api: 'https://canary.discord.com/api' },
         });
 
         getLogger().level = process.env['NODE_ENV'] ? 'trace' : 'info';
@@ -42,7 +40,6 @@ export class DevToolBot extends Client {
         await import('./events/error').then(i => this.on('error', arg => new i.default(this).run(arg)));
         await import('./events/interactionCreate').then(i => this.on('interactionCreate', arg => new i.default(this).run(arg)));
         await import('./events/messageCreate').then(i => this.on('messageCreate', arg => new i.default(this).run(arg)));
-        await import('./events/rateLimit').then(i => this.on('rateLimit', arg => new i.default(this).run(arg)));
         await import('./events/ready').then(i => this.once('ready', arg => new i.default(this).run(arg)));
         await import('./events/shardDisconnect').then(i => this.on('shardDisconnect', (...arg) => new i.default(this).run(...arg)));
         await import('./events/shardError').then(i => this.on('shardError', (...arg) => new i.default(this).run(...arg)));

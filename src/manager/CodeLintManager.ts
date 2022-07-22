@@ -1,6 +1,6 @@
 import type { Language } from '../interface';
 import type { ReplyMessageOptions } from 'discord.js';
-import { MessageAttachment } from 'discord.js';
+import { AttachmentBuilder, Colors } from 'discord.js';
 import prettier from 'prettier';
 
 const { format } = prettier;
@@ -41,7 +41,7 @@ function createMessage(code: string, lang: Language): ReplyMessageOptions {
             embeds: [{
                 title: '整形結果(Prettier 標準設定)',
                 description: `\`\`\`${lang}\n${code}\n\`\`\``,
-                color: 'BLURPLE',
+                color: Colors.Blurple,
             }],
         };
     }
@@ -54,6 +54,6 @@ function createMessage(code: string, lang: Language): ReplyMessageOptions {
 
     return {
         content: '整形結果です。ファイルをご覧ください。',
-        files: [new MessageAttachment(Buffer.from(code), `result.${lang}`)],
+        files: [new AttachmentBuilder(Buffer.from(code), { name: `result.${lang}` })],
     };
 }

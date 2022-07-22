@@ -1,4 +1,5 @@
 import type { InteractionReplyOptions, ReplyMessageOptions } from 'discord.js';
+import { ButtonStyle, Colors, ComponentType } from 'discord.js';
 
 export function parseContent(content: string): string[] {
     const parse = content.split(/(?:`{3}(`{3})`{3}|(`{3}))/g).filter(s => s);
@@ -38,13 +39,13 @@ export function getHelp(): InteractionReplyOptions | ReplyMessageOptions {
                 'ぜひあなたの頭と力を貸してください',
                 'PRお待ちしております。',
             ].join('\n'),
-            color: 'BLURPLE',
+            color: Colors.Blurple,
         }],
         components: [{
-            type: 'ACTION_ROW',
+            type: ComponentType.ActionRow,
             components: [{
-                type: 'BUTTON',
-                style: 'LINK',
+                type: ComponentType.Button,
+                style: ButtonStyle.Link,
                 label: 'GitHub',
                 url: 'https://github.com/eve0415/DevTool',
             }],
