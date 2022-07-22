@@ -31,6 +31,7 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'js')));
             child.stdin.write(`;\n${this.patchContent(content)}\n\n.exit\n`);
+            child.stdin.end();
         });
     }
 
