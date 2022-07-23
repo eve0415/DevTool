@@ -13,6 +13,8 @@ spec:
       maxUnavailable: 0
   template:
     metadata:
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/devtool: localhost/docker-deny-execution
       labels:
         app: devtool
     spec:
@@ -21,10 +23,13 @@ spec:
           image: ghcr.io/eve0415/devtool
           imagePullPolicy: Always
           securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
             readOnlyRootFilesystem: true
+            privileged: false
             capabilities:
               drop:
-                - NET_RAW
+                - ALL
           resources:
             limits:
               memory: 256M

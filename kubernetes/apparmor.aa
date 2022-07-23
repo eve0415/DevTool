@@ -1,0 +1,27 @@
+#include <tunables/global>
+
+
+profile docker-deny-execution flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+
+  network,
+  file,
+  umount,
+
+  /usr/local/bin/node ix,
+
+  deny /run mrwklx,
+  deny /sbin/reboot mrwklx,
+  deny /usr/bin/top mrwklx,
+
+
+  deny @{PROC}/** mrwklx,
+  deny mount,
+  deny /sys/[^f]*/** wklx,
+  deny /sys/f[^s]*/** wklx,
+  deny /sys/fs/[^c]*/** wklx,
+  deny /sys/fs/c[^g]*/** wklx,
+  deny /sys/fs/cg[^r]*/** wklx,
+  deny /sys/firmware/efi/efivars/** rwklx,
+  deny /sys/kernel/security/** rwklx,
+}
