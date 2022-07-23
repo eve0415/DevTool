@@ -11,6 +11,8 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
                 [
                     '-e',
                     'repl.start({ useGlobal: true, breakEvalOnSigint: true, prompt: "" })',
+                    '--abort-on-uncaught-exception',
+                    '--max-old-space-size=50',
                     '--experimental-import-meta-resolve',
                     '--experimental-json-modules',
                     '--experimental-top-level-await',
