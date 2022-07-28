@@ -1,6 +1,7 @@
 import type { Language } from '../interface';
 import type { ReplyMessageOptions } from 'discord.js';
 import { spawn } from 'child_process';
+import { inspect } from 'util';
 import { Colors } from 'discord.js';
 import treeKill from 'tree-kill';
 import { BaseEvaluationSystem } from './base';
@@ -17,15 +18,22 @@ export class PythonEvaluationSystem extends BaseEvaluationSystem {
             );
             child.stdout.setEncoding('utf8');
             child.stderr.setEncoding('utf8');
-            child.stdout.on('data', data => {
-                if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
-            });
-            child.stderr.on('data', data => {
-                if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
-            });
+            let inputted = false;
+            const handler = (data: unknown) => {
+                if (inputted) {
+                    this.result.push(data);
+                    return;
+                }
+                if (`${data}`.startsWith('>>>')) {
+                    inputted = true;
+                    child.stdin.end(`import sys; sys.ps1 = ""; sys.ps2 = ""\n${content}\n`);
+                    this.kill(child.pid ?? 100);
+                }
+            };
+            child.stdout.on('data', handler);
+            child.stderr.on('data', handler);
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'ts')));
-            child.stdin.write(`${content}\n\nexit()\n`);
             setTimeout(() => {
                 treeKill(child.pid ?? 100, 'SIGKILL');
                 this.embedColor = Colors.DarkRed;
@@ -34,8 +42,15 @@ export class PythonEvaluationSystem extends BaseEvaluationSystem {
         });
     }
 
+    protected override processContent(content: unknown[]): string[] {
+        return content
+            .map(c => typeof c === 'string' ? c : inspect(c, { depth: null, maxArrayLength: null }))
+            .flatMap(s => s.split('\n'))
+            .map(s => s.trimEnd());
+    }
+
     protected override createMessage(contents: unknown[], lang: Language): ReplyMessageOptions {
-        const processed = this.processContent(contents).filter(c => !/^Python.+on.+$/s.test(c));
+        const processed = this.processContent(contents);
         return super.createMessage(processed, lang);
     }
 }

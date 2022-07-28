@@ -41,7 +41,7 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
         return content
             .map(c => typeof c === 'string' ? c : inspect(c, { depth: null, maxArrayLength: null }))
             .slice(1)
-            .flatMap(s => s.split('\\n'))
+            .flatMap(s => s.split('\n'))
             .map(s => s.trimEnd());
     }
 
