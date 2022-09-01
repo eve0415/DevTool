@@ -46,7 +46,6 @@
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.19",
-    "rimraf": "^3.0.2",
-    "ts-node": "^10.9.1"
+    "rimraf": "^3.0.2"
   }
 }
