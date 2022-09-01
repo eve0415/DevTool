@@ -26,7 +26,11 @@ COPY --from=builder /app/out ./
 FROM node:16-alpine AS runner
 RUN addgroup -S devtool && adduser -S devtool -G devtool
 RUN apk add -U --no-cache openjdk16 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community && \
+    apk add -U --no-cache mono --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing && \
     apk add -U --no-cache python3 bash && \
+    apk add --no-cache --virtual=.build-dependencies ca-certificates && \
+    cert-sync /etc/ssl/certs/ca-certificates.crt && \
+    apk del .build-dependencies && \
     apk del --purge --no-cache apk-tools wget
 RUN rm -rf /sbin/reboot
 WORKDIR /app
