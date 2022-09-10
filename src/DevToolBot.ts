@@ -37,6 +37,7 @@ export class DevToolBot extends Client {
 
         this.setUp();
 
+        await import('./events/debug').then(i => this.on('debug', arg => new i.default(this).run(arg)));
         await import('./events/error').then(i => this.on('error', arg => new i.default(this).run(arg)));
         await import('./events/interactionCreate').then(i => this.on('interactionCreate', arg => new i.default(this).run(arg)));
         await import('./events/messageCreate').then(i => this.on('messageCreate', arg => new i.default(this).run(arg)));
