@@ -22,7 +22,7 @@ export class CSharpEvaluationSystem extends BaseEvaluationSystem {
             });
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'ts')));
-            child.stdin.write(`${content}\nEnvironment.Exit(0);\n`);
+            child.stdin.end(`${content}\nEnvironment.Exit(0);\n`);
             setTimeout(() => {
                 treeKill(child.pid ?? 100, 'SIGKILL');
                 this.embedColor = Colors.DarkRed;

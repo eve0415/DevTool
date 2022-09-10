@@ -25,7 +25,7 @@ export class PythonEvaluationSystem extends BaseEvaluationSystem {
             });
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'ts')));
-            child.stdin.write(`${content}\n\nexit()\n`);
+            child.stdin.end(`${content}\n\nexit()\n`);
             setTimeout(() => {
                 treeKill(child.pid ?? 100, 'SIGKILL');
                 this.embedColor = Colors.DarkRed;

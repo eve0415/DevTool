@@ -20,7 +20,7 @@ export class KotlinEvaluationSystem extends BaseEvaluationSystem {
             });
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'kt')));
-            child.stdin.write(`${content}\n\n:quit\n`);
+            child.stdin.end(`${content}\n\n:quit\n`);
         });
     }
 

@@ -7,17 +7,16 @@ import { BaseEvaluationSystem } from './base';
 export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
     public evaluate(content: string): Promise<ReplyMessageOptions> {
         return new Promise(res => {
-            const child = spawn('node',
+            const child = spawn(process.execPath,
                 [
-                    '-e',
-                    'repl.start({ useGlobal: true, breakEvalOnSigint: true, prompt: "" })',
-                    '--abort-on-uncaught-exception',
                     '--max-old-space-size=50',
                     '--experimental-import-meta-resolve',
                     '--experimental-json-modules',
                     '--experimental-top-level-await',
                     '--experimental-vm-modules',
                     '--disallow-code-generation-from-strings',
+                    '-e',
+                    'repl.start({ useGlobal: true, breakEvalOnSigint: true, prompt: "" })',
                 ],
                 { env: { TZ: process.env.TZ } },
             );
@@ -32,8 +31,7 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
             });
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'js')));
-            child.stdin.write(`;\n${this.patchContent(content)}\n\n.exit\n`);
-            child.stdin.end();
+            child.stdin.end(`;\n${this.patchContent(content)}\n\n.exit\n`);
         });
     }
 
