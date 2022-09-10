@@ -1,7 +1,7 @@
 FROM node:16-bullseye-slim AS base
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
-    apt-get install -y --no-install-recommends wget ca-certificates
+    apt-get install -y --no-install-recommends wget ca-certificates python3
 
 FROM base AS builder
 WORKDIR /app
@@ -14,7 +14,7 @@ RUN yarn node build.js
 
 
 FROM base AS production
-RUN apt-get install -y --no-install-recommends unzip
+RUN apt-get install -y --no-install-recommends unzip g++ make
 ENV VERSION=1.7.10
 WORKDIR /app
 COPY .yarn/ ./.yarn
