@@ -1,7 +1,7 @@
 import type { DevToolBot } from '../DevToolBot';
 import type { MessageContextMenuCommandInteraction } from 'discord.js';
 import { ApplicationCommandType } from 'discord.js';
-import { BrainfuckEvaluationSystem, JavaEvaluationSystem, JavaScriptEvaluationSystem, KotlinEvaluationSystem, PythonEvaluationSystem, TypeScriptEvaluationSystem } from '../evaluation';
+import { BrainfuckEvaluationSystem, CSharpEvaluationSystem, JavaEvaluationSystem, JavaScriptEvaluationSystem, KotlinEvaluationSystem, PythonEvaluationSystem, TypeScriptEvaluationSystem } from '../evaluation';
 import { parseContent } from '../helper';
 import { Command } from '../interface';
 
@@ -59,6 +59,11 @@ export default class extends Command {
                 case 'kt':
                 case 'kotlin':
                     await message.reply(await new KotlinEvaluationSystem().evaluate(codeblock['code'] ?? ''));
+                    break;
+
+                case 'cs':
+                case 'csharp':
+                    await message.reply(await new CSharpEvaluationSystem().evaluate(codeblock['code'] ?? ''));
                     break;
 
                 case 'brainfuck':
