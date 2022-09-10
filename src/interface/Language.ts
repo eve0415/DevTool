@@ -2,6 +2,7 @@ export type Language =
     'css' |
     'html' |
     'java' |
+    'cs' |
     'js' |
     'json' |
     'kt' |
