@@ -3,7 +3,12 @@ RUN apt-get update && \
     apt-get dist-upgrade -y && \
     apt-get install -y --no-install-recommends wget ca-certificates python3
 
-FROM base AS builder
+
+FROM base AS builder-base
+RUN apt-get install -y --no-install-recommends unzip g++ make
+
+
+FROM builder-base AS builder
 WORKDIR /app
 COPY .yarn/ ./.yarn
 COPY .yarnrc.yml package.json yarn.lock ./
@@ -13,8 +18,7 @@ RUN chmod +x build.js
 RUN yarn node build.js
 
 
-FROM base AS production
-RUN apt-get install -y --no-install-recommends unzip g++ make
+FROM builder-base AS production
 ENV VERSION=1.7.10
 WORKDIR /app
 COPY .yarn/ ./.yarn
