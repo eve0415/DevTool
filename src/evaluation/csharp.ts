@@ -21,7 +21,7 @@ export class CSharpEvaluationSystem extends BaseEvaluationSystem {
                 if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
             });
             child.on('error', err => res(this.createErrorMessage(err)));
-            child.on('close', () => res(this.createMessage(this.result, 'ts')));
+            child.on('close', () => res(this.createMessage(this.result, 'cs')));
             child.stdin.end(`${content}\nEnvironment.Exit(0);\n`);
             setTimeout(() => {
                 treeKill(child.pid ?? 100, 'SIGKILL');
