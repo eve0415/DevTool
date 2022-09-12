@@ -16,7 +16,7 @@
   "packageManager": "yarn@3.2.3",
   "scripts": {
     "build": "./build.js && tsc",
-    "build:prod": "./build.js",
+    "build:helper": "./helper/build.js",
     "dev": "nodemon --watch src -e ts --exec \"yarn build && yarn node -r dotenv/config --enable-source-maps ./out/index.js\"",
     "lint": "eslint --fix .",
     "clean": "rimraf out",

@@ -1,4 +1,4 @@
-FROM node:16-bullseye-slim AS base
+FROM node:lts-bullseye-slim AS base
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
     apt-get install -y --no-install-recommends wget ca-certificates python3
