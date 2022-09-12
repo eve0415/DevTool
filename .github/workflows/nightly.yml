@@ -1,4 +1,4 @@
-name: Deploy
+name: Nightly
 
 on:
   push:
@@ -89,6 +89,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
+          file: Dockerfile.helper
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
