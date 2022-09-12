@@ -1,4 +1,4 @@
-name: Nightly
+name: Build Nightly Docker
 
 on:
   push:
