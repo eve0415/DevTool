@@ -115,4 +115,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SECRET_KEY }}
           envs: MAIN,HELPER
-          script: kubectl set image deployment/devtool devtool=$MAIN sidecar=$HELPER
+          script: kubectl set image deployment/devtool devtool=$MAIN helper=$HELPER

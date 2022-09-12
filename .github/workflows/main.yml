@@ -111,11 +111,12 @@ jobs:
       - name: Rollout
         uses: appleboy/ssh-action@master
         env:
-          IMAGE: ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          MAIN: ghcr.io/${{ github.actor }}/devtool:sha-${{ github.sha }}
+          HELPER: ghcr.io/${{ github.actor }}/devtool-helper:sha-${{ github.sha }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SECRET_KEY }}
-          envs: IMAGE
-          script: kubectl set image deployment/devtool devtool=$IMAGE
+          envs: MAIN,HELPER
+          script: kubectl set image deployment/devtool devtool=$MAIN helper=$HELPER

@@ -30,7 +30,10 @@ setInterval(() => {
             let tasks = pids;
 
             willKill.forEach((timer, pid) => {
-                if (!pids.includes(pid)) return clearTimeout(timer);
+                if (!pids.includes(pid)) {
+                    clearTimeout(timer);
+                    willKill.delete(pid);
+                }
                 tasks = tasks.filter(t => t !== pid);
             });
 
