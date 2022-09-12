@@ -53,10 +53,10 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'push' }}
+          push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=main
+          cache-to: type=gha,mode=max,scope=main
 
   helper:
     name: Build Helper
@@ -95,26 +95,27 @@ jobs:
         with:
           file: Dockerfile.helper
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'push' }}
+          push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=helper
+          cache-to: type=gha,mode=max,scope=helper
 
-  # deploy:
-  #   name: Deploy
-  #   needs: 
-  #     - main
-  #     - helper
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Rollout
-  #       uses: appleboy/ssh-action@master
-  #       env:
-  #         IMAGE: ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-  #       with:
-  #         host: ${{ secrets.SSH_HOST }}
-  #         username: ${{ secrets.SSH_USER }}
-  #         port: ${{ secrets.SSH_PORT }}
-  #         key: ${{ secrets.SECRET_KEY }}
-  #         envs: IMAGE
-  #         script: kubectl set image deployment/devtool devtool=$IMAGE
+  deploy:
+    name: Deploy
+    if: github.event_name == 'push'
+    needs: 
+      - main
+      - helper
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rollout
+        uses: appleboy/ssh-action@master
+        env:
+          IMAGE: ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SECRET_KEY }}
+          envs: IMAGE
+          script: kubectl set image deployment/devtool devtool=$IMAGE
