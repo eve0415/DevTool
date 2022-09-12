@@ -4,7 +4,8 @@ import { platform } from 'process';
 if (platform === 'win32') throw new Error('This script is not supported on Windows');
 
 const parentPid: string[] = [];
-const willKill = new Map<string, NodeJS.Timer>();
+const allowTime = Array.from({ length: 10 }, (_, i) => `0:${i === 10 ? '' : '0'}${i}`);
+console.log(allowTime);
 
 setInterval(() => {
     spawn('ps', ['aux', '-o', 'pid,etime,comm,args'])
@@ -26,25 +27,11 @@ setInterval(() => {
                 return;
             }
 
-            const pids = process.map(({ pid }) => pid).filter(pid => !parentPid.includes(pid));
-            let tasks = pids;
-
-            willKill.forEach((timer, pid) => {
-                if (!pids.includes(pid)) {
-                    clearTimeout(timer);
-                    willKill.delete(pid);
-                }
-                tasks = tasks.filter(t => t !== pid);
-            });
-
-            tasks.forEach(pid => {
-                willKill.set(
-                    pid,
-                    setTimeout(() => {
-                        spawn('kill', ['-9', pid]);
-                        willKill.delete(pid);
-                    }, 1000 * 10),
-                );
-            });
+            process
+                .filter(({ pid }) => !parentPid.includes(pid))
+                .filter(({ time }) => !allowTime.includes(time))
+                .forEach(({ pid }) => {
+                    spawn('kill', ['-9', pid]);
+                });
         });
 }, 1000);
