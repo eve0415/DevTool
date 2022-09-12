@@ -95,3 +95,23 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha,scope=helper
           cache-to: type=gha,mode=max,scope=helper
+
+  deploy:
+    name: Deploy
+    if: github.event_name == 'push'
+    needs: 
+      - main
+      - helper
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rollout
+        uses: appleboy/ssh-action@master
+        env:
+          IMAGE: ghcr.io/${{ github.actor }}/devtool:sha-${{ github.sha }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SECRET_KEY }}
+          envs: IMAGE
+          script: kubectl set image deployment/devtool devtool=$IMAGE

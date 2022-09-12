@@ -23,11 +23,11 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
             child.stdout.setEncoding('utf8');
             child.stderr.setEncoding('utf8');
             child.stdout.on('data', data => {
-                if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
+                this.result.push(data);
             });
             child.stderr.on('data', data => {
                 this.embedColor = Colors.Red;
-                if (this.result.push(data) === 1) this.kill(child.pid ?? 100);
+                this.result.push(data);
             });
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'js')));

@@ -9,13 +9,6 @@ RUN chmod +x build.js
 RUN yarn node build.js
 
 
-# FROM node:lts-alpine AS production
-# WORKDIR /app
-# COPY .yarn/ ./.yarn
-# COPY .yarnrc.yml .pnp* package.json yarn.lock ./
-# COPY --from=base /app/out .
-
-
 FROM node:lts-alpine AS runner
 WORKDIR /app
 COPY package.json .
