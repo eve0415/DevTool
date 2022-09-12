@@ -5,7 +5,6 @@ if (platform === 'win32') throw new Error('This script is not supported on Windo
 
 const parentPid: string[] = [];
 const allowTime = Array.from({ length: 12 }, (_, i) => `0:${`${i}`.length === 1 ? '0' : ''}${i}`);
-console.log(allowTime);
 
 setInterval(() => {
     spawn('ps', ['aux', '-o', 'pid,etime,comm,args'])

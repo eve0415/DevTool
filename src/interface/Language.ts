@@ -1,8 +1,8 @@
 export type Language =
+    'cs' |
     'css' |
     'html' |
     'java' |
-    'cs' |
     'js' |
     'json' |
     'kt' |
