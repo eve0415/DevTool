@@ -4,7 +4,7 @@ import { platform } from 'process';
 if (platform === 'win32') throw new Error('This script is not supported on Windows');
 
 const parentPid: string[] = [];
-const allowTime = Array.from({ length: 10 }, (_, i) => `0:${i === 10 ? '' : '0'}${i}`);
+const allowTime = Array.from({ length: 12 }, (_, i) => `0:${`${i}`.length === 1 ? '0' : ''}${i}`);
 console.log(allowTime);
 
 setInterval(() => {
