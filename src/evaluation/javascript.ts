@@ -32,6 +32,9 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
             child.on('error', err => res(this.createErrorMessage(err)));
             child.on('close', () => res(this.createMessage(this.result, 'js')));
             child.stdin.end(`;\n${this.patchContent(content)}\n\n.exit\n`);
+            setTimeout(() => {
+                this.result.push("Process timed out. It's probably stuck in an infinite loop.");
+            }, 1000 * 10);
         });
     }
 

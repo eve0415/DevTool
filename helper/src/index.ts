@@ -1,5 +1,5 @@
 import { spawn } from 'child_process';
-import { kill, platform } from 'process';
+import { platform } from 'process';
 
 if (platform === 'win32') throw new Error('This script is not supported on Windows');
 
@@ -38,7 +38,8 @@ setInterval(() => {
                 willKill.set(
                     pid,
                     setTimeout(() => {
-                        kill(Number(pid), 'SIGKILL');
+                        spawn('kill', ['-9', pid]);
+                        willKill.delete(pid);
                     }, 1000 * 10),
                 );
             });
