@@ -1,19 +1,13 @@
-name: Build Latest Docker
+name: Build Nightly Docker
 
 on:
   push:
     branches:
-      - main
-    paths:
-      - "**/*.js"
-      - "**/*.ts"
-      - "**/*.json"
-      - "yarn.lock"
-      - "Dockerfile"
-      - ".github/workflows/main.yml"
+      - feat/helper
+  workflow_dispatch:
 
 concurrency:
-  group: ci-tests-${{ github.ref }}-main
+  group: ci-tests-${{ github.ref }}-nightly
   cancel-in-progress: true
 
 jobs:
@@ -44,16 +38,17 @@ jobs:
         id: meta
         with:
           images: ghcr.io/${{ github.actor }}/devtool
-          flavor: latest=true
+          flavor: latest=false
           tags: |
             type=sha
             type=sha,format=long
+            nightly
 
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name == 'push' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha,scope=main
           cache-to: type=gha,mode=max,scope=main
@@ -85,17 +80,18 @@ jobs:
         id: meta
         with:
           images: ghcr.io/${{ github.actor }}/devtool-helper
-          flavor: latest=true
+          flavor: latest=false
           tags: |
             type=sha
             type=sha,format=long
+            nightly
 
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           file: Dockerfile.helper
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name == 'push' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha,scope=helper
           cache-to: type=gha,mode=max,scope=helper

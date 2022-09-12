@@ -1,4 +1,4 @@
-FROM node:16-bullseye-slim AS base
+FROM node:lts-bullseye-slim AS base
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
     apt-get install -y --no-install-recommends wget ca-certificates python3
@@ -39,7 +39,7 @@ RUN mkdir -p /etc/apt/keyrings && \
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
     echo "deb https://download.mono-project.com/repo/debian stable-buster main" | tee /etc/apt/sources.list.d/mono-official-stable.list && \
     apt-get update && \
-    apt-get install -y --no-install-recommends temurin-17-jdk mono-devel procps python3 && \
+    apt-get install -y --no-install-recommends temurin-17-jdk mono-devel python3 && \
     apt-get purge --auto-remove -y --allow-remove-essential wget gnupg dirmngr apt && \
     rm -rf /var/lib/apt/lists/* /etc/apt/keyrings /sbin/reboot
 WORKDIR /app

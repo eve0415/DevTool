@@ -1,21 +1,45 @@
-import type { Language } from '../interface';
 import type { ColorResolvable, ReplyMessageOptions } from 'discord.js';
+import { spawn } from 'child_process';
 import { inspect } from 'util';
 import { AttachmentBuilder, Colors, EmbedBuilder } from 'discord.js';
-import treeKill from 'tree-kill';
 
 export abstract class BaseEvaluationSystem {
     protected embedColor: ColorResolvable = Colors.Blurple;
     protected result: unknown[] = [];
+    private wasTooLong = false;
 
-    public abstract evaluate(content: string): Promise<ReplyMessageOptions>;
+    protected evaluate(content: string, command: string, args: readonly string[] = []): Promise<ReplyMessageOptions> {
+        return new Promise(res => {
+            const child = spawn(command, args, { env: { TZ: process.env.TZ } });
+            child.stdout.setEncoding('utf8');
+            child.stderr.setEncoding('utf8');
+            child.stdout.on('data', data => {
+                this.result.push(data);
+            });
+            child.stderr.on('data', data => {
+                this.embedColor = Colors.Red;
+                this.result.push(data);
+            });
+            child.on('error', err => {
+                if (this.wasTooLong) {
+                    this.embedColor = Colors.DarkRed;
+                    this.result.push('10秒を超過して実行することはできません');
+                }
+                res(this.createErrorMessage(err));
+            });
+            child.on('close', () => {
+                if (this.wasTooLong) {
+                    this.embedColor = Colors.DarkRed;
+                    this.result.push('10秒を超過して実行することはできません');
+                }
+                res(this.createMessage(this.result));
+            });
+            child.stdin.end(content);
 
-    protected kill(pid: number): void {
-        setTimeout(() => {
-            treeKill(pid, 'SIGKILL');
-            this.embedColor = Colors.DarkRed;
-            this.result.push('10秒を超過して実行することはできません');
-        }, 10000);
+            setTimeout(() => {
+                this.wasTooLong = true;
+            }, 10000);
+        });
     }
 
     protected processContent(content: unknown[]): string[] {
@@ -36,14 +60,14 @@ export abstract class BaseEvaluationSystem {
             );
     }
 
-    protected createMessage(contents: unknown[], lang: Language): ReplyMessageOptions {
+    protected createMessage(contents: unknown[]): ReplyMessageOptions {
         let result = this.processContent(contents).filter(c => c).join('\n');
         if (!result) result = '返り値がありません';
 
         if (result.length <= 4080) {
             const embed = new EmbedBuilder()
                 .setColor(this.embedColor)
-                .setDescription(`\`\`\`${lang}\n${result}\n\`\`\``);
+                .setDescription(`\`\`\`\n${result}\n\`\`\``);
             return { embeds: [embed] };
         }
 
