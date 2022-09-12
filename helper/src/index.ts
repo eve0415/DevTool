@@ -17,15 +17,14 @@ setInterval(() => {
                 .map(line => {
                     const [pid, time, command, ...args] = line.split(/\s+/);
                     return { pid, time, command, args: args.slice(1) };
-                });
+                }) as { pid: string, time: string, command: string, args: string[] }[];
             if (parentPid.length === 0) {
                 process
                     .filter(({ command }) => command === 'node')
-                    .map(({ pid }) => pid)
-                    .filter((pid): pid is string => typeof pid === 'string')
-                    .forEach(pid => parentPid.push(pid));
+                    .forEach(({ pid }) => parentPid.push(pid));
+                return;
             }
             console.log(process, parentPid);
         });
     console.log('----------------------------------------');
-}, 5000);
+}, 1000);
