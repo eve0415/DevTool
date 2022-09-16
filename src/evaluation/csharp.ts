@@ -3,7 +3,7 @@ import { BaseEvaluationSystem } from './base';
 
 export class CSharpEvaluationSystem extends BaseEvaluationSystem {
     public override evaluate(content: string): Promise<ReplyMessageOptions> {
-        return super.evaluate(`${content}\nEnvironment.Exit(0);\n`, 'csi', ['--enable-small-config=yes']);
+        return super.evaluate(`${content}\nEnvironment.Exit(0);\n`, 'csi');
     }
 
     protected override createMessage(contents: unknown[]): ReplyMessageOptions {
