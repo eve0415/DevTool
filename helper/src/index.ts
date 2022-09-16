@@ -24,7 +24,7 @@ setInterval(() => {
                     .filter(({ command }) => command === 'node')
                     .forEach(({ pid }) => parentPid.push(pid));
                 return;
-            } else if (process.length === 1) {
+            } else if (process.filter(({ command }) => command === 'node').length === 1) {
                 // DevTool might be killed but I'm am alive
                 parentPid.forEach(() => parentPid.pop());
             }
