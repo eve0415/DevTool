@@ -609,6 +609,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios-cache-interceptor@npm:^0.10.7":
+  version: 0.10.7
+  resolution: "axios-cache-interceptor@npm:0.10.7"
+  dependencies:
+    cache-parser: ^1.2.4
+    fast-defer: ^1.1.7
+    object-code: ^1.2.4
+  checksum: e7927101875a1e642f5459410c1bafba1e7b9fe69c5e488ece50b6e542eae24f2de025718d47aa17e3d3b9f27951e609b4aed8c7fe21d530d0e45be0cd1a04fd
+  languageName: node
+  linkType: hard
+
 "axios@npm:^1.1.2":
   version: 1.1.2
   resolution: "axios@npm:1.1.2"
@@ -730,6 +741,13 @@ __metadata:
     tar: ^6.1.11
     unique-filename: ^2.0.0
   checksum: d91409e6e57d7d9a3a25e5dcc589c84e75b178ae8ea7de05cbf6b783f77a5fae938f6e8fda6f5257ed70000be27a681e1e44829251bfffe4c10216002f8f14e6
+  languageName: node
+  linkType: hard
+
+"cache-parser@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "cache-parser@npm:1.2.4"
+  checksum: de9fc4ab7af318109f1e53474e674d43997bc7b8676157e4f28e7dc60fda2f434ee138aa9d9abb9f849c55e73202ee74865afaa4e00298de70c4326510680c19
   languageName: node
   linkType: hard
 
@@ -943,6 +961,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.40.0
     "@typescript-eslint/parser": ^5.40.0
     axios: ^1.1.2
+    axios-cache-interceptor: ^0.10.7
     bufferutil: ^4.0.6
     discord.js: ^14.6.0
     dotenv: ^16.0.3
@@ -1567,6 +1586,13 @@ __metadata:
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
   checksum: e21a9d8d84f53493b6aa15efc9cfd53dd5b714a1f23f67fb5dc8f574af80df889b3bce25dc081887c6d25457cce704e636395333abad896ccdec03abaf1f3f9d
+  languageName: node
+  linkType: hard
+
+"fast-defer@npm:^1.1.7":
+  version: 1.1.7
+  resolution: "fast-defer@npm:1.1.7"
+  checksum: c0f816fe3f83ca7e12c56a6631c6819a50349fb7e1931cec88e883168b523c65605e6e0df32c8fba6c341860c29ecc6fe2531ba8a418d27d31da6544ad1bf45b
   languageName: node
   linkType: hard
 
@@ -2762,6 +2788,13 @@ __metadata:
     gauge: ^4.0.3
     set-blocking: ^2.0.0
   checksum: ae238cd264a1c3f22091cdd9e2b106f684297d3c184f1146984ecbe18aaa86343953f26b9520dedd1b1372bc0316905b736c1932d778dbeb1fcf5a1001390e2a
+  languageName: node
+  linkType: hard
+
+"object-code@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "object-code@npm:1.2.4"
+  checksum: b5dd65c81793705c996cacaea4009287d88629add24e70f8a610d58747fea6d19196e43bf32e134aab582dc1f3ba4867cbacaf84e1d194b70126cd33689c8d5b
   languageName: node
   linkType: hard
 

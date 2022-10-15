@@ -2,6 +2,7 @@ import type { DevToolBot } from '../DevToolBot';
 import type { DJSDocument, DJSRawDocument } from '../interface';
 import type { AutocompleteInteraction, ChatInputCommandInteraction } from 'discord.js';
 import axios from 'axios';
+import { buildMemoryStorage, defaultHeaderInterpreter, defaultKeyGenerator, setupCache } from 'axios-cache-interceptor';
 import { ApplicationCommandOptionType, ApplicationCommandType, Colors, EmbedBuilder } from 'discord.js';
 import Fuse from 'fuse.js';
 import { Command } from '../interface';
@@ -15,6 +16,12 @@ const deprecatedDef = 'These deprecated features can still be used, but should b
 const readonlyDef = 'Read-only members can be accessed outside the class, but their value cannot be changed.';
 const privateDef = 'The private access modifier ensures that class members are visible only to that class and are not accessible outside the containing class.';
 const staticDef = "Neither static methods nor static properties can be called on instances of the class. Instead, they're called on the class itself.";
+
+const docsRequest = setupCache(axios.create(), {
+    storage: buildMemoryStorage(),
+    generateKey: defaultKeyGenerator,
+    headerInterpreter: defaultHeaderInterpreter,
+});
 
 export default class extends Command {
     private fuse: Fuse<string> | null = null;
@@ -42,8 +49,8 @@ export default class extends Command {
     }
 
     private async fetchDocs(): Promise<void> {
-        const { data: djs } = await axios.get<DJSRawDocument>('https://raw.githubusercontent.com/discordjs/docs/main/discord.js/stable.json');
-        const { data: collection } = await axios.get<DJSRawDocument>('https://raw.githubusercontent.com/discordjs/docs/main/collection/stable.json');
+        const { data: djs } = await docsRequest.get<DJSRawDocument>('https://raw.githubusercontent.com/discordjs/docs/main/discord.js/main.json', { cache: { etag: true } });
+        const { data: collection } = await docsRequest.get<DJSRawDocument>('https://raw.githubusercontent.com/discordjs/docs/main/collection/main.json', { cache: { etag: true } });
 
         this.docs.clear();
 
