@@ -1,9 +1,9 @@
-import type { ReplyMessageOptions } from 'discord.js';
+import type { BaseMessageOptions } from 'discord.js';
 import { inspect } from 'util';
 import { BaseEvaluationSystem } from './base';
 
 export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
-    public override evaluate(content: string): Promise<ReplyMessageOptions> {
+    public override evaluate(content: string): Promise<BaseMessageOptions> {
         return super.evaluate(`;\n${this.patchContent(content)}\n\n.exit\n`, process.execPath, [
             '--max-old-space-size=50',
             '--experimental-import-meta-resolve',

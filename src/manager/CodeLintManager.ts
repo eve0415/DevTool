@@ -1,41 +1,41 @@
 import type { Language } from '../interface';
-import type { ReplyMessageOptions } from 'discord.js';
+import type { BaseMessageOptions } from 'discord.js';
 import { AttachmentBuilder, Colors } from 'discord.js';
 import prettier from 'prettier';
 
 const { format } = prettier;
 
 export class CodeLintManager {
-    public static lintJavaScript(code: string): ReplyMessageOptions {
+    public static lintJavaScript(code: string): BaseMessageOptions {
         return createMessage(format(code, { parser: 'babel' }), 'js');
     }
 
-    public static lintTypeScript(code: string): ReplyMessageOptions {
+    public static lintTypeScript(code: string): BaseMessageOptions {
         return createMessage(format(code, { parser: 'babel-ts' }), 'ts');
     }
 
-    public static lintCss(code: string): ReplyMessageOptions {
+    public static lintCss(code: string): BaseMessageOptions {
         return createMessage(format(code, { parser: 'css' }), 'css');
     }
 
-    public static lintMd(code: string): ReplyMessageOptions {
+    public static lintMd(code: string): BaseMessageOptions {
         return createMessage(format(code, { parser: 'markdown' }), 'md');
     }
 
-    public static lintJson(code: string): ReplyMessageOptions {
+    public static lintJson(code: string): BaseMessageOptions {
         return createMessage(format(code, { parser: 'json' }), 'json');
     }
 
-    public static lintYaml(code: string): ReplyMessageOptions {
+    public static lintYaml(code: string): BaseMessageOptions {
         return createMessage(format(code, { parser: 'yaml' }), 'yaml');
     }
 
-    public static lintHtml(code: string): ReplyMessageOptions {
+    public static lintHtml(code: string): BaseMessageOptions {
         return createMessage(format(code, { parser: 'html' }), 'html');
     }
 }
 
-function createMessage(code: string, lang: Language): ReplyMessageOptions {
+function createMessage(code: string, lang: Language): BaseMessageOptions {
     if (code.length <= 4080) {
         return {
             embeds: [{

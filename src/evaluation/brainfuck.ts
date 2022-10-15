@@ -1,8 +1,8 @@
-import type { ReplyMessageOptions } from 'discord.js';
+import type { BaseMessageOptions } from 'discord.js';
 import { BaseEvaluationSystem } from './base';
 
 export class BrainfuckEvaluationSystem extends BaseEvaluationSystem {
-    public override evaluate(content: string): Promise<ReplyMessageOptions> {
+    public override evaluate(content: string): Promise<BaseMessageOptions> {
         return new Promise(res => {
             if (content.includes(',')) return res(this.createErrorMessage(new TypeError('`,`は使用できません。')));
 

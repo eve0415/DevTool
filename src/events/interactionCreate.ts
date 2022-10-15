@@ -1,5 +1,5 @@
 import type { DevToolBot } from '../DevToolBot';
-import type { DiscordAPIError, Interaction, WebhookEditMessageOptions } from 'discord.js';
+import type { BaseMessageOptions, DiscordAPIError, Interaction } from 'discord.js';
 import { inspect } from 'util';
 import { Colors, InteractionType } from 'discord.js';
 import { Event } from '../interface';
@@ -23,7 +23,7 @@ export default class extends Event {
             this.logger.error(e);
 
             const exec = /^\/interactions\/\d+\/(?<token>.+)\/callback$/.exec((e as DiscordAPIError).url)?.groups ?? {};
-            const message: WebhookEditMessageOptions = {
+            const message: BaseMessageOptions = {
                 embeds: [{
                     color: Colors.Red,
                     title: 'An Error Occured When Sending A Message',

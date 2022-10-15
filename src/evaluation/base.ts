@@ -1,4 +1,4 @@
-import type { ColorResolvable, ReplyMessageOptions } from 'discord.js';
+import type { BaseMessageOptions, ColorResolvable } from 'discord.js';
 import { spawn } from 'child_process';
 import { inspect } from 'util';
 import { AttachmentBuilder, Colors, EmbedBuilder } from 'discord.js';
@@ -8,7 +8,7 @@ export abstract class BaseEvaluationSystem {
     protected result: unknown[] = [];
     private wasTooLong = false;
 
-    protected evaluate(content: string, command: string, args: readonly string[] = []): Promise<ReplyMessageOptions> {
+    protected evaluate(content: string, command: string, args: readonly string[] = []): Promise<BaseMessageOptions> {
         return new Promise(res => {
             const child = spawn(command, args, { env: { TZ: process.env.TZ } });
             child.stdout.setEncoding('utf8');
@@ -60,7 +60,7 @@ export abstract class BaseEvaluationSystem {
             );
     }
 
-    protected createMessage(contents: unknown[]): ReplyMessageOptions {
+    protected createMessage(contents: unknown[]): BaseMessageOptions {
         let result = this.processContent(contents).filter(c => c).join('\n');
         if (!result) result = '返り値がありません';
 
@@ -88,7 +88,7 @@ export abstract class BaseEvaluationSystem {
         };
     }
 
-    protected createErrorMessage(error: Error): ReplyMessageOptions {
+    protected createErrorMessage(error: Error): BaseMessageOptions {
         return {
             embeds: [{
                 color: Colors.DarkRed,

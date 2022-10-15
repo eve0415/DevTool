@@ -1,4 +1,4 @@
-import type { InteractionReplyOptions, ReplyMessageOptions } from 'discord.js';
+import type { BaseMessageOptions, InteractionReplyOptions } from 'discord.js';
 import { ButtonStyle, Colors, ComponentType } from 'discord.js';
 
 export function parseContent(content: string): string[] {
@@ -12,9 +12,9 @@ export function parseContent(content: string): string[] {
 }
 
 export function getHelp(replyTo: 'interaction'): InteractionReplyOptions;
-export function getHelp(replyTo: 'message'): ReplyMessageOptions;
-export function getHelp(): InteractionReplyOptions | ReplyMessageOptions {
-    const options: InteractionReplyOptions | ReplyMessageOptions = {
+export function getHelp(replyTo: 'message'): BaseMessageOptions;
+export function getHelp(): InteractionReplyOptions | BaseMessageOptions {
+    const options: InteractionReplyOptions | BaseMessageOptions = {
         embeds: [{
             title: 'ヘルプ？',
             description: [
