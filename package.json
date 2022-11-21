@@ -28,7 +28,7 @@
     "bufferutil": "^4.0.7",
     "discord.js": "^14.6.0",
     "erlpack": "^0.1.4",
-    "fastify": "^4.10.0",
+    "fastify": "^4.10.2",
     "fuse.js": "^6.6.2",
     "log4js": "^6.7.0",
     "prettier": "^2.7.1",
