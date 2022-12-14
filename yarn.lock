@@ -1123,7 +1123,6 @@ __metadata:
     dotenv: ^16.0.3
     erlpack: ^0.1.4
     esbuild: ^0.16.5
-    esbuild-node-externals: ^1.6.0
     eslint: ^8.29.0
     eslint-import-resolver-node: ^0.3.6
     eslint-plugin-import: ^2.26.0
@@ -1291,18 +1290,6 @@ __metadata:
     is-date-object: ^1.0.1
     is-symbol: ^1.0.2
   checksum: 4ead6671a2c1402619bdd77f3503991232ca15e17e46222b0a41a5d81aebc8740a77822f5b3c965008e631153e9ef0580540007744521e72de8e33599fca2eed
-  languageName: node
-  linkType: hard
-
-"esbuild-node-externals@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "esbuild-node-externals@npm:1.6.0"
-  dependencies:
-    find-up: ^5.0.0
-    tslib: ^2.4.1
-  peerDependencies:
-    esbuild: 0.12 - 0.16
-  checksum: dacc96228e610a391318c4fa46b2dfd2a923ab5819bff1b1e5ae92799d1eda18a8efc1836216a157fd5ab6a7bf65596f231e261b1bf18bfc23f5b7c850ee8c07
   languageName: node
   linkType: hard
 
