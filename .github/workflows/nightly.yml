@@ -32,7 +32,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Generate Docker meta
         uses: docker/metadata-action@v4
         id: meta
@@ -74,7 +74,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Generate Docker meta
         uses: docker/metadata-action@v4
         id: meta

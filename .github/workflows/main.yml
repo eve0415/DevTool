@@ -8,9 +8,9 @@ on:
       - "**/*.js"
       - "**/*.ts"
       - "**/*.json"
-      - "yarn.lock"
-      - "Dockerfile"
-      - ".github/workflows/main.yml"
+      - yarn.lock
+      - Dockerfile
+      - .github/workflows/main.yml
   schedule:
     - cron: 0 1 * * 1
 

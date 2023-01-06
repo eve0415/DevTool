@@ -8,15 +8,15 @@ on:
       - "**/*.js"
       - "**/*.ts"
       - "**/*.json"
-      - "yarn.lock"
-      - ".github/workflows/test.yml"
+      - yarn.lock
+      - .github/workflows/test.yml
   pull_request:
     paths:
       - "**/*.js"
       - "**/*.ts"
       - "**/*.json"
-      - "yarn.lock"
-      - ".github/workflows/test.yml"
+      - yarn.lock
+      - .github/workflows/test.yml
 
 concurrency:
   group: ci-tests-${{ github.ref }}-test
