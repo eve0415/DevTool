@@ -31,7 +31,7 @@ ENV VERSION=1.8.0
 WORKDIR /app
 RUN wget -O kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v${VERSION}/kotlin-compiler-${VERSION}.zip
 RUN unzip kotlin.zip
-RUN mv kotlinc/bin/* kotlinc
+RUN mv kotlinc/bin/*.bat kotlinc
 
 
 FROM base AS runner
