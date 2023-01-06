@@ -29,9 +29,9 @@ COPY --from=builder /app/out ./
 FROM builder-base AS binary
 ENV VERSION=1.8.0
 WORKDIR /app
-RUN wget -O kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v${VERSION}/kotlin-compiler-${VERSION}.zip && \
-    unzip kotlin.zip && \
-    mv kotlinc/bin/*.zip kotlinc
+RUN wget -O kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v${VERSION}/kotlin-compiler-${VERSION}.zip
+RUN unzip kotlin.zip
+RUN mv kotlinc/bin/* kotlinc
 
 
 FROM base AS runner
