@@ -29,9 +29,9 @@ COPY --from=builder /app/out ./
 FROM builder-base AS binary
 ENV VERSION=1.8.0
 WORKDIR /app
-RUN wget -O /app/kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v${VERSION}/kotlin-compiler-${VERSION}.zip && \
+RUN wget -O kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v${VERSION}/kotlin-compiler-${VERSION}.zip && \
     unzip kotlin.zip && \
-    mv kotlinc/bin/kotlinc-jvm /app/bin
+    mv kotlinc/bin/*.zip kotlinc
 
 
 FROM base AS runner
@@ -48,7 +48,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends temurin-17-jdk mono-devel python3 && \
     apt-get purge --auto-remove -y --allow-remove-essential wget gnupg dirmngr apt && \
     rm -rf /var/lib/apt/lists/* /etc/apt/keyrings /sbin/reboot
-COPY --from=binary /app/bin /usr/local/bin
+COPY --from=binary /app/kotlinc/bin/* /usr/local/bin
 COPY --from=production /app ./
 USER devtool
 CMD ["yarn", "node", "--enable-source-maps", "index.js"]
