@@ -31,7 +31,7 @@ ENV VERSION=1.8.0
 WORKDIR /app
 RUN wget -O kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v${VERSION}/kotlin-compiler-${VERSION}.zip
 RUN unzip kotlin.zip
-RUN mv kotlinc/bin/*.bat kotlinc
+RUN rm kotlinc/bin/*.bat
 
 
 FROM base AS runner
@@ -49,6 +49,7 @@ RUN apt-get update && \
     apt-get purge --auto-remove -y --allow-remove-essential wget gnupg dirmngr apt && \
     rm -rf /var/lib/apt/lists/* /etc/apt/keyrings /sbin/reboot
 COPY --from=binary /app/kotlinc/bin/* /usr/local/bin
+COPY --from=binary /app/kotlinc/lib /usr/local/lib
 COPY --from=production /app ./
 USER devtool
 CMD ["yarn", "node", "--enable-source-maps", "index.js"]
