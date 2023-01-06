@@ -27,7 +27,7 @@ COPY --from=builder /app/out ./
 
 
 FROM builder-base AS binary
-ENV VERSION=1.7.21
+ENV VERSION=1.8.0
 WORKDIR /app
 RUN wget -O /app/kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v${VERSION}/kotlin-compiler-${VERSION}.zip && \
     unzip kotlin.zip && \
