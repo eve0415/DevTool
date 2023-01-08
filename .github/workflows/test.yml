@@ -8,6 +8,7 @@ on:
       - "**/*.js"
       - "**/*.ts"
       - "**/*.json"
+      - build.js
       - yarn.lock
       - .github/workflows/test.yml
   pull_request:
@@ -15,6 +16,7 @@ on:
       - "**/*.js"
       - "**/*.ts"
       - "**/*.json"
+      - build.js
       - yarn.lock
       - .github/workflows/test.yml
 
@@ -63,3 +65,22 @@ jobs:
 
       - name: Build
         run: yarn build
+
+  types:
+    name: Check types
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Check
+        run: yarn check
