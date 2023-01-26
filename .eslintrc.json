@@ -57,7 +57,7 @@
     "no-useless-computed-key": "error",
     "no-useless-rename": "error",
     "no-var": "error",
-    "object-shorthand": ["error", "consistent-as-needed"],
+    "object-shorthand": "error",
     "operator-assignment": "error",
     "prefer-arrow-callback": "error",
     "prefer-const": "error",
@@ -69,6 +69,7 @@
     "prefer-spread": "error",
     "prefer-template": "error",
     "require-atomic-updates": "error",
-    "yoda": "error"
+    "yoda": "error",
+    "no-control-regex": "off"
   }
 }
