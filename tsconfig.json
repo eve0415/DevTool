@@ -24,7 +24,5 @@
     "strict": true,
     "target": "esnext"
   },
-  "exclude": [
-    "out"
-  ]
+  "exclude": ["out"]
 }

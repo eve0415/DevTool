@@ -17,10 +17,12 @@
   "scripts": {
     "build": "./build.js",
     "build:helper": "./helper/build.js",
+    "watch": "./build.js --watch",
     "check": "tsc",
-    "dev": "nodemon --watch src -e ts --exec \"yarn build && yarn node -r dotenv/config --enable-source-maps ./out/index.js\"",
-    "lint": "eslint --fix .",
-    "clean": "rimraf out",
+    "start": "node -r dotenv/config --enable-source-maps ./out/index.js",
+    "dev": "nodemon --watch ./out/index.js --exec \"yarn node -r dotenv/config --enable-source-maps ./out/index.js\"",
+    "lint": "eslint --fix . & prettier --write \"./**/*.{ts,tsx,js,json}\"",
+    "lint:ci": "eslint lint & prettier --check \"./**/*.{ts,tsx,js,json}\"",
     "sdk": "yarn dlx @yarnpkg/sdks"
   },
   "dependencies": {
