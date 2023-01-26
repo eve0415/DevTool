@@ -49,6 +49,7 @@
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-import": "^2.27.5",
     "nodemon": "^2.0.20",
+    "pretty-bytes": "^6.0.0",
     "rimraf": "^4.1.2"
   }
 }

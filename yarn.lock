@@ -1158,6 +1158,7 @@ __metadata:
     log4js: ^6.7.1
     nodemon: ^2.0.20
     prettier: ^2.8.3
+    pretty-bytes: ^6.0.0
     rimraf: ^4.1.2
     typescript: ^4.9.4
     utf-8-validate: ^6.0.1
@@ -3246,6 +3247,13 @@ __metadata:
   bin:
     prettier: bin-prettier.js
   checksum: 92f2ceb522d454370e02082aa74ad27388672f7cee8975028b59517c069fe643bdc73e322675c8faf2ff173d7a626d1a6389f26b474000308e793aa25fff46e5
+  languageName: node
+  linkType: hard
+
+"pretty-bytes@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "pretty-bytes@npm:6.0.0"
+  checksum: 0bb9f95e617236404b29a8392c6efd82d65805f622f5e809ecd70068102be857d4e3276c86d2a32fa2ef851cc29472e380945dab7bec83ec79bd57a19a10faf7
   languageName: node
   linkType: hard
 
