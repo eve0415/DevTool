@@ -60,6 +60,10 @@ export abstract class BaseEvaluationSystem {
       .map(s => s.trimEnd())
       .map(c =>
         c
+          .replaceAll(
+            /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+            ''
+          )
           .replaceAll('undefined\n>', '')
           .replaceAll('jshell>', '')
           .replaceAll('>', '')

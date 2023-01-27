@@ -1,8 +1,8 @@
 import type { BaseMessageOptions } from 'discord.js';
 import { BaseEvaluationSystem } from './base';
 
-export class KotlinEvaluationSystem extends BaseEvaluationSystem {
+export class DenoEvaluationSystem extends BaseEvaluationSystem {
   public override evaluate(content: string): Promise<BaseMessageOptions> {
-    return super.evaluate(`${content}\n\n:quit\n`, 'sh', ['-c', 'kotlin']);
+    return super.evaluate(`${content}\n\nclose()\n`, 'deno', ['repl']);
   }
 }
