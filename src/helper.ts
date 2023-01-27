@@ -18,7 +18,7 @@ export function parseContent(content: string): string[] {
 export function getHelp(replyTo: 'interaction'): InteractionReplyOptions;
 export function getHelp(replyTo: 'message'): BaseMessageOptions;
 export function getHelp(): BaseMessageOptions | InteractionReplyOptions {
-  const options: BaseMessageOptions | InteractionReplyOptions = {
+  return {
     embeds: [
       {
         title: 'ヘルプ？',
@@ -61,6 +61,4 @@ export function getHelp(): BaseMessageOptions | InteractionReplyOptions {
       },
     ],
   };
-
-  return options;
 }
