@@ -4,6 +4,7 @@ import type { DevToolBot } from '../DevToolBot';
 import {
   BrainfuckEvaluationSystem,
   CSharpEvaluationSystem,
+  DenoEvaluationSystem,
   JavaEvaluationSystem,
   JavaScriptEvaluationSystem,
   KotlinEvaluationSystem,
@@ -66,6 +67,12 @@ export default class extends Command {
             await new TypeScriptEvaluationSystem().evaluate(
               codeblock['code'] ?? ''
             )
+          );
+          break;
+
+        case 'deno':
+          await message.reply(
+            await new DenoEvaluationSystem().evaluate(codeblock['code'] ?? '')
           );
           break;
 

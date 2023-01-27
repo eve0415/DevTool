@@ -22,17 +22,9 @@ export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
   }
 
   protected override createMessage(contents: unknown[]): BaseMessageOptions {
-    const processed = this.processContent(contents)
-      .map(c =>
-        // eslint-disable-next-line no-control-regex
-        c.replaceAll(
-          /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
-          ''
-        )
-      )
-      .filter(
-        c => !c.includes('Could not open history file') || !/^\.{2,}$/.test(c)
-      );
+    const processed = this.processContent(contents).filter(
+      c => !c.includes('Could not open history file') || !/^\.{2,}$/.test(c)
+    );
     return super.createMessage(processed);
   }
 }

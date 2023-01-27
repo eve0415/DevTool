@@ -53,6 +53,7 @@ Discord で簡単なプログラムを実行するためのボットです。
 --- | :---: | :---:
 JavaScript | ✓ | ✓
 TypeScript | ✓ | ✓
+Deno | ✓ |
 Python | ✓ |
 Java | ✓ |
 Kotlin | ✓ |

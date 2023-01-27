@@ -1,6 +1,7 @@
 export type Language =
   | 'cs'
   | 'css'
+  | 'deno'
   | 'html'
   | 'java'
   | 'js'

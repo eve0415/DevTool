@@ -1,5 +1,6 @@
 export * from './brainfuck';
 export * from './csharp';
+export * from './deno';
 export * from './java';
 export * from './javascript';
 export * from './kotlin';
