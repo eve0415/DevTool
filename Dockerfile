@@ -47,7 +47,7 @@ RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | tee
   curl -fsSL https://deno.land/x/install/install.sh | sh
 RUN apt-get update && \
   apt-get install -y --no-install-recommends temurin-17-jdk mono-devel python3 && \
-  apt-get purge --auto-remove -y --allow-remove-essential wget gnupg dirmngr apt && \
+  apt-get purge --auto-remove -y --allow-remove-essential wget gnupg dirmngr apt curl unzip && \
   rm -rf /var/lib/apt/lists/* /etc/apt/keyrings /sbin/reboot
 COPY --from=binary /app/kotlinc/bin/* /usr/local/bin
 COPY --from=binary /app/kotlinc/lib /usr/local/lib
