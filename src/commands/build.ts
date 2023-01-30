@@ -1,17 +1,7 @@
 import type { MessageContextMenuCommandInteraction } from 'discord.js';
 import { ApplicationCommandType } from 'discord.js';
+import { CoffeeScriptBuildingSystem, SassBuildingSystem, TypeScriptBuildingSystem } from '../building';
 import type { DevToolBot } from '../DevToolBot';
-import {
-  BrainfuckEvaluationSystem,
-  CoffeeScriptEvaluationSystem,
-  CSharpEvaluationSystem,
-  DenoEvaluationSystem,
-  JavaEvaluationSystem,
-  JavaScriptEvaluationSystem,
-  KotlinEvaluationSystem,
-  PythonEvaluationSystem,
-  TypeScriptEvaluationSystem,
-} from '../evaluation';
 import { parseContent } from '../helper';
 import { Command } from '../interface';
 
@@ -21,7 +11,7 @@ export default class extends Command {
   public constructor(client: DevToolBot) {
     super(client, {
       type: ApplicationCommandType.Message,
-      name: '実行',
+      name: 'ビルド',
     });
   }
 
@@ -53,69 +43,37 @@ export default class extends Command {
 
       const codeblock = codeBlockRegex.exec(content)?.groups ?? {};
       switch (codeblock['lang']?.toLowerCase()) {
-        case 'js':
-        case 'javascript':
-          await message.reply(
-            await new JavaScriptEvaluationSystem().evaluate(
-              codeblock['code'] ?? ''
-            )
-          );
-          break;
-
-        case 'ts':
-        case 'typescript':
-          await message.reply(
-            await new TypeScriptEvaluationSystem().evaluate(
-              codeblock['code'] ?? ''
-            )
-          );
-          break;
-
         case 'deno':
-          await message.reply(
-            await new DenoEvaluationSystem().evaluate(codeblock['code'] ?? '')
-          );
-          break;
-
         case 'py':
         case 'python':
-          await message.reply(
-            await new PythonEvaluationSystem().evaluate(codeblock['code'] ?? '')
-          );
-          break;
-
         case 'java':
-          await message.reply(
-            await new JavaEvaluationSystem().evaluate(codeblock['code'] ?? '')
-          );
-          break;
-
         case 'kt':
         case 'kotlin':
-          await message.reply(
-            await new KotlinEvaluationSystem().evaluate(codeblock['code'] ?? '')
-          );
-          break;
-
         case 'cs':
         case 'csharp':
+        case 'brainfuck':
+        case 'js':
+          await message.reply("この言語をビルドすることはできません");
+          break;
+        
+        case 'ts':
+        case 'tsx':
           await message.reply(
-            await new CSharpEvaluationSystem().evaluate(codeblock['code'] ?? '')
+            await new TypeScriptBuildingSystem().build(codeblock['code'] ?? '')
           );
           break;
-
-        case 'brainfuck':
+        
+        case 'sass':
+        case 'scss':
           await message.reply(
-            await new BrainfuckEvaluationSystem().evaluate(
-              codeblock['code'] ?? ''
-            )
+            await new SassBuildingSystem().build(codeblock['code'] ?? '')
           );
           break;
         
         case 'coffeescript':
         case 'coffee':
           await message.reply(
-            await new CoffeeScriptEvaluationSystem().evaluate(codeblock['code'] ?? '')
+            await new CoffeeScriptBuildingSystem().build(codeblock['code'] ?? '')
           );
           break;
 
@@ -126,7 +84,7 @@ export default class extends Command {
               '一緒に開発してくれる方を募集しています',
               `\`${
                 codeblock['lang'] ?? ''
-              }\` が実行できるようにあなたの手で対応しませんか？`,
+              }\` がビルドできるようにあなたの手で対応しませんか？`,
             ].join('\n')
           );
           break;

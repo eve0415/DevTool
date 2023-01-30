@@ -20,11 +20,4 @@ export class TypeScriptEvaluationSystem extends BaseEvaluationSystem {
       res(new JavaScriptEvaluationSystem().evaluate(script.outputText));
     });
   }
-
-  protected override createMessage(contents: unknown[]): BaseMessageOptions {
-    const processed = this.processContent(contents).filter(
-      c => !c.includes('Could not open history file') || !/^\.{2,}$/.test(c)
-    );
-    return super.createMessage(processed);
-  }
 }
