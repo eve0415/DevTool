@@ -52,8 +52,8 @@ RUN apt-get update && \
   apt-get install -y --no-install-recommends temurin-17-jdk mono-devel python3 && \
   apt-get purge --auto-remove -y --allow-remove-essential wget gnupg dirmngr apt && \
   rm -rf /var/lib/apt/lists/* /etc/apt/keyrings /sbin/reboot
-COPY --from=kotlin /app/kotlinc/bin/* /usr/local/bin
-COPY --from=kotlin /app/kotlinc/lib /usr/local/lib
+COPY --from=kotlin /app/kotlinc/bin/* /usr/bin
+COPY --from=kotlin /app/kotlinc/lib /usr/lib
 COPY --from=deno /root/.deno/bin/deno /usr/bin
 COPY --from=production /app ./
 USER devtool
