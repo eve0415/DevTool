@@ -54,7 +54,7 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/* /etc/apt/keyrings /sbin/reboot
 COPY --from=kotlin /app/kotlinc/bin/* /usr/local/bin
 COPY --from=kotlin /app/kotlinc/lib /usr/local/lib
-COPY --from=deno /root/.deno/bin/deno /usr/local/bin
+COPY --from=deno /root/.deno/bin/deno /usr/bin
 COPY --from=production /app ./
 USER devtool
 CMD ["yarn", "node", "--enable-source-maps", "index.js"]
