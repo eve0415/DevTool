@@ -60,9 +60,11 @@ export default class extends Command {
         case 'css':
           await message.reply(CodeLintManager.lintCss(codeblock['code'] ?? ''));
           break;
-        
+
         case 'scss':
-          await message.reply(CodeLintManager.lintScss(codeblock['code'] ?? ''));
+          await message.reply(
+            CodeLintManager.lintScss(codeblock['code'] ?? '')
+          );
           break;
 
         case 'md':
