@@ -44,7 +44,7 @@ RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | tee
   echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list && \
   apt-key add /etc/apt/keyrings/mono.gpg && \
   echo "deb https://download.mono-project.com/repo/debian stable-buster main" | tee /etc/apt/sources.list.d/mono-official-stable.list && \
-  curl -fsSL https://deno.land/x/install/install.sh | sh
+  curl -s https://gist.githubusercontent.com/LukeChannings/09d53f5c364391042186518c8598b85e/raw/ac8cd8c675b985edd4b3e16df63ffef14d1f0e24/deno_install.sh | sh
 RUN apt-get update && \
   apt-get install -y --no-install-recommends temurin-17-jdk mono-devel python3 && \
   apt-get purge --auto-remove -y --allow-remove-essential wget gnupg dirmngr apt curl unzip && \
