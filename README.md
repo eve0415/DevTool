@@ -53,8 +53,8 @@ Discord で簡単なプログラムを実行するためのボットです。
 --- | :---: | :---: | :---:
 JavaScript | ✓ | ✓ |
 TypeScript | ✓ | ✓ | ✓
-CoffeeScript | ✓ | ✓ | ✓
 TSX | | | ✓
+CoffeeScript | ✓ | ✓ | ✓
 Deno | ✓ |
 Python | ✓ |
 Java | ✓ |
@@ -63,10 +63,10 @@ C# | ✓ |
 Brainfuck | ✓ |
 HTML | | ✓
 CSS | | ✓
-Sass/Scss | | | ✓
 MarkDown | | ✓
 JSON | | ✓
 YAML | | ✓
+Sass/Scss | | | ✓
 
 ## 諸注意
 
