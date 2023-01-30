@@ -29,7 +29,8 @@ export class JavaScriptEvaluationSystem extends BaseEvaluationSystem {
       )
       .slice(1)
       .flatMap(s => s.split('\\n'))
-      .map(s => s.trimEnd());
+      .map(s => s.trimEnd())
+      .filter(s => s !== '...');
   }
 
   private patchContent(input: string): string {

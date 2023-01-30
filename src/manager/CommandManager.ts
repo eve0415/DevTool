@@ -24,6 +24,9 @@ export class CommandManager extends Collection<string, Command> {
     await import('../commands/run').then(i =>
       this.set('実行', new i.default(this.client))
     );
+    await import('../commands/build').then(i =>
+      this.set('ビルド', new i.default(this.client))
+    );
     this.logger.info(`Successfully registered ${this.size} commands`);
   }
 

@@ -1,6 +1,7 @@
 import { spawn } from 'child_process';
 import type { BaseMessageOptions, ColorResolvable } from 'discord.js';
-import { AttachmentBuilder, Colors, EmbedBuilder } from 'discord.js';
+import { Colors } from 'discord.js';
+import { createMessageFromText } from '../util';
 import { inspect } from 'util';
 
 export abstract class BaseEvaluationSystem {
@@ -76,41 +77,10 @@ export abstract class BaseEvaluationSystem {
       .join('\n');
     if (!result) result = '返り値がありません';
 
-    if (result.length <= 4080) {
-      const embed = new EmbedBuilder()
-        .setColor(this.embedColor)
-        .setDescription(`\`\`\`\n${result}\n\`\`\``);
-      return { embeds: [embed] };
-    }
-
-    const content = `実行結果です。ファイルをご覧ください。${
-      Buffer.from(result).byteLength / 1024 / 1024 > 8
-        ? '\nファイルの容量が8MBを超えたため、一部の結果が省略されています'
-        : ''
-    }`;
-
-    while (Buffer.from(result).byteLength / 1024 / 1024 > 8) {
-      const cache = result.split('\n');
-
-      result =
-        (cache.length === 1
-          ? cache[0]?.substring(
-              cache[0].length - Number(cache[0].length.toString().slice(0, -1))
-            )
-          : cache
-              .splice(
-                0,
-                cache.length - Number(cache.length.toString().slice(0, -1))
-              )
-              .join('\n')) ?? '';
-    }
-
-    return {
-      content,
-      files: [
-        new AttachmentBuilder(Buffer.from(result), { name: 'result.txt' }),
-      ],
-    };
+    return createMessageFromText(result, {
+      title: '実行結果',
+      embedColor: this.embedColor,
+    });
   }
 
   protected createErrorMessage(error: Error): BaseMessageOptions {

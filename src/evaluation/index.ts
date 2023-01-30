@@ -6,3 +6,4 @@ export * from './javascript';
 export * from './kotlin';
 export * from './python';
 export * from './typescript';
+export * from './coffeescript';

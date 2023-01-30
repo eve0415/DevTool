@@ -3,6 +3,7 @@ import { ApplicationCommandType } from 'discord.js';
 import type { DevToolBot } from '../DevToolBot';
 import {
   BrainfuckEvaluationSystem,
+  CoffeeScriptEvaluationSystem,
   CSharpEvaluationSystem,
   DenoEvaluationSystem,
   JavaEvaluationSystem,
@@ -106,6 +107,15 @@ export default class extends Command {
         case 'brainfuck':
           await message.reply(
             await new BrainfuckEvaluationSystem().evaluate(
+              codeblock['code'] ?? ''
+            )
+          );
+          break;
+
+        case 'coffeescript':
+        case 'coffee':
+          await message.reply(
+            await new CoffeeScriptEvaluationSystem().evaluate(
               codeblock['code'] ?? ''
             )
           );

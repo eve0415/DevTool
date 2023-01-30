@@ -1,9 +1,13 @@
 import type { MessageContextMenuCommandInteraction } from 'discord.js';
 import { ApplicationCommandType } from 'discord.js';
+import {
+  CoffeeScriptBuildingSystem,
+  SassBuildingSystem,
+  TypeScriptBuildingSystem,
+} from '../building';
 import type { DevToolBot } from '../DevToolBot';
 import { parseContent } from '../helper';
 import { Command } from '../interface';
-import { CodeLintManager } from '../manager';
 
 const codeBlockRegex = /^`{3}(?<lang>[a-z]+)\n(?<code>[\s\S]+)\n`{3}$/mu;
 
@@ -11,7 +15,7 @@ export default class extends Command {
   public constructor(client: DevToolBot) {
     super(client, {
       type: ApplicationCommandType.Message,
-      name: '整形',
+      name: 'ビルド',
     });
   }
 
@@ -43,51 +47,39 @@ export default class extends Command {
 
       const codeblock = codeBlockRegex.exec(content)?.groups ?? {};
       switch (codeblock['lang']?.toLowerCase()) {
+        case 'deno':
+        case 'py':
+        case 'python':
+        case 'java':
+        case 'kt':
+        case 'kotlin':
+        case 'cs':
+        case 'csharp':
+        case 'brainfuck':
         case 'js':
-        case 'javascript':
-          await message.reply(
-            CodeLintManager.lintJavaScript(codeblock['code'] ?? '')
-          );
+          await message.reply('この言語をビルドすることはできません');
           break;
 
         case 'ts':
-        case 'typescript':
+        case 'tsx':
           await message.reply(
-            CodeLintManager.lintTypeScript(codeblock['code'] ?? '')
+            await new TypeScriptBuildingSystem().build(codeblock['code'] ?? '')
           );
           break;
 
-        case 'css':
-          await message.reply(CodeLintManager.lintCss(codeblock['code'] ?? ''));
-          break;
-
+        case 'sass':
         case 'scss':
           await message.reply(
-            CodeLintManager.lintScss(codeblock['code'] ?? '')
+            await new SassBuildingSystem().build(codeblock['code'] ?? '')
           );
           break;
 
-        case 'md':
-        case 'markdown':
-          await message.reply(CodeLintManager.lintMd(codeblock['code'] ?? ''));
-          break;
-
-        case 'json':
+        case 'coffeescript':
+        case 'coffee':
           await message.reply(
-            CodeLintManager.lintJson(codeblock['code'] ?? '')
-          );
-          break;
-
-        case 'yml':
-        case 'yaml':
-          await message.reply(
-            CodeLintManager.lintYaml(codeblock['code'] ?? '')
-          );
-          break;
-
-        case 'html':
-          await message.reply(
-            CodeLintManager.lintHtml(codeblock['code'] ?? '')
+            await new CoffeeScriptBuildingSystem().build(
+              codeblock['code'] ?? ''
+            )
           );
           break;
 
@@ -98,7 +90,7 @@ export default class extends Command {
               '一緒に開発してくれる方を募集しています',
               `\`${
                 codeblock['lang'] ?? ''
-              }\` が整形できるようにあなたの手で対応しませんか？`,
+              }\` がビルドできるようにあなたの手で対応しませんか？`,
             ].join('\n')
           );
           break;
