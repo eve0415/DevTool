@@ -1,9 +1,15 @@
 import type { BaseMessageOptions, ColorResolvable } from 'discord.js';
+import type { Language } from 'src/interface';
 import { Colors } from 'discord.js';
 import { createMessageFromText } from '../util';
 
 export abstract class BaseBuildingSystem {
   protected embedColor: ColorResolvable = Colors.Blurple;
+  private readonly resultLanguage: Language | '' = '';
+
+  constructor(options: { resultLanguage: Language }) {
+    this.resultLanguage = options.resultLanguage;
+  }
 
   public build(content: string): Promise<BaseMessageOptions> {
     return this.buildSnippet(content)
@@ -24,6 +30,7 @@ export abstract class BaseBuildingSystem {
     return createMessageFromText(result, {
       title: 'ビルド結果',
       embedColor: this.embedColor,
+      lang: this.resultLanguage,
     });
   }
 
