@@ -31,7 +31,7 @@ setInterval(() => {
       } else if (
         process.filter(({ command }) => command === 'node').length === 1
       ) {
-        // DevTool might be killed but I'm am alive
+        // DevTool might be killed but I'm alive
         parentPid.forEach(() => parentPid.pop());
       }
 
