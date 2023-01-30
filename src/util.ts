@@ -3,12 +3,16 @@ import { AttachmentBuilder, EmbedBuilder } from 'discord.js';
 
 export function createMessageFromText(
   result: string,
-  { title, embedColor }: { title: string; embedColor: ColorResolvable }
+  {
+    title,
+    embedColor,
+    lang,
+  }: { title: string; embedColor: ColorResolvable; lang?: string }
 ) {
   if (result.length <= 4080) {
     const embed = new EmbedBuilder()
       .setColor(embedColor)
-      .setDescription(`\`\`\`\n${result}\n\`\`\``);
+      .setDescription(`\`\`\`${lang ?? ''}\n${result}\n\`\`\``);
     return { embeds: [embed] };
   }
 
