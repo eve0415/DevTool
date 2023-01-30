@@ -51,6 +51,7 @@ export default class extends Command {
           break;
 
         case 'ts':
+        case 'tsx':
         case 'typescript':
           await message.reply(
             CodeLintManager.lintTypeScript(codeblock['code'] ?? '')
