@@ -6,7 +6,7 @@ export abstract class BaseBuildingSystem {
   protected embedColor: ColorResolvable = Colors.Blurple;
 
   public build(content: string): Promise<BaseMessageOptions> {
-    return this.buildSnipet(content)
+    return this.buildSnippet(content)
       .then(result => {
         return this.createMessage(result);
       })
@@ -17,7 +17,7 @@ export abstract class BaseBuildingSystem {
       });
   }
 
-  protected abstract buildSnipet(content: string): Promise<string>;
+  protected abstract buildSnippet(content: string): Promise<string>;
 
   protected createMessage(result: string): BaseMessageOptions {
     if (!result) result = '返り値がありません';

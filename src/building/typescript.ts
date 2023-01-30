@@ -4,7 +4,7 @@ import { BaseBuildingSystem } from './base';
 import tsconfig from '../../tsconfig.json';
 
 export class TypeScriptBuildingSystem extends BaseBuildingSystem {
-  protected buildSnipet(content: string): Promise<string> {
+  protected buildSnippet(content: string): Promise<string> {
     const { outputText } = ts.transpileModule(content, {
       ...tsconfig,
       compilerOptions: {
