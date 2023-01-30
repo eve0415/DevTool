@@ -44,7 +44,7 @@ export default class extends Command {
       const codeblock = codeBlockRegex.exec(content)?.groups ?? {};
       switch (codeblock['lang']?.toLowerCase()) {
         case 'js':
-        case 'jsx":
+        case 'jsx':
         case 'javascript':
           await message.reply(
             CodeLintManager.lintJavaScript(codeblock['code'] ?? '')
