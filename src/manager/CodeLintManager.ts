@@ -34,6 +34,10 @@ export class CodeLintManager {
   public static lintHtml(code: string): BaseMessageOptions {
     return createMessage(format(code, { parser: 'html' }), 'html');
   }
+
+  public static lintScss(code: string): BaseMessageOptions {
+    return createMessage(format(code, { parser: 'scss' }), 'scss');
+  }
 }
 
 function createMessage(code: string, lang: Language): BaseMessageOptions {

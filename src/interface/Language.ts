@@ -9,6 +9,7 @@ export type Language =
   | 'kt'
   | 'md'
   | 'py'
+  | 'scss'
   | 'sh'
   | 'text'
   | 'ts'

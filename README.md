@@ -66,7 +66,9 @@ CSS | | ✓
 MarkDown | | ✓
 JSON | | ✓
 YAML | | ✓
-Sass/Scss | | | ✓
+Sass/Scss | | ✓[^3] | ✓
+
+[^3]: Scssのみ。
 
 ## 諸注意
 
