@@ -6,7 +6,6 @@
     "alwaysStrict": true,
     "baseUrl": ".",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["ESNext"],
     "module": "esnext",
