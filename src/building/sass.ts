@@ -1,5 +1,5 @@
-import sass from "sass";
-import { BaseBuildingSystem } from "./base";
+import sass from 'sass';
+import { BaseBuildingSystem } from './base';
 
 export class SassBuildingSystem extends BaseBuildingSystem {
   protected async buildSnipet(content: string): Promise<string> {

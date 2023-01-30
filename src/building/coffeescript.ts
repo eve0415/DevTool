@@ -1,5 +1,5 @@
-import { compile } from "coffeescript";
-import { BaseBuildingSystem } from "./base";
+import { compile } from 'coffeescript';
+import { BaseBuildingSystem } from './base';
 
 export class CoffeeScriptBuildingSystem extends BaseBuildingSystem {
   protected buildSnipet(content: string): Promise<string> {

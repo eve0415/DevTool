@@ -111,11 +111,13 @@ export default class extends Command {
             )
           );
           break;
-        
+
         case 'coffeescript':
         case 'coffee':
           await message.reply(
-            await new CoffeeScriptEvaluationSystem().evaluate(codeblock['code'] ?? '')
+            await new CoffeeScriptEvaluationSystem().evaluate(
+              codeblock['code'] ?? ''
+            )
           );
           break;
 

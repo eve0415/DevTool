@@ -1,7 +1,10 @@
-import type { ColorResolvable} from "discord.js";
-import { AttachmentBuilder, EmbedBuilder } from "discord.js";
+import type { ColorResolvable } from 'discord.js';
+import { AttachmentBuilder, EmbedBuilder } from 'discord.js';
 
-export function createMessageFromText(result:string, {title, embedColor}:{title:string, embedColor:ColorResolvable}){
+export function createMessageFromText(
+  result: string,
+  { title, embedColor }: { title: string; embedColor: ColorResolvable }
+) {
   if (result.length <= 4080) {
     const embed = new EmbedBuilder()
       .setColor(embedColor)
@@ -33,8 +36,6 @@ export function createMessageFromText(result:string, {title, embedColor}:{title:
 
   return {
     content,
-    files: [
-      new AttachmentBuilder(Buffer.from(result), { name: 'result.txt' }),
-    ],
+    files: [new AttachmentBuilder(Buffer.from(result), { name: 'result.txt' })],
   };
 }

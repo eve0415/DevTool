@@ -78,7 +78,7 @@ export abstract class BaseEvaluationSystem {
     if (!result) result = '返り値がありません';
 
     return createMessageFromText(result, {
-      title: "実行結果",
+      title: '実行結果',
       embedColor: this.embedColor,
     });
   }

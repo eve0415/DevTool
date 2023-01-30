@@ -1,6 +1,10 @@
 import type { MessageContextMenuCommandInteraction } from 'discord.js';
 import { ApplicationCommandType } from 'discord.js';
-import { CoffeeScriptBuildingSystem, SassBuildingSystem, TypeScriptBuildingSystem } from '../building';
+import {
+  CoffeeScriptBuildingSystem,
+  SassBuildingSystem,
+  TypeScriptBuildingSystem,
+} from '../building';
 import type { DevToolBot } from '../DevToolBot';
 import { parseContent } from '../helper';
 import { Command } from '../interface';
@@ -53,27 +57,29 @@ export default class extends Command {
         case 'csharp':
         case 'brainfuck':
         case 'js':
-          await message.reply("この言語をビルドすることはできません");
+          await message.reply('この言語をビルドすることはできません');
           break;
-        
+
         case 'ts':
         case 'tsx':
           await message.reply(
             await new TypeScriptBuildingSystem().build(codeblock['code'] ?? '')
           );
           break;
-        
+
         case 'sass':
         case 'scss':
           await message.reply(
             await new SassBuildingSystem().build(codeblock['code'] ?? '')
           );
           break;
-        
+
         case 'coffeescript':
         case 'coffee':
           await message.reply(
-            await new CoffeeScriptBuildingSystem().build(codeblock['code'] ?? '')
+            await new CoffeeScriptBuildingSystem().build(
+              codeblock['code'] ?? ''
+            )
           );
           break;
 

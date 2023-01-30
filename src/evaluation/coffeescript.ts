@@ -1,5 +1,5 @@
 import type { BaseMessageOptions } from 'discord.js';
-import { compile } from "coffeescript";
+import { compile } from 'coffeescript';
 import { BaseEvaluationSystem } from './base';
 import { JavaScriptEvaluationSystem } from './javascript';
 

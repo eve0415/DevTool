@@ -1,3 +1,3 @@
-export * from "./typescript";
-export * from "./sass";
-export * from "./coffeescript";
+export * from './typescript';
+export * from './sass';
+export * from './coffeescript';
