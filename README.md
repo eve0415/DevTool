@@ -53,7 +53,7 @@ Discord で簡単なプログラムを実行するためのボットです。
 --- | :---: | :---: | :---:
 JavaScript | ✓ | ✓ |
 TypeScript | ✓ | ✓ | ✓
-TSX | | | ✓
+TSX | | ✓ | ✓
 CoffeeScript | ✓ | ✓ | ✓
 Deno | ✓ |
 Python | ✓ |
