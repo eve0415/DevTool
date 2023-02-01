@@ -29,6 +29,7 @@ export abstract class BaseBuildingSystem {
     if (!result) result = '返り値がありません';
     return createMessageFromText(result, {
       title: 'ビルド結果',
+      showTitleOnEmbed: true,
       embedColor: this.embedColor,
       lang: this.resultLanguage,
     });

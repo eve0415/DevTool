@@ -7,12 +7,14 @@ export function createMessageFromText(
     title,
     embedColor,
     lang,
-  }: { title: string; embedColor: ColorResolvable; lang?: string }
+    showTitleOnEmbed = false,
+  }: { title: string; embedColor: ColorResolvable; lang?: string, showTitleOnEmbed?:boolean }
 ) {
   if (result.length <= 4080) {
     const embed = new EmbedBuilder()
       .setColor(embedColor)
-      .setDescription(`\`\`\`${lang ?? ''}\n${result}\n\`\`\``);
+      .setDescription(`\`\`\`${lang ?? ''}\n${result}\n\`\`\``)
+      .setTitle(showTitleOnEmbed ? title : null);
     return { embeds: [embed] };
   }
 
@@ -39,6 +41,7 @@ export function createMessageFromText(
   }
 
   return {
+    title: showTitleOnEmbed ? title : undefined,
     content,
     files: [new AttachmentBuilder(Buffer.from(result), { name: 'result.txt' })],
   };

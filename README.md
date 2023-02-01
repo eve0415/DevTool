@@ -52,7 +52,7 @@ Discord で簡単なプログラムを実行するためのボットです。
 言語 | 実行 | 整形 | ビルド
 --- | :---: | :---: | :---:
 JavaScript | ✓ | ✓ |
-JSX | | ✓ | ✓
+JSX | | ✓ |
 TypeScript | ✓ | ✓ | ✓
 TSX | | ✓ | ✓
 CoffeeScript | ✓ | ✓ | ✓
