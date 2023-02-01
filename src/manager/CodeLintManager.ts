@@ -1,6 +1,7 @@
 import type { BaseMessageOptions } from 'discord.js';
-import { AttachmentBuilder, Colors } from 'discord.js';
+import { Colors } from 'discord.js';
 import prettier from 'prettier';
+import { createMessageFromText } from '../util';
 import type { Language } from '../interface';
 
 const { format } = prettier;
@@ -41,28 +42,10 @@ export class CodeLintManager {
 }
 
 function createMessage(code: string, lang: Language): BaseMessageOptions {
-  if (code.length <= 4080) {
-    return {
-      embeds: [
-        {
-          title: '整形結果(Prettier 標準設定)',
-          description: `\`\`\`${lang}\n${code}\n\`\`\``,
-          color: Colors.Blurple,
-        },
-      ],
-    };
-  }
-
-  if (Buffer.from(code).byteLength / 1024 / 1024 > 8) {
-    return {
-      content: '整形結果が 8GB を超えるファイルになってしまいました',
-    };
-  }
-
-  return {
-    content: '整形結果です。ファイルをご覧ください。',
-    files: [
-      new AttachmentBuilder(Buffer.from(code), { name: `result.${lang}` }),
-    ],
-  };
+  return createMessageFromText(code, {
+    title: '整形結果(Prettier 標準設定)',
+    showTitleOnEmbed: true,
+    embedColor: Colors.Blurple,
+    lang,
+  });
 }

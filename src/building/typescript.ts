@@ -18,6 +18,7 @@ export class TypeScriptBuildingSystem extends BaseBuildingSystem {
         noImplicitUseStrict: true,
         alwaysStrict: false,
         strict: false,
+        jsx: ts.JsxEmit.Preserve,
       },
     });
     return Promise.resolve(outputText);
