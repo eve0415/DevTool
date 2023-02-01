@@ -8,7 +8,12 @@ export function createMessageFromText(
     embedColor,
     lang,
     showTitleOnEmbed = false,
-  }: { title: string; embedColor: ColorResolvable; lang?: string, showTitleOnEmbed?:boolean }
+  }: {
+    title: string;
+    embedColor: ColorResolvable;
+    lang?: string;
+    showTitleOnEmbed?: boolean;
+  }
 ) {
   if (result.length <= 4080) {
     const embed = new EmbedBuilder()
