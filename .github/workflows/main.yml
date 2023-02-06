@@ -40,7 +40,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Generate Docker meta
         uses: docker/metadata-action@v4
         id: meta
@@ -57,7 +57,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
-          cache-from: type=gha,scope=main
+          cache-from: type=gha,mode=max,scope=main
           cache-to: type=gha,mode=max,scope=main
 
   helper:
@@ -81,7 +81,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Generate Docker meta
         uses: docker/metadata-action@v4
         id: meta
@@ -99,13 +99,13 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
-          cache-from: type=gha,scope=helper
+          cache-from: type=gha,mode=max,scope=helper
           cache-to: type=gha,mode=max,scope=helper
 
   deploy:
     name: Deploy
     if: github.event_name == 'push'
-    needs: 
+    needs:
       - main
       - helper
     runs-on: ubuntu-latest
