@@ -27,15 +27,7 @@ export default class extends Command {
       return interaction.editReply('対象のメッセージの取得に失敗しました');
     }
     if (!codeBlockRegex.test(message.content)) {
-      return interaction.editReply(
-        [
-          '対象のメッセージに、コードブロックを使用されている部分を見つけることはできませんでした',
-          '> 例)',
-          '> \\`\\`\\`js',
-          "> console.log('Hello World')",
-          '> ```',
-        ].join('\n')
-      );
+      return interaction.editReply(this.noCodeBlock);
     }
 
     for await (const content of parseContent(message.content)) {

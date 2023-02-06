@@ -1,4 +1,3 @@
-import type { DevToolBot } from '../DevToolBot';
 import type {
   ApplicationCommandData,
   AutocompleteInteraction,
@@ -6,9 +5,17 @@ import type {
 } from 'discord.js';
 import type { Logger } from 'log4js';
 import log4js from 'log4js';
+import type { DevToolBot } from '../DevToolBot';
 
 export abstract class Command {
   protected readonly logger: Logger;
+  protected readonly noCodeBlock = [
+    '対象のメッセージに、コードブロックを使用されている部分を見つけることはできませんでした',
+    '> 例)',
+    '> \\`\\`\\`js',
+    "> console.log('Hello World')",
+    '> ```',
+  ].join('\n');
 
   protected constructor(
     protected readonly client: DevToolBot,
