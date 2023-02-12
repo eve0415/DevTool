@@ -53,7 +53,8 @@ RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | tee
 RUN --mount=type=cache,target=/var/cache/apt,sharing=private --mount=type=cache,target=/var/lib/apt,sharing=private \
   apt-get update && \
   apt-get install -y --no-install-recommends temurin-17-jdk mono-devel python3 && \
-  apt-get purge --auto-remove -y --allow-remove-essential wget gnupg dirmngr apt && \
+  apt-get purge --auto-remove -y --allow-remove-essential wget gnupg dirmngr && \
+  apt-get remove apt && \
   rm -rf /var/lib/apt/lists/* /etc/apt/keyrings /sbin/reboot
 COPY --from=kotlin /app/kotlinc/bin/* /usr/bin
 COPY --from=kotlin /app/kotlinc/lib /usr/lib
