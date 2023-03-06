@@ -13,7 +13,7 @@ RUN chmod +x build.js
 RUN yarn node build.js
 
 
-FROM node:lts-slim AS runner
+FROM node:lts-alpine AS runner
 WORKDIR /app
 COPY --link package.json .
 COPY --from=builder /app/out .
