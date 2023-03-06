@@ -13,7 +13,7 @@ RUN chmod +x build.js
 RUN yarn node build.js
 
 
-FROM builder-base AS production
+FROM node:lts-alpine-base AS production
 WORKDIR /app
 COPY --link .yarn/ ./.yarn
 COPY --link .yarnrc.yml .pnp* package.json yarn.lock ./
