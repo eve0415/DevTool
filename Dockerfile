@@ -29,7 +29,7 @@ COPY --link .yarn/ ./.yarn
 COPY --link .yarnrc.yml .pnp* package.json yarn.lock ./
 RUN --mount=type=cache,target=/root/.yarn/berry/cache \
   --mount=type=cache,target=/root/.cache \
-  yarn workspaces focus --production
+  yarn workspaces focus --production -A
 COPY --from=builder /app/out ./
 
 
