@@ -13,19 +13,23 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=private --mount=type=cache,
 
 FROM builder-base AS builder
 WORKDIR /app
-COPY .yarn/ ./.yarn
-COPY .yarnrc.yml package.json yarn.lock ./
-RUN yarn install --immutable --network-timeout 100000
-COPY . .
+COPY --link .yarn/ ./.yarn
+COPY --link .yarnrc.yml package.json yarn.lock ./
+RUN --mount=type=cache,target=/root/.yarn/berry/cache \
+  --mount=type=cache,target=/root/.cache \
+  yarn install --immutable --network-timeout 100000
+COPY --link . .
 RUN chmod +x build.js
 RUN yarn node build.js
 
 
 FROM builder-base AS production
 WORKDIR /app
-COPY .yarn/ ./.yarn
-COPY .yarnrc.yml .pnp* package.json yarn.lock ./
-RUN yarn workspaces focus --production
+COPY --link .yarn/ ./.yarn
+COPY --link .yarnrc.yml .pnp* package.json yarn.lock ./
+RUN --mount=type=cache,target=/root/.yarn/berry/cache \
+  --mount=type=cache,target=/root/.cache \
+  yarn workspaces focus --production
 COPY --from=builder /app/out ./
 
 
@@ -45,7 +49,7 @@ FROM base AS runner
 RUN groupadd -r devtool && useradd --no-log-init -r -g devtool devtool
 WORKDIR /app
 RUN mkdir -p /etc/apt/keyrings
-COPY mono.gpg /etc/apt/keyrings/
+COPY --link mono.gpg /etc/apt/keyrings/
 RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/keyrings/adoptium.asc && \
   echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list && \
   apt-key add /etc/apt/keyrings/mono.gpg && \
