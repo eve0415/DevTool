@@ -3,16 +3,28 @@ RUN mkdir -p /etc/apt/apt.conf.d && echo 'Binary::apt::APT::Keep-Downloaded-Pack
 RUN --mount=type=cache,target=/var/cache/apt,sharing=private --mount=type=cache,target=/var/lib/apt,sharing=locked \
   apk add python3 make g++ wget
 WORKDIR /app
-COPY .yarn/ ./.yarn
-COPY .yarnrc.yml package.json yarn.lock build.js tsconfig.json ./
-RUN yarn install --immutable --network-timeout 100000
-COPY helper ./
+COPY --link .yarn/ ./.yarn
+COPY --link .yarnrc.yml package.json yarn.lock build.js tsconfig.json ./
+RUN --mount=type=cache,target=/root/.yarn/berry/cache \
+  --mount=type=cache,target=/root/.cache \
+  yarn install --immutable --network-timeout 100000
+COPY --link helper ./
 RUN chmod +x build.js
 RUN yarn node build.js
 
 
-FROM node:lts-alpine AS runner
+FROM builder-base AS production
 WORKDIR /app
-COPY package.json .
-COPY --from=builder /app/out .
+COPY --link .yarn/ ./.yarn
+COPY --link .yarnrc.yml .pnp* package.json yarn.lock ./
+RUN --mount=type=cache,target=/root/.yarn/berry/cache \
+  --mount=type=cache,target=/root/.cache \
+  yarn workspaces focus --production
+COPY --from=builder /app/out ./
+
+
+FROM gcr.io/distroless/nodejs18-debian11:nonroot AS runner
+WORKDIR /app
+COPY --link package.json .
+COPY --from=production /app/out .
 CMD ["node", "index.js", "--enable-source-maps"]
