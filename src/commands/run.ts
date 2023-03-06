@@ -1,5 +1,6 @@
 import type { MessageContextMenuCommandInteraction } from 'discord.js';
-import { ApplicationCommandType } from 'discord.js';
+import { ApplicationCommandType, ChannelType } from 'discord.js';
+
 import type { DevToolBot } from '../DevToolBot';
 import {
   BrainfuckEvaluationSystem,
@@ -30,9 +31,11 @@ export default class extends Command {
   ): Promise<unknown> {
     await interaction.deferReply({ ephemeral: true });
 
-    const message = await interaction.channel?.messages.fetch(
-      interaction.targetId
-    );
+    // Workaround
+    const message =
+      interaction.channel?.type !== ChannelType.GuildStageVoice
+        ? await interaction.channel?.messages.fetch(interaction.targetId)
+        : null;
     if (!message) {
       return interaction.editReply('対象のメッセージの取得に失敗しました');
     }
