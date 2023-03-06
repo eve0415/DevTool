@@ -13,14 +13,10 @@ RUN chmod +x build.js
 RUN yarn node build.js
 
 
-FROM node:lts-alpine AS production
-WORKDIR /app
-COPY --link .yarn/ ./.yarn
-COPY --link .yarnrc.yml .pnp* package.json yarn.lock ./
+FROM builder AS production
 RUN --mount=type=cache,target=/root/.yarn/berry/cache \
   --mount=type=cache,target=/root/.cache \
   yarn workspaces focus --production
-COPY --from=builder /app/out ./
 
 
 FROM gcr.io/distroless/nodejs18-debian11:nonroot AS runner
